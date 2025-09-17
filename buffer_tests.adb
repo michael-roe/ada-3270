@@ -18,12 +18,12 @@ package body Buffer_Tests is
   procedure Register_Tests (T: in out Buffer_Test) is
     use AUnit.Test_Cases.Registration;
   begin
-    Register_Routine(T, Test_Clear'Access, "Test Clear");
+    Register_Routine(T, Test_Clear'Access, "Test_Clear");
   end Register_Tests;
 
   function Name(T: Buffer_Test) return Test_String is
   begin
-    return Format("Buffer Tests");
+    return Format("Buffer_Tests");
   end Name;
 
 end Buffer_Tests;
