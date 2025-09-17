@@ -2,7 +2,7 @@ package body Buffer is
 
   function Is_Empty(buff: in T) return Boolean is
   begin
-    return buff.length /= 0;
+    return buff.length = 0;
   end;
 
   function Is_Full(buff: in T) return Boolean is
