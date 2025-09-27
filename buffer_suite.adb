@@ -4,7 +4,7 @@ package body Buffer_Suite is
 
    use AUnit.Test_Suites;
 
-   -- Statically allocate test suite:
+   --  Statically allocate test suite:
    Result : aliased Test_Suite;
 
    --  Statically allocate test cases:
