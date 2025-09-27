@@ -86,7 +86,7 @@ private
    type InternalBuffer is array (Buffer_Index) of Byte;
 
    type T is record
-      length : Buffer_Length;
+      length : Buffer_Length := 0;
       head   : Buffer_Index;
       tail   : Buffer_Index;
       peak   : Buffer_Length;
