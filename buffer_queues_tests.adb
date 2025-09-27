@@ -1,3 +1,4 @@
+with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers; use Ada.Containers;
 with AUnit.Assertions; use AUnit.Assertions;
 with Buffer; use Buffer; use type Buffer.Byte;
@@ -69,6 +70,51 @@ package body Buffer_Queues_Tests is
 
    end Test_TX_RX;
 
+   procedure Test_TX_RX_Large (T : in out Test_Cases.Test_Case'Class) is
+      TX : Buffer_Queues.Queue;
+      RX : Buffer_Queues.Queue;
+      Byte_Sent : constant Buffer.Byte := 42;
+      Byte_Received : Buffer.Byte;
+      Finished : Boolean;
+      task Server;
+      task body Server is
+         Byte_Server : Buffer.Byte;
+      begin
+         --
+         --  The Server received data until it gets a NULL, then
+         --  replies with a NULL.
+         --
+         --  For the server, receive and transmit are swapped
+         --
+         --  Put in a small delay here so that the buffer will probably
+         --  fill up before the server empties it; this will test the
+         --  buffer full condition.
+         delay 0.1;
+         Finished := False;
+         while not Finished loop
+            TX.Dequeue (Byte_Server);
+            if Byte_Server = 0 then
+               Finished := True;
+            end if;
+         end loop;
+         RX.Enqueue (0);
+      end Server;
+   begin
+      TX.Clear;
+      RX.Clear;
+      for J in 1 .. Buffer.Buffer_Size * 2 loop
+         TX.Enqueue (Byte_Sent);
+      end loop;
+      TX.Enqueue (0);
+
+      RX.Dequeue (Byte_Received);
+      Assert (Byte_Received = 0,
+         "Reply from server should be terminated with NULL");
+
+      Put ("Peak_Use = ");
+      Put_Line (Ada.Containers.Count_Type'Image (TX.Peak_Use));
+   end Test_TX_RX_Large;
+
    procedure Register_Tests (T : in out Buffer_Queues_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -81,6 +127,9 @@ package body Buffer_Queues_Tests is
 
       Register_Routine (T, Test_TX_RX'Access,
          "Test_TX_RX");
+
+      Register_Routine (T, Test_TX_RX_Large'Access,
+         "Test_TX_RX_Large");
 
    end Register_Tests;
 
