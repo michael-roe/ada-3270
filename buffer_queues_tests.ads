@@ -11,4 +11,6 @@ package Buffer_Queues_Tests is
 
    procedure Test_Clear (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Enqueue_Dequeue (T : in out Test_Cases.Test_Case'Class);
+
 end Buffer_Queues_Tests;
