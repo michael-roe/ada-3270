@@ -1,10 +1,9 @@
+with Ada.Containers; use Ada.Containers;
 with Interfaces;
 
 package Buffer is
 
    subtype Byte is Interfaces.Unsigned_8;
-
-   type Bytes is array (Integer range <>) of Byte;
 
    type T is private;
 
@@ -12,19 +11,31 @@ package Buffer is
    --  The type Buffer.T represents a buffer in a communications protocol
    --
 
-   function Is_Empty (buff : T) return Boolean;
+   function Is_Empty (Container : T) return Boolean;
 
    --
-   --  Is_Empty returns true is there is no data left to read in the buffer
+   --  Is_Empty returns true if there is no data left to read in the buffer
    --
 
-   function Is_Full (buff : T) return Boolean;
+   function Is_Full (Container : T) return Boolean;
 
    --
-   --  Is_Full returns true is there no space to write data into the buffer
+   --  Is_Full returns true if there no space to write data into the buffer
    --
 
-   procedure Clear (buff : in out T);
+   function Current_Use (Container : T) return Count_Type;
+
+   --
+   --  Current_Use returns the number of elements in the buffer
+   --
+
+   function Peak_Use (Container : T) return Count_Type;
+
+   --
+   --  Peak_Use returns the maximum number of elements since the last Clear
+   --
+
+   procedure Clear (Container : in out T);
 
    --
    --  Clear sets the contents of the buffer to empty
@@ -34,7 +45,7 @@ package Buffer is
    --  (a) After Clear, the buffer is empty
    --  (b) After Clear, the buffer is not full (Buffer_Size is not zero)
 
-   function Enqueue_Tail (buff : in out T; b : Byte) return Boolean;
+   function Enqueue_Tail (Container : in out T; b : Byte) return Boolean;
 
    --
    --  Enqueue_Tail appends b to the end of buffer if there is space for it.
@@ -47,7 +58,8 @@ package Buffer is
    --  (c) If Enqueue_Tail returns False, the buffer is unchanged
    --  (d) If the buffer is not full, Enqueue_Tail will return True
 
-   function Dequeue_Head (buff : in out T; b : in out Byte) return Boolean;
+   function Dequeue_Head (Container : in out T; b : in out Byte)
+      return Boolean;
 
    --
    --  Dequeue_Head takes a byte from the head of the queue
@@ -65,17 +77,20 @@ private
 
    Buffer_Size : constant := 4096;
 
-   type Buffer_Index is range 0 .. Buffer_Size - 1;
+   subtype Buffer_Index is Ada.Containers.Count_Type
+      range 0 ..  Buffer_Size - 1;
 
-   type Buffer_Length is range 0 .. Buffer_Size;
+   subtype Buffer_Length is Ada.Containers.Count_Type
+      range 0 .. Buffer_Size;
 
    type InternalBuffer is array (Buffer_Index) of Byte;
 
    type T is record
       length : Buffer_Length;
-      head : Buffer_Index;
-      tail : Buffer_Index;
-      data : InternalBuffer;
+      head   : Buffer_Index;
+      tail   : Buffer_Index;
+      peak   : Buffer_Length;
+      data   : InternalBuffer;
    end record;
 
 end Buffer;

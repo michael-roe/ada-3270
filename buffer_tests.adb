@@ -20,6 +20,9 @@ package body Buffer_Tests is
       Assert (Current_Use (Buff) = 0,
           "Current_Use should be 0 after Clear");
 
+      Assert (Peak_Use (Buff) = 0,
+          "Peak_Use should be 0 after Clear");
+
    end Test_Clear;
 
    procedure Test_Enqueue_Dequeue (T : in out Test_Cases.Test_Case'Class) is
@@ -48,6 +51,9 @@ package body Buffer_Tests is
       Assert (Current_Use (Buff) = 1,
          "Current_Use should be 1 after single Enqueue");
 
+      Assert (Peak_Use (Buff) = 1,
+         "Peak_Use should be 1 after single Enqueue");
+
       Success := Dequeue_Head (Buff, Received_Byte);
 
       Assert (Success,
@@ -58,6 +64,12 @@ package body Buffer_Tests is
 
       Assert (Is_Empty (Buff),
          "Buffer should be empty after Dequeue");
+
+      Assert (Current_Use (Buff) = 0,
+         "Current_Use should be 0 after Dequeue");
+
+      Assert (Peak_Use (Buff) = 1,
+         "Peak_Use should still be 1 after Dequeue");
 
    end Test_Enqueue_Dequeue;
 
