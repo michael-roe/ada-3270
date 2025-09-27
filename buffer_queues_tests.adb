@@ -1,4 +1,3 @@
-with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers; use Ada.Containers;
 with AUnit.Assertions; use AUnit.Assertions;
 with Buffer; use Buffer; use type Buffer.Byte;
@@ -111,8 +110,6 @@ package body Buffer_Queues_Tests is
       Assert (Byte_Received = 0,
          "Reply from server should be terminated with NULL");
 
-      Put ("Peak_Use = ");
-      Put_Line (Ada.Containers.Count_Type'Image (TX.Peak_Use));
    end Test_TX_RX_Large;
 
    procedure Register_Tests (T : in out Buffer_Queues_Test) is
