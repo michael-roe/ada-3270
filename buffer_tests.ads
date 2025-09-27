@@ -15,4 +15,6 @@ package Buffer_Tests is
 
    procedure Test_Full (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Wrap (T : in out Test_Cases.Test_Case'Class);
+
 end Buffer_Tests;

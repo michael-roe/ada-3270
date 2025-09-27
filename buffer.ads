@@ -5,6 +5,8 @@ package Buffer is
 
    subtype Byte is Interfaces.Unsigned_8;
 
+   Buffer_Size : constant := 4096;
+
    type T is private;
 
    --
@@ -74,8 +76,6 @@ package Buffer is
    --  (d) If the buffer is not empty, Dequeue_Head will return True
 
 private
-
-   Buffer_Size : constant := 4096;
 
    subtype Buffer_Index is Ada.Containers.Count_Type
       range 0 ..  Buffer_Size - 1;
