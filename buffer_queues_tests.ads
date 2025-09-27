@@ -13,4 +13,6 @@ package Buffer_Queues_Tests is
 
    procedure Test_Enqueue_Dequeue (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_TX_RX (T : in out Test_Cases.Test_Case'Class);
+
 end Buffer_Queues_Tests;
