@@ -84,7 +84,7 @@ package body Buffer_Queues_Tests is
          Byte_Server : Buffer.Byte;
       begin
          --
-         --  The Server received data until it gets a NULL, then
+         --  The Server receives data until it gets a NULL, then
          --  replies with a NULL.
          --
          --  For the server, receive and transmit are swapped
@@ -116,6 +116,57 @@ package body Buffer_Queues_Tests is
 
    end Test_TX_RX_Large;
 
+   procedure Test_TX_RX_Break (T : in out Test_Cases.Test_Case'Class) is
+      TX : Buffer_Queues.Queue;
+      RX : Buffer_Queues.Queue;
+      Byte_Sent : constant Buffer.Byte := 42;
+      Byte_Received : Buffer.Byte;
+      Finished : Boolean;
+      task Server;
+      task body Server is
+         Byte_Server  : Buffer.Byte;
+         Count_Server : Integer;
+      begin
+         --  The Server receives data until it receives a NULL, then replies
+         --  with a NULL. It also sends a 1 (indicating that the client
+         --  should quit sending) when it has received 2 bytes.
+         Count_Server := 0;
+         Finished := False;
+         while not Finished loop
+            TX.Dequeue (Byte_Server);
+            if Byte_Server = 0 then
+               Finished := True;
+            else
+               Count_Server := Count_Server + 1;
+               if Count_Server = 2 then
+                 RX.Enqueue (1);
+               end if;
+            end if;
+         end loop;
+         RX.Enqueue (0);
+      end Server; 
+   begin
+      null;
+      TX.Clear;
+      RX.Clear;
+      --  Send data until we have sent Buffer_Size * 2 bytes, or we have
+      --  received something (should be a 1, stop sending, byte) from the
+      --  Server.
+      for J in 1 .. Buffer.Buffer_Size * 2 loop
+         TX.Enqueue (Byte_Sent);
+         if not RX.Is_Empty then
+            exit;
+         end if;
+      end loop;
+      TX.Enqueue (0);
+      RX.Dequeue (Byte_Received);
+      Assert (Byte_Received = 1,
+         "Expected a 1 (BREAK) byte");
+      RX.Dequeue (Byte_Received);
+      Assert (Byte_Received = 0,
+         "Expected a 0 (EOR) byte");
+   end Test_TX_RX_Break;
+
    procedure Register_Tests (T : in out Buffer_Queues_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -131,6 +182,9 @@ package body Buffer_Queues_Tests is
 
       Register_Routine (T, Test_TX_RX_Large'Access,
          "Test_TX_RX_Large");
+
+      Register_Routine (T, Test_TX_RX_Break'Access,
+         "Test_TX_RX_Break");
 
    end Register_Tests;
 
