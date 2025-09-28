@@ -14,6 +14,8 @@ package Buffer_Queues is
 
       overriding function Peak_Use return Count_Type;
 
+      function Is_Empty return Boolean;
+
       procedure Clear;
 
    private

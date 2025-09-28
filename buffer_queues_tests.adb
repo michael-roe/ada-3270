@@ -9,10 +9,14 @@ package body Buffer_Queues_Tests is
       Q : Buffer_Queues.Queue;
    begin
 
+      Assert (Q.Is_Empty,
+         "Queue should be initialized as empty");
       Assert (Q.Current_Use = 0,
         "Queue should be initialized as empty");
 
       Q.Clear;
+      Assert (Q.Is_Empty,
+         "Queue should be empty after Clear");
       Assert (Q.Current_Use = 0,
         "Queue should be empty after Clear");
       Assert (Q.Peak_Use = 0,

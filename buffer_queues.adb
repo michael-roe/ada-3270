@@ -26,6 +26,11 @@ package body Buffer_Queues is
       return Peak_Use (Container);
    end Peak_Use;
 
+   function Is_Empty return Boolean is
+   begin
+      return Is_Empty (Container);
+   end Is_Empty;
+
    procedure Clear is
    begin
       Clear (Container);
