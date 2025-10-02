@@ -10,6 +10,8 @@ package Telnet.Negotiation is
 
    procedure Wont (Option : Buffer.Byte; Reply : out Do_Dont);
 
+   procedure Request_Enable (Option : Buffer.Byte; Reply : out Do_Dont);
+
    procedure Do_It (Option : Buffer.Byte; Reply : out Will_Wont);
 
    procedure Dont (Option : Buffer.Byte; Reply : out Will_Wont);

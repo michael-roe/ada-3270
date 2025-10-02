@@ -81,9 +81,49 @@ package body Telnet.Negotiation is
    end Will;
 
    procedure Wont (Option : Buffer.Byte; Reply : out Do_Dont) is
+      Index : Option_Id;
    begin
-      null;
+      Index := Find (Option);
+      case States (Index).Them is
+         when No =>
+            Reply := Send_Nothing;
+         when Yes =>
+            States (Index).Them := No;
+            Reply := Send_Dont;
+         when others =>
+            null;
+      end case;
    end Wont;
+
+   procedure Request_Enable (Option : Buffer.Byte; Reply : out Do_Dont) is
+      Index : Option_Id;
+   begin
+      Index := Find (Option);
+      case States (Index).Them is
+         when No =>
+            States (Index).Them := Want_Yes;
+            Reply := Send_Do_It;
+         when Yes =>
+            --
+            --  Error condition: already enabled
+            --
+            Reply := Send_Nothing;
+         when Want_No =>
+            if States (Index).Them_Q then
+               Reply := Send_Nothing;
+            else
+               States (Index).Them_Q := True;
+               Reply := Send_Nothing;
+            end if;
+         when Want_Yes =>
+            if States (Index).Them_Q then
+               States (Index).Them_Q := False;
+               Reply := Send_Nothing;
+            else
+               Reply := Send_Nothing;
+            end if;
+      end case;
+   end Request_Enable;
 
    procedure Do_It (Option : Buffer.Byte; Reply : out Will_Wont) is
    begin

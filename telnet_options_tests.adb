@@ -7,11 +7,46 @@ package body Telnet_Options_Tests is
    procedure Test_Will (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
    begin
+
+      Telnet.Negotiation.Wont (Telnet.Options.Transmit_Binary, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Nothing,
+         "No reply expected in response to WONT");
+
       Telnet.Negotiation.Will (Telnet.Options.Transmit_Binary, Reply);
       Assert (Reply = Telnet.Negotiation.Send_Do_It,
          "DO expected in response to WILL");
-      null;
+
+      Telnet.Negotiation.Will (Telnet.Options.Transmit_Binary, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Nothing,
+         "No reply expected in response to second WILL");
+
+      Telnet.Negotiation.Wont (Telnet.Options.Transmit_Binary, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Dont,
+         "DONT expected in response to WONT");
+
    end Test_Will;
+
+   procedure Test_Request_Enable (T : in out Test_Cases.Test_Case'Class) is
+      Reply : Telnet.Negotiation.Do_Dont;
+   begin
+
+      Telnet.Negotiation.Request_Enable (Telnet.Options.End_Of_Record, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Do_It,
+         "DO expected after Request_Enable");
+
+      Telnet.Negotiation.Will (Telnet.Options.End_Of_Record, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Nothing,
+         "No reply expected in reply to WILL");
+
+   end Test_Request_Enable;
+
+   procedure Test_Do_It (T : in out Test_Cases.Test_Case'Class) is
+      Reply : Telnet.Negotiation.Do_Dont;
+   begin
+
+      null;
+
+   end Test_Do_It;
 
    procedure Register_Tests (T : in out Telnet_Options_Test) is
       use AUnit.Test_Cases.Registration;
@@ -19,6 +54,12 @@ package body Telnet_Options_Tests is
 
       Register_Routine (T, Test_Will'Access,
          "Test_Will");
+
+      Register_Routine (T, Test_Request_Enable'Access,
+         "Test_Request_Enable");
+
+      Register_Routine (T, Test_Do_It'Access,
+         "Test_Do_It");
 
    end Register_Tests;
 
