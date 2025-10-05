@@ -36,7 +36,7 @@ package body Telnet_Options_Tests is
 
    end Test_Peer_Enables;
 
-   procedure Test_We_Enable (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_Request_Enable (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
    begin
 
@@ -66,7 +66,7 @@ package body Telnet_Options_Tests is
       Assert (Reply = Telnet.Negotiation.Send_Nothing,
          "No reply expected in reply to WONT");
 
-   end Test_We_Enable;
+   end Test_Request_Enable;
 
    procedure Test_Queuing (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
@@ -101,7 +101,7 @@ package body Telnet_Options_Tests is
       Register_Routine (T, Test_Peer_Enables'Access,
          "Test_Peer_Enables");
 
-      Register_Routine (T, Test_We_Enable'Access,
+      Register_Routine (T, Test_Request_Enable'Access,
          "Test_We_Enable");
 
       Register_Routine (T, Test_Queuing'Access,

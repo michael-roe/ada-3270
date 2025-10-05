@@ -178,8 +178,40 @@ package body Telnet.Negotiation is
    end Request_Disable;
 
    procedure Do_It (Option : Buffer.Byte; Reply : out Will_Wont) is
+      Index : Option_Id;
    begin
-      null;
+      Index := Find (Option);
+      case States (Index).Them is
+         when No =>
+            if States (Index).Supported then
+               States (Index).Us := Yes;
+               Reply := Send_Will;
+            else
+               Reply := Send_Wont;
+            end if;
+         when Yes =>
+            Reply := Send_Nothing;
+         when Want_No =>
+            --
+            --  This is an error condition that shouldn't happen
+            --
+            if States (Index).Us_Q then
+               States (Index).Us := Yes;
+               States (Index).Us_Q := False;
+               Reply := Send_Nothing;
+            else
+               States (Index).Us := No;
+            end if;
+         when Want_Yes =>
+            if States (Index).Us_Q then
+               States (Index).Us := Want_No;
+               States (Index).Us_Q := False;
+               Reply := Send_Wont;
+            else
+               States (Index).Us := Yes;
+               Reply := Send_Nothing;
+            end if;
+      end case;
    end Do_It;
 
    procedure Dont (Option : Buffer.Byte; Reply : out Will_Wont) is

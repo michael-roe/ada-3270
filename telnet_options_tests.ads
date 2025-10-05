@@ -13,10 +13,12 @@ package Telnet_Options_Tests is
 
    --  Test in which the peer offers to enable the option
 
-   procedure Test_We_Enable (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Request_Enable (T : in out Test_Cases.Test_Case'Class);
 
    --  Test in which we ask the peer to enable the option
 
    procedure Test_Queuing (T : in out Test_Cases.Test_Case'Class);
+
+   --  Test of option changes getting put in the queue
 
 end Telnet_Options_Tests;
