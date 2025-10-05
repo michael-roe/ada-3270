@@ -55,6 +55,17 @@ package body Telnet_Options_Tests is
          (Telnet.Options.End_Of_Record),
          "Peer status should be set to enabled after receiving WILL");
 
+      Telnet.Negotiation.Request_Disable (Telnet.Options.End_Of_Record, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Dont,
+         "DONT expected after Request_Disable");
+      Assert (not Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.End_Of_Record),
+         "Peer status should be set to disabled after Request_Disable");
+
+      Telnet.Negotiation.Wont (Telnet.Options.End_Of_Record, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Nothing,
+         "No reply expected in reply to WONT");
+
    end Test_We_Enable;
 
    procedure Test_Do_It (T : in out Test_Cases.Test_Case'Class) is

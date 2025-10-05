@@ -104,8 +104,18 @@ package body Telnet.Negotiation is
          when Yes =>
             States (Index).Them := No;
             Reply := Send_Dont;
-         when others =>
-            null;
+         when Want_Yes =>
+            States (Index).Them := No;
+            States (Index).Them_Q := False;
+         when Want_No =>
+            if States (Index).Them_Q then
+               States (Index).Them := Want_Yes;
+               States (Index).Them_Q := False;
+               Reply := Send_Do_It;
+            else
+               States (Index).Them := No;
+               Reply := Send_Nothing;
+            end if;
       end case;
    end Wont;
 
@@ -140,8 +150,31 @@ package body Telnet.Negotiation is
    end Request_Enable;
 
    procedure Request_Disable (Option : Buffer.Byte; Reply : out Do_Dont) is
+      Index : Option_Id;
    begin
-      null;
+      Index := Find (Option);
+      case States (Index).Them is
+         when No =>
+            --  Error condition: already disabled
+            Reply := Send_Nothing;
+         when Yes =>
+            States (Index).Them := Want_No;
+            Reply := Send_Dont;
+         when Want_No =>
+            if States (Index).Them_Q then
+               States (Index).Them_Q := False;
+               Reply := Send_Nothing;
+            else
+               Reply := Send_Nothing;
+            end if;
+         when Want_Yes =>
+            if States (Index).Them_Q then
+               Reply := Send_Nothing;
+            else
+               States (Index).Them_Q := True;
+               Reply := Send_Nothing;
+            end if;
+      end case;
    end Request_Disable;
 
    procedure Do_It (Option : Buffer.Byte; Reply : out Will_Wont) is
