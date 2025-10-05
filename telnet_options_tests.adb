@@ -138,6 +138,14 @@ package body Telnet_Options_Tests is
       Assert (Telnet.Negotiation.Is_Enabled (Telnet.Options.End_Of_Record),
          "Expected option to be enabled after DO");
 
+      Telnet.Negotiation.Disable (Telnet.Options.End_Of_Record,
+         Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Wont,
+         "Expected WONT after Disable");
+      Assert (not Telnet.Negotiation.Is_Enabled
+         (Telnet.Options.End_Of_Record),
+         "Expected option to be disabled after Disable");
+
    end Test_Offer_Enable;
 
    procedure Register_Tests (T : in out Telnet_Options_Test) is
