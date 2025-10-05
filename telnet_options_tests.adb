@@ -68,13 +68,31 @@ package body Telnet_Options_Tests is
 
    end Test_We_Enable;
 
-   procedure Test_Do_It (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_Queuing (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
    begin
 
-      null;
+      Assert (not Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.End_Of_Record),
+         "Peer status should be set to disabled at start of test");
 
-   end Test_Do_It;
+      Telnet.Negotiation.Request_Enable (Telnet.Options.End_Of_Record, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Do_It,
+         "DO expected after Request_Enable");
+
+      Telnet.Negotiation.Request_Disable (Telnet.Options.End_Of_Record, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Nothing,
+         "No reply expected after queued Request_Disable");
+
+      Telnet.Negotiation.Will (Telnet.Options.End_Of_Record, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Dont,
+         "Queued DONT expected in reply to WILL");
+
+     Telnet.Negotiation.Wont (Telnet.Options.End_Of_Record, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Nothing,
+         "No reply expected in reply to WONT");
+
+   end Test_Queuing;
 
    procedure Register_Tests (T : in out Telnet_Options_Test) is
       use AUnit.Test_Cases.Registration;
@@ -86,8 +104,8 @@ package body Telnet_Options_Tests is
       Register_Routine (T, Test_We_Enable'Access,
          "Test_We_Enable");
 
-      Register_Routine (T, Test_Do_It'Access,
-         "Test_Do_It");
+      Register_Routine (T, Test_Queuing'Access,
+         "Test_Queuing");
 
    end Register_Tests;
 

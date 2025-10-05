@@ -17,6 +17,6 @@ package Telnet_Options_Tests is
 
    --  Test in which we ask the peer to enable the option
 
-   procedure Test_Do_It (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Queuing (T : in out Test_Cases.Test_Case'Class);
 
 end Telnet_Options_Tests;
