@@ -23,4 +23,6 @@ package Telnet_Options_Tests is
 
    procedure Test_We_Enable (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Offer_Enable (T : in out Test_Cases.Test_Case'Class);
+
 end Telnet_Options_Tests;

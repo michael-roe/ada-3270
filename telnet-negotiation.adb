@@ -181,7 +181,7 @@ package body Telnet.Negotiation is
       Index : Option_Id;
    begin
       Index := Find (Option);
-      case States (Index).Them is
+      case States (Index).Us is
          when No =>
             if States (Index).Supported then
                States (Index).Us := Yes;
@@ -240,8 +240,33 @@ package body Telnet.Negotiation is
    end Dont;
 
    procedure Offer_Enable (Option : Buffer.Byte; Reply : out Will_Wont) is
+      Index : Option_Id;
    begin
-      null;
+      Index := Find (Option);
+      case States (Index).Us is
+         when No =>
+            States (Index).Us := Want_Yes;
+            Reply := Send_Will;
+         when Yes =>
+            --
+            --  Error condition: already enabled
+            --
+            Reply := Send_Nothing;
+         when Want_No =>
+            if States (Index).Us_Q then
+               Reply := Send_Nothing;
+            else
+               States (Index).Us_Q := True;
+               Reply := Send_Nothing;
+            end if;
+         when Want_Yes =>
+            if States (Index).Us_Q then
+               States (Index).Us_Q := False;
+               Reply := Send_Nothing;
+            else
+               Reply := Send_Nothing;
+            end if;
+      end case;
    end Offer_Enable;
 
    procedure Disable (Option : Buffer.Byte; Reply : out Will_Wont) is

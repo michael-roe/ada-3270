@@ -119,6 +119,27 @@ package body Telnet_Options_Tests is
 
    end Test_We_Enable;
 
+   procedure Test_Offer_Enable (T : in out Test_Cases.Test_Case'Class) is
+      Reply : Telnet.Negotiation.Will_Wont;
+   begin
+      Assert (not Telnet.Negotiation.Is_Enabled
+         (Telnet.Options.End_Of_Record),
+         "Option should be disabled at start of test");
+
+      Telnet.Negotiation.Offer_Enable (Telnet.Options.End_Of_Record,
+         Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Will,
+         "Expected to send WILL after Offer_Enable");
+
+      Telnet.Negotiation.Do_It (Telnet.Options.End_Of_Record,
+         Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Nothing,
+         "Expected no reply to DO");
+      Assert (Telnet.Negotiation.Is_Enabled (Telnet.Options.End_Of_Record),
+         "Expected option to be enabled after DO");
+
+   end Test_Offer_Enable;
+
    procedure Register_Tests (T : in out Telnet_Options_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -127,13 +148,16 @@ package body Telnet_Options_Tests is
          "Test_Peer_Enables");
 
       Register_Routine (T, Test_Request_Enable'Access,
-         "Test_We_Enable");
+         "Test_Request_Enable");
 
       Register_Routine (T, Test_Queuing'Access,
          "Test_Queuing");
 
       Register_Routine (T, Test_We_Enable'Access,
          "Test_We_Enable");
+
+      Register_Routine (T, Test_Offer_Enable'Access,
+         "Test_Offer_Enable");
 
    end Register_Tests;
 
