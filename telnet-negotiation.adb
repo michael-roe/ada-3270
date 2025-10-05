@@ -73,7 +73,7 @@ package body Telnet.Negotiation is
             Reply := Send_Nothing;
          when Want_No =>
             --
-            --  This is an error condition thhat shouldn't happen
+            --  This is an error condition that shouldn't happen
             --
             if States (Index).Them_Q then
                States (Index).Them := Yes;

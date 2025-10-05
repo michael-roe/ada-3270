@@ -12,9 +12,16 @@ package body Telnet_Options_Tests is
       Assert (Reply = Telnet.Negotiation.Send_Nothing,
          "No reply expected in response to WONT");
 
+      Assert (not Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.Transmit_Binary),
+         "Peer status should be set to disabled at start of test");
+
       Telnet.Negotiation.Will (Telnet.Options.Transmit_Binary, Reply);
       Assert (Reply = Telnet.Negotiation.Send_Do_It,
          "DO expected in response to WILL");
+      Assert (Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.Transmit_Binary),
+         "Peer status should be set to enabled after receiving WILL");
 
       Telnet.Negotiation.Will (Telnet.Options.Transmit_Binary, Reply);
       Assert (Reply = Telnet.Negotiation.Send_Nothing,
@@ -23,12 +30,19 @@ package body Telnet_Options_Tests is
       Telnet.Negotiation.Wont (Telnet.Options.Transmit_Binary, Reply);
       Assert (Reply = Telnet.Negotiation.Send_Dont,
          "DONT expected in response to WONT");
+      Assert (not Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.Transmit_Binary),
+         "Peer status should be set to disabled after receiving WONT");
 
    end Test_Peer_Enables;
 
    procedure Test_We_Enable (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
    begin
+
+      Assert (not Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.End_Of_Record),
+         "Peer status should be set to disabled at start of test");
 
       Telnet.Negotiation.Request_Enable (Telnet.Options.End_Of_Record, Reply);
       Assert (Reply = Telnet.Negotiation.Send_Do_It,
@@ -37,6 +51,9 @@ package body Telnet_Options_Tests is
       Telnet.Negotiation.Will (Telnet.Options.End_Of_Record, Reply);
       Assert (Reply = Telnet.Negotiation.Send_Nothing,
          "No reply expected in reply to WILL");
+      Assert (Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.End_Of_Record),
+         "Peer status should be set to enabled after receiving WILL");
 
    end Test_We_Enable;
 
