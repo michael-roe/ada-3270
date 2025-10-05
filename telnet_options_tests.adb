@@ -4,7 +4,7 @@ with Telnet.Negotiation; use type Telnet.Negotiation.Do_Dont;
 
 package body Telnet_Options_Tests is
 
-   procedure Test_Will (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_Peer_Enables (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
    begin
 
@@ -24,9 +24,9 @@ package body Telnet_Options_Tests is
       Assert (Reply = Telnet.Negotiation.Send_Dont,
          "DONT expected in response to WONT");
 
-   end Test_Will;
+   end Test_Peer_Enables;
 
-   procedure Test_Request_Enable (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_We_Enable (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
    begin
 
@@ -38,7 +38,7 @@ package body Telnet_Options_Tests is
       Assert (Reply = Telnet.Negotiation.Send_Nothing,
          "No reply expected in reply to WILL");
 
-   end Test_Request_Enable;
+   end Test_We_Enable;
 
    procedure Test_Do_It (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
@@ -52,11 +52,11 @@ package body Telnet_Options_Tests is
       use AUnit.Test_Cases.Registration;
    begin
 
-      Register_Routine (T, Test_Will'Access,
-         "Test_Will");
+      Register_Routine (T, Test_Peer_Enables'Access,
+         "Test_Peer_Enables");
 
-      Register_Routine (T, Test_Request_Enable'Access,
-         "Test_Request_Enable");
+      Register_Routine (T, Test_We_Enable'Access,
+         "Test_We_Enable");
 
       Register_Routine (T, Test_Do_It'Access,
          "Test_Do_It");

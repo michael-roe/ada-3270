@@ -9,9 +9,9 @@ package Telnet_Options_Tests is
 
    function Name (T : Telnet_Options_Test) return Message_String;
 
-   procedure Test_Will (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Peer_Enables (T : in out Test_Cases.Test_Case'Class);
 
-   procedure Test_Request_Enable (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_We_Enable (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Do_It (T : in out Test_Cases.Test_Case'Class);
 

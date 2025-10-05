@@ -43,6 +43,20 @@ package body Telnet.Negotiation is
       end case;
    end Find;
 
+   function Is_Enabled (Option : Buffer.Byte) return Boolean is
+      Index : Option_Id;
+   begin
+      Index := Find (Option);
+      return States (Index).Us = Yes;
+   end Is_Enabled;
+
+   function Is_Peer_Enabled (Option : Buffer.Byte) return Boolean is
+      Index : Option_Id;
+   begin
+      Index := Find (Option);
+      return States (Index).Them = Yes;
+   end Is_Peer_Enabled;
+
    procedure Will (Option : Buffer.Byte; Reply : out Do_Dont) is
       Index : Option_Id;
    begin
@@ -125,6 +139,11 @@ package body Telnet.Negotiation is
       end case;
    end Request_Enable;
 
+   procedure Request_Disable (Option : Buffer.Byte; Reply : out Do_Dont) is
+   begin
+      null;
+   end Request_Disable;
+
    procedure Do_It (Option : Buffer.Byte; Reply : out Will_Wont) is
    begin
       null;
@@ -134,6 +153,16 @@ package body Telnet.Negotiation is
    begin
       null;
    end Dont;
+
+   procedure Offer_Enable (Option : Buffer.Byte; Reply : out Will_Wont) is
+   begin
+      null;
+   end Offer_Enable;
+
+   procedure Disable (Option : Buffer.Byte; Reply : out Will_Wont) is
+   begin
+      null;
+   end Disable;
 
 begin
 
