@@ -215,8 +215,28 @@ package body Telnet.Negotiation is
    end Do_It;
 
    procedure Dont (Option : Buffer.Byte; Reply : out Will_Wont) is
+      Index : Option_Id;
    begin
-      null;
+      Index := Find (Option);
+      case States (Index).Us is
+         when No =>
+            Reply := Send_Nothing;
+         when Yes =>
+            States (Index).Us := No;
+            Reply := Send_Wont;
+         when Want_Yes =>
+            States (Index).Us := No;
+            States (Index).Us_Q := False;
+         when Want_No =>
+            if States (Index).Us_Q then
+               States (Index).Us := Want_Yes;
+               States (Index).Us_Q := False;
+               Reply := Send_Will;
+            else
+               States (Index).Us := No;
+               Reply := Send_Nothing;
+            end if;
+      end case;
    end Dont;
 
    procedure Offer_Enable (Option : Buffer.Byte; Reply : out Will_Wont) is

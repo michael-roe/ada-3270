@@ -1,6 +1,8 @@
 with AUnit.Assertions; use AUnit.Assertions;
 with Telnet.Options;
-with Telnet.Negotiation; use type Telnet.Negotiation.Do_Dont;
+with Telnet.Negotiation;
+use type Telnet.Negotiation.Do_Dont;
+use type Telnet.Negotiation.Will_Wont;
 
 package body Telnet_Options_Tests is
 
@@ -88,11 +90,34 @@ package body Telnet_Options_Tests is
       Assert (Reply = Telnet.Negotiation.Send_Dont,
          "Queued DONT expected in reply to WILL");
 
-     Telnet.Negotiation.Wont (Telnet.Options.End_Of_Record, Reply);
+      Telnet.Negotiation.Wont (Telnet.Options.End_Of_Record, Reply);
       Assert (Reply = Telnet.Negotiation.Send_Nothing,
          "No reply expected in reply to WONT");
 
    end Test_Queuing;
+
+   procedure Test_We_Enable (T : in out Test_Cases.Test_Case'Class) is
+      Reply : Telnet.Negotiation.Will_Wont;
+   begin
+
+      Assert (not Telnet.Negotiation.Is_Enabled
+         (Telnet.Options.Transmit_Binary),
+         "Option should be disabled at start of test");
+
+      Telnet.Negotiation.Do_It (Telnet.Options.Transmit_Binary, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Will,
+         "Expected WILL in response to DO");
+      Assert (Telnet.Negotiation.Is_Enabled (Telnet.Options.Transmit_Binary),
+         "Expected option to be enabled after receiving DO");
+
+      Telnet.Negotiation.Dont (Telnet.Options.Transmit_Binary, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Wont,
+         "Expected WONT in response to DONT");
+      Assert (not Telnet.Negotiation.Is_Enabled
+         (Telnet.Options.Transmit_Binary),
+         "Expected option to be disable after receiving DONT");
+
+   end Test_We_Enable;
 
    procedure Register_Tests (T : in out Telnet_Options_Test) is
       use AUnit.Test_Cases.Registration;
@@ -106,6 +131,9 @@ package body Telnet_Options_Tests is
 
       Register_Routine (T, Test_Queuing'Access,
          "Test_Queuing");
+
+      Register_Routine (T, Test_We_Enable'Access,
+         "Test_We_Enable");
 
    end Register_Tests;
 
