@@ -81,6 +81,7 @@ package body Telnet.Negotiation is
                Reply := Send_Nothing;
             else
                States (Index).Them := No;
+               Reply := Send_Nothing;
             end if;
          when Want_Yes =>
             if States (Index).Them_Q then
@@ -107,6 +108,7 @@ package body Telnet.Negotiation is
          when Want_Yes =>
             States (Index).Them := No;
             States (Index).Them_Q := False;
+            Reply := Send_Nothing;
          when Want_No =>
             if States (Index).Them_Q then
                States (Index).Them := Want_Yes;
@@ -201,6 +203,7 @@ package body Telnet.Negotiation is
                Reply := Send_Nothing;
             else
                States (Index).Us := No;
+               Reply := Send_Nothing;
             end if;
          when Want_Yes =>
             if States (Index).Us_Q then
@@ -227,6 +230,7 @@ package body Telnet.Negotiation is
          when Want_Yes =>
             States (Index).Us := No;
             States (Index).Us_Q := False;
+            Reply := Send_Nothing;
          when Want_No =>
             if States (Index).Us_Q then
                States (Index).Us := Want_Yes;
