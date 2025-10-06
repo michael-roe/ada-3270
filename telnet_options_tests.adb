@@ -1,8 +1,10 @@
 with AUnit.Assertions; use AUnit.Assertions;
+with Buffer; use type Buffer.Byte;
 with Telnet.Options;
 with Telnet.Negotiation;
 use type Telnet.Negotiation.Do_Dont;
 use type Telnet.Negotiation.Will_Wont;
+use type Telnet.Negotiation.Request_Offer;
 
 package body Telnet_Options_Tests is
 
@@ -176,6 +178,28 @@ package body Telnet_Options_Tests is
 
    end Test_Offer_Enable;
 
+   procedure Test_Next_Option (T : in out Test_Cases.Test_Case'Class) is
+      Direction : Telnet.Negotiation.Request_Offer;
+      Option : Buffer.Byte;
+   begin
+
+      Telnet.Negotiation.Next_Option (Direction, Option);
+      Assert (Direction = Telnet.Negotiation.Request,
+         "Expected first option negotiation to be a request");
+      Assert (Option = Telnet.Options.Terminal_Type,
+         "Expected first option negotiation to be for terminal type");
+
+      --  We haven't negotiated the option, so it will still be the
+      --  next option when we ask again.
+    
+      Telnet.Negotiation.Next_Option (Direction, Option);
+      Assert (Direction = Telnet.Negotiation.Request,
+        "Expected option negotiation to be a request");
+      Assert (Option = Telnet.Options.Terminal_Type,
+         "Expected option negotiation to still be for terminal type");
+
+   end Test_Next_Option;
+
    procedure Register_Tests (T : in out Telnet_Options_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -197,6 +221,9 @@ package body Telnet_Options_Tests is
 
       Register_Routine (T, Test_Offer_Enable'Access,
          "Test_Offer_Enable");
+
+      Register_Routine (T, Test_Next_Option'Access,
+         "Test_Next_Option");
 
    end Register_Tests;
 

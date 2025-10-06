@@ -23,6 +23,28 @@ package body Telnet.Negotiation is
 
    States : aliased array (Option_Id) of State;
 
+   type Wanted_Option is record
+      Direction : Request_Offer;
+      Option : Buffer.Byte;
+   end record;
+
+   type Wanted_Index_Type is new Integer range 1 .. 9;
+
+   Wanted_Options : array (Wanted_Index_Type) of Wanted_Option :=
+   (
+      (Request, Telnet.Options.Terminal_Type),
+      (Request, Telnet.Options.New_Environ),
+      (Request, Telnet.Options.Transmit_Binary),
+      (Offer,   Telnet.Options.Transmit_Binary),
+      (Request, Telnet.Options.End_Of_Record),
+      (Offer,   Telnet.Options.End_Of_Record),
+      (Request, Telnet.Options.Supress_Go_Ahead),
+      (Offer,   Telnet.Options.Supress_Go_Ahead),
+      (Done, 0)
+   );
+ 
+   Wanted_Index : Wanted_Index_Type := 1;
+
    function Find (Option : Buffer.Byte) return Option_Id;
 
    function Find (Option : Buffer.Byte) return Option_Id is
@@ -300,6 +322,38 @@ package body Telnet.Negotiation is
             end if;
       end case;
    end Disable;
+
+   procedure Next_Option
+      (Direction : out Request_Offer; 
+       Option    : out Buffer.Byte) is
+      Found : Boolean;
+   begin
+
+      Found := False;
+      while not Found loop
+         case Wanted_Options (Wanted_Index).Direction is
+            when Done =>
+               Found := True;
+            when Offer =>
+               if States (Find (Wanted_Options
+                  (Wanted_Index).Option)).Us /= Yes then
+                  Found := True;
+               end if;
+            when Request =>
+               if States (Find (Wanted_Options
+                  (Wanted_Index).Option)).Them /= Yes then
+                  Found := True;
+               end if;
+         end case;
+         if not Found then
+            Wanted_Index := Wanted_Index + 1;
+         end if;
+      end loop;
+      
+      Direction := Wanted_Options (Wanted_Index).Direction;
+      Option := Wanted_Options (Wanted_Index).Option;
+
+   end Next_Option;
 
 begin
 

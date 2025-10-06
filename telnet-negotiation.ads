@@ -6,7 +6,7 @@ package Telnet.Negotiation is
 
    type Do_Dont is (Send_Dont, Send_Nothing, Send_Do_It);
 
-   type Request_Offer is (Request, Offer);
+   type Request_Offer is (Request, Offer, Done);
 
    function Is_Enabled (Option : Buffer.Byte) return Boolean;
 
@@ -23,7 +23,6 @@ package Telnet.Negotiation is
    --  The peer can decline.
    --
    --  Precondition: not Is_Peer_Enabled (Option)
-
 
    procedure Request_Disable (Option : Buffer.Byte; Reply : out Do_Dont);
 
@@ -54,5 +53,9 @@ package Telnet.Negotiation is
    procedure Dont (Option : Buffer.Byte; Reply : out Will_Wont);
 
    --  Dont processes an incoming DONT message
+
+   procedure Next_Option
+      (Direction : out Request_Offer;
+       Option    : out Buffer.Byte);
 
 end Telnet.Negotiation;
