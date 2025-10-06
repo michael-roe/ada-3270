@@ -6,6 +6,34 @@ use type Telnet.Negotiation.Will_Wont;
 
 package body Telnet_Options_Tests is
 
+   procedure Test_Unimplemented (T : in out Test_Cases.Test_Case'Class) is
+      Reply : Telnet.Negotiation.Do_Dont;
+      Reply2 : Telnet.Negotiation.Will_Wont;
+   begin
+
+      Assert (not Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.Extended_ASCII),
+         "Peer status should be set to disabled at start of test");
+      Assert (not Telnet.Negotiation.Is_Enabled
+         (Telnet.Options.Extended_ASCII),
+         "Peer status should be set to disabled at start of test");
+
+      Telnet.Negotiation.Will (Telnet.Options.Extended_ASCII, Reply);
+      Assert (Reply = Telnet.Negotiation.Send_Dont,
+         "DONT expected in response to WILL");
+      Assert (not Telnet.Negotiation.Is_Peer_Enabled
+         (Telnet.Options.Transmit_Binary),
+         "Peer status should be set to disabled after receiving DONT");
+
+      Telnet.Negotiation.Do_It (Telnet.Options.Extended_ASCII, Reply2);
+      Assert (Reply2 = Telnet.Negotiation.Send_Wont,
+         "WONT expected in response to DO");
+      Assert (not Telnet.Negotiation.Is_Enabled
+         (Telnet.Options.Transmit_Binary),
+         "Peer status should be set to disabled after receiving WONT");
+
+   end Test_Unimplemented;
+
    procedure Test_Peer_Enables (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
    begin
@@ -151,6 +179,9 @@ package body Telnet_Options_Tests is
    procedure Register_Tests (T : in out Telnet_Options_Test) is
       use AUnit.Test_Cases.Registration;
    begin
+
+      Register_Routine (T, Test_Unimplemented'Access,
+         "Test_Unimplemented");
 
       Register_Routine (T, Test_Peer_Enables'Access,
          "Test_Peer_Enables");

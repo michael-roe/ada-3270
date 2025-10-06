@@ -15,6 +15,11 @@ package Telnet.Options is
    Supress_Go_Ahead : constant Buffer.Byte := 3;
 
    --
+   --  Defined by RFC 698, TELNET Extended ASCII Option
+
+   Extended_ASCII : constant Buffer.Byte := 17;
+
+   --
    --  Defined by RFC 1091, TELNET Terminal-Type Option
    --
 
