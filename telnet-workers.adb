@@ -86,7 +86,10 @@ package body Telnet.Workers is
                      Put ("[SB]");
                      S := Opt;
                   when Telnet.Protocol.BRK =>
-                     Put ("[BRK]");
+                     Put ("[BREAK]");
+                     S := Data;
+                  when Telnet.Protocol.EOR =>
+                     Put ("[EOR]");
                      S := Data;
                   when others =>
                      S := Data;
@@ -109,6 +112,32 @@ package body Telnet.Workers is
                   Put ("[Enabled]");
                end if;
                S := Data;
+            when Wont =>
+               Telnet.Negotiation.Wont (C, DD);
+               S := Data;
+            when Dont =>
+               Telnet.Negotiation.Dont (C, WW);
+               S := Data;
+            when Opt =>
+               if C = Telnet.Protocol.IAC then
+                  S := Opt_IAC;
+               else
+                  Put ("[");
+                  Put (Buffer.Byte'Image (C));
+                  Put ("]");
+               end if;
+            when Opt_IAC =>
+               if C = Telnet.Protocol.IAC then
+                  Put ("[");
+                  Put (Buffer.Byte'Image (C));
+                  Put ("]");
+                  S := Opt;
+               elsif C = Telnet.Protocol.SE then
+                  Put ("[SE]");
+                  S := Data;
+               else
+                  S := Opt;
+               end if;
             when others =>
                null;
          end case;
