@@ -1,11 +1,21 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Buffer; use type Buffer.Byte;
 with Telnet.Protocol;
+with Telnet.Options;
+with Telnet.Terminal;
 with Telnet.Negotiation; use Telnet.Negotiation;
 
 package body Telnet.Workers is
 
    type State is (Data, Data_IAC, Will, Wont, Do_It, Dont, Opt, Opt_IAC);
+
+   Terminal_Message : Buffer.Byte_Array := (
+      Telnet.Protocol.IAC,
+      Telnet.Protocol.SB,
+      Telnet.Options.Terminal_Type,
+      Telnet.Terminal.Send,
+      Telnet.Protocol.IAC,
+      Telnet.Protocol.SE);
 
    task body Worker is
       S : State := Data;
@@ -14,6 +24,7 @@ package body Telnet.Workers is
       Option : Buffer.Byte;
       WW : Telnet.Negotiation.Will_Wont;
       DD : Telnet.Negotiation.Do_Dont;
+      Got_Reply : Boolean;
    begin
 
       for J in 1 .. 9 loop -- only 8 options to send
@@ -51,9 +62,13 @@ package body Telnet.Workers is
                end case;
             when Done =>
                Ada.Text_IO.Put_Line ("Negotiation done");
+               for J in Terminal_Message'Range loop
+                  TX.Enqueue (Terminal_Message (J));
+               end loop;
          end case;
 
-      for K in 1 .. 3 loop
+      Got_Reply := False;
+      while not Got_Reply loop
          RX.Dequeue (C);
          -- Put ("[");
          -- Put (Buffer.Byte'Image (C));
@@ -103,6 +118,7 @@ package body Telnet.Workers is
                   Put_Line ("[Enabled]");
                end if;
                S := Data;
+               Got_Reply := True;
             when Do_It =>
                Put ("[");
                Put (Buffer.Byte'Image (C));
@@ -112,19 +128,26 @@ package body Telnet.Workers is
                   Put ("[Enabled]");
                end if;
                S := Data;
+               Got_Reply := True;
             when Wont =>
                Telnet.Negotiation.Wont (C, DD);
                S := Data;
+               Got_Reply := True;
             when Dont =>
                Telnet.Negotiation.Dont (C, WW);
                S := Data;
+               Got_Reply := True;
             when Opt =>
                if C = Telnet.Protocol.IAC then
                   S := Opt_IAC;
                else
-                  Put ("[");
-                  Put (Buffer.Byte'Image (C));
-                  Put ("]");
+                  if C < 32 then
+                     Put ("[");
+                     Put (Buffer.Byte'Image (C));
+                     Put ("]");
+                  else
+                     Put (Character'Val (C));
+                  end if;
                end if;
             when Opt_IAC =>
                if C = Telnet.Protocol.IAC then
@@ -135,6 +158,7 @@ package body Telnet.Workers is
                elsif C = Telnet.Protocol.SE then
                   Put ("[SE]");
                   S := Data;
+                  Got_Reply := True;
                else
                   S := Opt;
                end if;
@@ -143,6 +167,7 @@ package body Telnet.Workers is
          end case;
       end loop;
       end loop;
+      Put_Line ("Worker done");
    end Worker;
 
 end Telnet.Workers;
