@@ -3,6 +3,7 @@ with Buffer; use type Buffer.Byte;
 with Telnet.Protocol;
 with Telnet.Options;
 with Telnet.Terminal;
+with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
 
 package body Telnet.Workers is
@@ -14,6 +15,23 @@ package body Telnet.Workers is
       Telnet.Protocol.SB,
       Telnet.Options.Terminal_Type,
       Telnet.Terminal.Send,
+      Telnet.Protocol.IAC,
+      Telnet.Protocol.SE);
+
+   Environ_Message : Buffer.Byte_Array := (
+      Telnet.Protocol.IAC,
+      Telnet.Protocol.SB,
+      Telnet.Options.New_Environ,
+      Telnet.Environ.Send_Cmd,
+      Telnet.Environ.User_Var_Tag,
+      Character'Pos ('C'),
+      Character'Pos ('O'),
+      Character'Pos ('D'),
+      Character'Pos ('E'),
+      Character'Pos ('P'),
+      Character'Pos ('A'),
+      Character'Pos ('G'),
+      Character'Pos ('E'),
       Telnet.Protocol.IAC,
       Telnet.Protocol.SE);
 
@@ -62,8 +80,8 @@ package body Telnet.Workers is
                end case;
             when Done =>
                Ada.Text_IO.Put_Line ("Negotiation done");
-               for J in Terminal_Message'Range loop
-                  TX.Enqueue (Terminal_Message (J));
+               for J in Environ_Message'Range loop
+                  TX.Enqueue (Environ_Message (J));
                end loop;
          end case;
 

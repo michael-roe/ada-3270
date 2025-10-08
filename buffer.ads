@@ -5,6 +5,9 @@ package Buffer is
 
    subtype Byte is Interfaces.Unsigned_8;
 
+   type Byte_Array is array
+      (Ada.Containers.Count_Type range <>) of Byte;
+
    Buffer_Size : constant := 4096;
 
    type T is private;
