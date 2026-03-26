@@ -46,6 +46,7 @@ package body Telnet.Workers is
       Got_Reply : Boolean;
       Bytes_Out : Byte_Vectors.Vector;
       Bytes_In : Byte_Vectors.Vector;
+      Option_In : Byte_Vectors.Vector;
    begin
 
       for J in 1 .. 9 loop -- only 8 options to send
@@ -167,7 +168,7 @@ package body Telnet.Workers is
                if C = Telnet.Protocol.IAC then
                   S := Opt_IAC;
                else
-                  Bytes_In.Append (C);
+                  Option_In.Append (C);
                   if C < 32 then
                      Put ("[");
                      Put (Buffer.Byte'Image (C));
@@ -180,7 +181,7 @@ package body Telnet.Workers is
                end if;
             when Opt_IAC =>
                if C = Telnet.Protocol.IAC then
-                  Bytes_In.Append (C);
+                  Option_In.Append (C);
                   Put ("[");
                   Put (Buffer.Byte'Image (C));
                   Put ("]");
@@ -188,9 +189,9 @@ package body Telnet.Workers is
                elsif C = Telnet.Protocol.SE then
                   Put ("[SE]");
                   Put ("[Length = ");
-                  Put (Bytes_In.Length'Image);
+                  Put (Option_In.Length'Image);
                   Put ("]");
-                  Bytes_In.Clear;
+                  Option_In.Clear;
                   S := Data;
                   Got_Reply := True;
                else
