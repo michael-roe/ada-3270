@@ -18,4 +18,6 @@ package IBM_3270 is
    IBM_Write_Erase      : constant Buffer.Byte := 16#F5#;
    IBM_Read_Modified    : constant Buffer.Byte := 16#F6#;
 
+   Graphic_Escape : constant Buffer.Byte := 16#08#;
+
 end IBM_3270;

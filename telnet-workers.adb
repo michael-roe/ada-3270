@@ -6,6 +6,7 @@ with Telnet.Options;
 with Telnet.Terminal;
 with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
+with IBM_3270;
 
 package body Telnet.Workers is
 
@@ -36,6 +37,14 @@ package body Telnet.Workers is
       Telnet.Protocol.IAC,
       Telnet.Protocol.SE);
 
+   Screen_Message : Buffer.Byte_Array := (
+      IBM_3270.IBM_Write_Erase,
+      IBM_3270.WCC_Go_Ahead,
+      IBM_3270.Graphic_Escape,
+      16#C5#,
+      Telnet.Protocol.IAC,
+      Telnet.Protocol.EOR);
+
    task body Worker is
       S : State := Data;
       C : Buffer.Byte;
@@ -51,7 +60,7 @@ package body Telnet.Workers is
       Terminal_Sent : Boolean := False;
    begin
 
-      for J in 1 .. 10 loop -- only 8 options to send
+      for J in 1 .. 11 loop -- only 8 options to send
 
          Next_Option (Direction, Option);
 
@@ -96,6 +105,10 @@ package body Telnet.Workers is
                      TX.Enqueue (Terminal_Message (J));
                   end loop;
                   Terminal_Sent := True;
+               else
+                  for J in Screen_Message'Range loop
+                     TX.Enqueue (Screen_Message (J));
+                  end loop;
                end if;
          end case;
 
@@ -138,7 +151,12 @@ package body Telnet.Workers is
                      S := Data;
                   when Telnet.Protocol.EOR =>
                      Put ("[EOR]");
+                     Put ("[Length = ");
+                     Put (Bytes_In.Length'Image);
+                     Put ("]");
+                     Bytes_In.Clear;
                      S := Data;
+                     Got_Reply := True;
                   when Telnet.Protocol.IAC =>
                      Bytes_In.Append (C);
                      Put ("[IAC]");
