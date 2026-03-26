@@ -47,9 +47,11 @@ package body Telnet.Workers is
       Bytes_Out : Byte_Vectors.Vector;
       Bytes_In : Byte_Vectors.Vector;
       Option_In : Byte_Vectors.Vector;
+      Environ_Sent : Boolean := False;
+      Terminal_Sent : Boolean := False;
    begin
 
-      for J in 1 .. 9 loop -- only 8 options to send
+      for J in 1 .. 10 loop -- only 8 options to send
 
          Next_Option (Direction, Option);
 
@@ -84,9 +86,17 @@ package body Telnet.Workers is
                end case;
             when Done =>
                Ada.Text_IO.Put_Line ("Negotiation done");
-               for J in Environ_Message'Range loop
-                  TX.Enqueue (Environ_Message (J));
-               end loop;
+               if not Environ_Sent then
+                  for J in Environ_Message'Range loop
+                     TX.Enqueue (Environ_Message (J));
+                  end loop;
+                  Environ_Sent := True;
+               elsif not Terminal_Sent then
+                  for J in Terminal_Message'Range loop
+                     TX.Enqueue (Terminal_Message (J));
+                  end loop;
+                  Terminal_Sent := True;
+               end if;
          end case;
 
       Got_Reply := False;
