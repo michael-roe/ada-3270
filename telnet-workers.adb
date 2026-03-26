@@ -1,5 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Buffer; use type Buffer.Byte;
+with Byte_Vectors;
 with Telnet.Protocol;
 with Telnet.Options;
 with Telnet.Terminal;
@@ -43,6 +44,8 @@ package body Telnet.Workers is
       WW : Telnet.Negotiation.Will_Wont;
       DD : Telnet.Negotiation.Do_Dont;
       Got_Reply : Boolean;
+      Bytes_Out : Byte_Vectors.Vector;
+      Bytes_In : Byte_Vectors.Vector;
    begin
 
       for J in 1 .. 9 loop -- only 8 options to send
@@ -97,6 +100,7 @@ package body Telnet.Workers is
                   Put ("[IAC]");
                   S := Data_IAC;
                else
+                  Bytes_In.Append (C);
                   Put ("[");
                   Ada.Text_IO.Put (Character'Val (C));
                   Put ("]");
@@ -124,6 +128,10 @@ package body Telnet.Workers is
                   when Telnet.Protocol.EOR =>
                      Put ("[EOR]");
                      S := Data;
+                  when Telnet.Protocol.IAC =>
+                     Bytes_In.Append (C);
+                     Put ("[IAC]");
+                     s := Data;
                   when others =>
                      S := Data;
                end case;
@@ -159,22 +167,30 @@ package body Telnet.Workers is
                if C = Telnet.Protocol.IAC then
                   S := Opt_IAC;
                else
+                  Bytes_In.Append (C);
                   if C < 32 then
                      Put ("[");
                      Put (Buffer.Byte'Image (C));
                      Put ("]");
                   else
+                     Put ("[");
                      Put (Character'Val (C));
+                     Put ("]");
                   end if;
                end if;
             when Opt_IAC =>
                if C = Telnet.Protocol.IAC then
+                  Bytes_In.Append (C);
                   Put ("[");
                   Put (Buffer.Byte'Image (C));
                   Put ("]");
                   S := Opt;
                elsif C = Telnet.Protocol.SE then
                   Put ("[SE]");
+                  Put ("[Length = ");
+                  Put (Bytes_In.Length'Image);
+                  Put ("]");
+                  Bytes_In.Clear;
                   S := Data;
                   Got_Reply := True;
                else
