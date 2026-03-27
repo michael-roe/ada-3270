@@ -1,4 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 with Buffer; use type Buffer.Byte;
 with Byte_Vectors;
 with Byte_Text_IO;
@@ -42,9 +44,7 @@ package body Telnet.Workers is
       IBM_3270.IBM_Write_Erase,
       IBM_3270.WCC_Go_Ahead,
       IBM_3270.Graphic_Escape,
-      16#C5#,
-      Telnet.Protocol.IAC,
-      Telnet.Protocol.EOR);
+      16#C5#);
 
    task body Worker is
       S : State := Data;
@@ -60,6 +60,10 @@ package body Telnet.Workers is
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
    begin
+
+      for J in Screen_Message'Range loop
+         Bytes_Out.Append (Screen_Message (J));
+      end loop;
 
       for J in 1 .. 11 loop -- only 8 options to send
 
@@ -107,9 +111,13 @@ package body Telnet.Workers is
                   end loop;
                   Terminal_Sent := True;
                else
-                  for J in Screen_Message'Range loop
-                     TX.Enqueue (Screen_Message (J));
-                  end loop;
+                  if Bytes_Out.Length > 0 then
+                     for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
+                        Tx.Enqueue (Bytes_Out.Element (J));
+                     end loop;
+                  end if;
+                  TX.Enqueue (Telnet.Protocol.IAC);
+                  TX.Enqueue (Telnet.Protocol.EOR);
                end if;
          end case;
 
