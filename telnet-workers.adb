@@ -1,6 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Buffer; use type Buffer.Byte;
 with Byte_Vectors;
+with Byte_Text_IO;
 with Telnet.Protocol;
 with Telnet.Options;
 with Telnet.Terminal;
@@ -167,7 +168,7 @@ package body Telnet.Workers is
                end case;
             when Will =>
                Put ("[");
-               Put (Buffer.Byte'Image (C));
+               Byte_Text_IO.Put (C);
                Put ("]");
                Telnet.Negotiation.Will (C, DD);
                if Telnet.Negotiation.Is_Peer_Enabled (C) then
@@ -177,7 +178,7 @@ package body Telnet.Workers is
                Got_Reply := True;
             when Do_It =>
                Put ("[");
-               Put (Buffer.Byte'Image (C));
+               Byte_Text_IO.Put (C);
                Put ("]");
                Telnet.Negotiation.Do_It (C, WW);
                if Telnet.Negotiation.Is_Enabled (C) then
@@ -200,7 +201,7 @@ package body Telnet.Workers is
                   Option_In.Append (C);
                   if C < 32 then
                      Put ("[");
-                     Put (Buffer.Byte'Image (C));
+                     Byte_Text_IO.Put (C);
                      Put ("]");
                   else
                      Put ("[");
@@ -212,7 +213,7 @@ package body Telnet.Workers is
                if C = Telnet.Protocol.IAC then
                   Option_In.Append (C);
                   Put ("[");
-                  Put (Buffer.Byte'Image (C));
+                  Byte_Text_IO.Put (C);
                   Put ("]");
                   S := Opt;
                elsif C = Telnet.Protocol.SE then
