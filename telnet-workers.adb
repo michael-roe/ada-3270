@@ -10,6 +10,9 @@ with Telnet.Terminal;
 with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
 with IBM_3270;
+with Box_Drawing;
+with Code_Page_310;
+with Code_Page_500;
 
 package body Telnet.Workers is
 
@@ -42,9 +45,7 @@ package body Telnet.Workers is
 
    Screen_Message : Buffer.Byte_Array := (
       IBM_3270.IBM_Write_Erase,
-      IBM_3270.WCC_Go_Ahead,
-      IBM_3270.Graphic_Escape,
-      16#C5#);
+      IBM_3270.WCC_Go_Ahead);
 
    task body Worker is
       S : State := Data;
@@ -64,6 +65,25 @@ package body Telnet.Workers is
       for J in Screen_Message'Range loop
          Bytes_Out.Append (Screen_Message (J));
       end loop;
+
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
+      for J in 1 .. 78 loop
+         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
+      end loop;
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      for J in 1 .. 78 loop
+        Code_Page_500.Append (Bytes_Out, " ");
+      end loop;
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Right);
+      for J in 1 .. 78 loop
+         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
+      end loop;
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
+
+      Code_Page_500.Append (Bytes_Out, "The quick brown fox ");
+      Code_Page_500.Append (Bytes_Out, "jumped over the lazy dog.");
 
       for J in 1 .. 11 loop -- only 8 options to send
 
