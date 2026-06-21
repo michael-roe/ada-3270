@@ -7,4 +7,9 @@ package Box_Drawing is
    Up_Right   : constant Wide_Character := Wide_Character'Val (16#2514#);
    Up_Left    : constant Wide_Character := Wide_Character'Val (16#2518#);
 
+   Vertical_Right  : constant Wide_Character := Wide_Character'Val (16#251C#);
+   Vertical_Left   : constant Wide_Character := Wide_Character'Val (16#2524#);
+   Down_Horizontal : constant Wide_Character := Wide_Character'Val (16#252C#);
+   Up_Horizontal   : constant Wide_Character := Wide_Character'Val (16#2534#);
+
 end Box_Drawing;

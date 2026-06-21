@@ -42,6 +42,13 @@ begin
    Ada.Wide_Text_IO.Put (F1, Box_Drawing.Vertical);
    Ada.Wide_Text_IO.New_Line (F1);
 
+   Ada.Wide_Text_IO.Put (F1, Box_Drawing.Vertical_Right);
+   Ada.Wide_Text_IO.Put (F1, Box_Drawing.Horizontal);
+   Ada.Wide_Text_IO.Put (F1, Box_Drawing.Horizontal);
+   Ada.Wide_Text_IO.Put (F1, Box_Drawing.Horizontal);
+   Ada.Wide_Text_IO.Put (F1, Box_Drawing.Vertical_Left);
+   Ada.Wide_Text_IO.New_Line (F1);
+
    Ada.Wide_Text_IO.Put (F1, Box_Drawing.Up_Right);
    Ada.Wide_Text_IO.Put (F1, Box_Drawing.Horizontal);
    Ada.Wide_Text_IO.Put (F1, Box_Drawing.Horizontal);

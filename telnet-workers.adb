@@ -13,6 +13,7 @@ with IBM_3270;
 with Box_Drawing;
 with Code_Page_310;
 with Code_Page_500;
+with IBM_3270_Orders;
 
 package body Telnet.Workers is
 
@@ -76,14 +77,17 @@ package body Telnet.Workers is
         Code_Page_500.Append (Bytes_Out, " ");
       end loop;
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Right);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
       for J in 1 .. 78 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
       end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
 
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
       Code_Page_500.Append (Bytes_Out, "The quick brown fox ");
       Code_Page_500.Append (Bytes_Out, "jumped over the lazy dog.");
+      IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
 
       for J in 1 .. 11 loop -- only 8 options to send
 
