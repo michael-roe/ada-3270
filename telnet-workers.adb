@@ -11,6 +11,7 @@ with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
 with IBM_3270;
 with Box_Drawing;
+with Block_Elements;
 with Code_Page_310;
 with Code_Page_500;
 with IBM_3270_Orders;
@@ -85,6 +86,7 @@ package body Telnet.Workers is
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
+      IBM_3270_Orders.Insert_Cursor (Bytes_Out);
       Code_Page_500.Append (Bytes_Out, "The quick brown fox ");
       Code_Page_500.Append (Bytes_Out, "jumped over the lazy dog.");
       IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
