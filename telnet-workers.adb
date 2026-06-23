@@ -89,7 +89,9 @@ package body Telnet.Workers is
       IBM_3270_Orders.Insert_Cursor (Bytes_Out);
       Code_Page_500.Append (Bytes_Out, "The quick brown fox ");
       Code_Page_500.Append (Bytes_Out, "jumped over the lazy dog.");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 3);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
       for J in 1 .. 11 loop -- only 8 options to send
 
