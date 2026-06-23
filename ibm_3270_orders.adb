@@ -24,10 +24,11 @@ package body IBM_3270_Orders is
       Addr : Interfaces.Unsigned_16;
    begin
       --
-      --  The screen size here will need to be changed for terminal models
-      --  like the 3278-4 that have a larger size.
+      --  Check that the buffer address falls within the screen size
+      --  of the 3278-4. Other models had smaller screens, and we ought
+      --  to check against the screen size of the current terminal.
       --
-      if X >= 0 and X < 80 and Y >= 0 and Y < 24 then
+      if X >= 0 and X < 80 and Y >= 0 and Y < 44 then
          Addr := Interfaces.Unsigned_16 (X + 80*Y);
          V.Append (IBM_3270.Set_Buffer_Address);
          V.Append (Table (Unsigned_6 (Addr / 64)));
