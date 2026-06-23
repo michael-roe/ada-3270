@@ -46,7 +46,7 @@ package body Telnet.Workers is
       Telnet.Protocol.SE);
 
    Screen_Message : Buffer.Byte_Array := (
-      IBM_3270.IBM_Write_Erase,
+      IBM_3270.IBM_Write_Erase_Alternate,
       IBM_3270.WCC_Go_Ahead);
 
    task body Worker is
@@ -74,9 +74,7 @@ package body Telnet.Workers is
       end loop;
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      for J in 1 .. 78 loop
-        Code_Page_500.Append (Bytes_Out, " ");
-      end loop;
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
       for J in 1 .. 78 loop
@@ -87,11 +85,36 @@ package body Telnet.Workers is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
       IBM_3270_Orders.Insert_Cursor (Bytes_Out);
-      Code_Page_500.Append (Bytes_Out, "The quick brown fox ");
-      Code_Page_500.Append (Bytes_Out, "jumped over the lazy dog.");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 3);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+      for J in 4 .. 39 loop
+         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+         IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      end loop;
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 40);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
+      for J in 1 .. 78 loop
+         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
+      end loop;
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Code_Page_500.Append (Bytes_Out, " PF7=Prev PF8=Next");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 42);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Right);
+      for J in 1 .. 78 loop
+         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
+      end loop;
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
 
       for J in 1 .. 11 loop -- only 8 options to send
 
