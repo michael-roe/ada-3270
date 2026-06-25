@@ -7,6 +7,8 @@ package Code_Page_500.Tests is
 
    procedure Test_Round_Trip (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Round_Trip2 (T : in out Test_Cases.Test_Case'Class);
+
    procedure Register_Tests (T : in out Code_Page_Test);
 
    function Name (T : Code_Page_Test) return Message_String;
