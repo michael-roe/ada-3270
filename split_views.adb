@@ -80,4 +80,11 @@ package body Split_Views is
       
    end To_Physical;
 
+   procedure From_Physical (
+      V : Split_View;
+      Bytes_In : Byte_Vectors.Vector) is
+   begin
+      null;
+   end From_Physical;
+
 end Split_Views;
