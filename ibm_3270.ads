@@ -28,6 +28,7 @@ package IBM_3270 is
    AID_PF11  : constant Buffer.Byte := 16#7b#;
    AID_PF12  : constant Buffer.Byte := 16#7c#;
    AID_Enter : constant Buffer.Byte := 16#7d#;
+   AID_CrSel : constant Buffer.Byte := 16#7e#;
    AID_PF1   : constant Buffer.Byte := 16#f1#;
    AID_PF2   : constant Buffer.Byte := 16#f2#;
    AID_PF3   : constant Buffer.Byte := 16#f3#;
