@@ -2,8 +2,12 @@ with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
+use type IBM_3270_Orders.Intensity;
 
 package body Text_Views is
+
+   function Normal_Text return IBM_3270_Orders.Intensity renames
+      IBM_3270_Orders.Normal_Text;
 
    procedure To_Physical (
       V : Text_View;
@@ -28,17 +32,17 @@ package body Text_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
        
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
+      IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
       IBM_3270_Orders.Insert_Cursor (Bytes_Out);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 3);
-      IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+      IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
       for J in 4 .. 39 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
+         IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 

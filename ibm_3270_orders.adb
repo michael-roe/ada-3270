@@ -44,7 +44,7 @@ package body IBM_3270_Orders is
 
    procedure Start_Field (V : in out Byte_Vectors.Vector;
       Protect : Boolean;
-      Intense : Boolean) is
+      Intense : Intensity) is
       Attr : Buffer.Byte;
    begin
       V.Append (IBM_3270.Start_Field);
@@ -52,9 +52,7 @@ package body IBM_3270_Orders is
       if Protect then
          Attr := Attr + 16#20#;
       end if;
-      if Intense then
-         Attr := Attr + 16#08#;
-      end if;
+      Attr := Attr + 4*Intensity'Pos (Intense);
       V.Append (Attr);
    end Start_Field;
 

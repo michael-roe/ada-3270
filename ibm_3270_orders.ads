@@ -3,6 +3,8 @@ with Byte_Vectors;
 
 package IBM_3270_Orders is
 
+   type Intensity is (Normal_Text, Detectable, Highlighted, Hidden);
+
    procedure Set_Buffer_Address (V : in out Byte_Vectors.Vector;
       X : Integer;
       Y : Integer);
@@ -11,6 +13,6 @@ package IBM_3270_Orders is
 
    procedure Start_Field (V : in out Byte_Vectors.Vector;
       Protect : Boolean;
-      Intense : Boolean);
+      Intense : Intensity);
 
 end IBM_3270_Orders;

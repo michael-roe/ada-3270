@@ -2,8 +2,12 @@ with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
+with Byte_Text_IO;
 
 package body Split_Views is
+
+   function Normal_Text return IBM_3270_Orders.Intensity renames
+      IBM_3270_Orders.Normal_Text;
 
    procedure To_Physical (
       V : Split_View;
@@ -28,16 +32,16 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
        
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+      IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 3);
-      IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+      IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
       for J in 4 .. 19 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 
@@ -50,12 +54,12 @@ package body Split_Views is
 
       for J in 21 .. 39 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
+         IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
          if J = 21 then
             IBM_3270_Orders.Insert_Cursor (Bytes_Out);
          end if;
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 
@@ -84,7 +88,9 @@ package body Split_Views is
       V : Split_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
+
       null;
+
    end From_Physical;
 
 end Split_Views;
