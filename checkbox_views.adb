@@ -1,4 +1,5 @@
 with Ada.Text_IO;
+with Ada.Wide_Text_IO;
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
@@ -18,6 +19,8 @@ package body Checkbox_Views is
       Ada.Text_IO.Put (Natural'Image (X));
       Ada.Text_IO.Put (",");
       Ada.Text_IO.Put (Natural'Image (Y));
+      Ada.Text_IO.Put (",");
+      Ada.Wide_Text_IO.Put (Lines.To_Wide_String (L));
       Ada.Text_IO.Put (")");
       Ada.Text_IO.New_Line;
    end Callback;
@@ -44,7 +47,8 @@ package body Checkbox_Views is
       Code_Page_310.Append (Bytes_Out, '[');
       IBM_3270_Orders.Start_Field (Bytes_Out,
          False,
-         IBM_3270_Orders.Detectable);
+         IBM_3270_Orders.Detectable,
+         Modified => True);
       Code_Page_500.Append (Bytes_Out, ">");
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       Code_Page_310.Append (Bytes_Out, ']');

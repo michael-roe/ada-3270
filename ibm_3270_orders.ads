@@ -13,7 +13,8 @@ package IBM_3270_Orders is
 
    procedure Start_Field (V : in out Byte_Vectors.Vector;
       Protect : Boolean;
-      Intense : Intensity);
+      Intense : Intensity;
+      Modified : Boolean := False);
 
    procedure To_Buffer_Address (
       C1 : Buffer.Byte;

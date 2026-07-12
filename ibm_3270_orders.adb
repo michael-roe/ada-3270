@@ -44,11 +44,15 @@ package body IBM_3270_Orders is
 
    procedure Start_Field (V : in out Byte_Vectors.Vector;
       Protect : Boolean;
-      Intense : Intensity) is
+      Intense : Intensity;
+      Modified : Boolean := False) is
       Attr : Buffer.Byte;
    begin
       V.Append (IBM_3270.Start_Field);
       Attr := 0;
+      if Modified then
+         Attr := Attr + 16#1#;
+      end if;
       if Protect then
          Attr := Attr + 16#20#;
       end if;
