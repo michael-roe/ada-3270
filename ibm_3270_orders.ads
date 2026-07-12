@@ -15,4 +15,10 @@ package IBM_3270_Orders is
       Protect : Boolean;
       Intense : Intensity);
 
+   procedure To_Buffer_Address (
+      C1 : Buffer.Byte;
+      C2 : Buffer.Byte;
+      X : out Natural;
+      Y : out Natural);
+
 end IBM_3270_Orders;

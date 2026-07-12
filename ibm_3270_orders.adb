@@ -56,5 +56,30 @@ package body IBM_3270_Orders is
       V.Append (Attr);
    end Start_Field;
 
+   function Unpack (B : Buffer.Byte) return Natural is
+   begin
+
+      for J in Unsigned_6 loop
+         if Table (J) = B then
+            return Natural (J);
+         end if;
+      end loop;
+
+      return 0;
+
+   end Unpack;
+
+   procedure To_Buffer_Address (
+      C1 : Buffer.Byte;
+      C2 : Buffer.Byte;
+      X : out Natural;
+      Y : out Natural) is
+      A : Natural;
+   begin
+      A := 64*Unpack (C1) + Unpack (C2);
+      X := A / 80;
+      Y := A mod 80;
+   end To_Buffer_Address;
+
 end IBM_3270_Orders;
 
