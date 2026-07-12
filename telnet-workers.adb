@@ -1,4 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Wide_Text_IO;
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
 with Buffer; use type Buffer.Byte;
@@ -12,11 +13,20 @@ with Telnet.Negotiation; use Telnet.Negotiation;
 with IBM_3270;
 with Box_Drawing;
 with Block_Elements;
+with Math_Operators;
 with Code_Page_310;
 with Code_Page_500;
 with IBM_3270_Orders;
+with Text_Views;
+with Split_Views;
+with Checkbox_Views;
+with Menu_Views;
+with Login_Views;
 
 package body Telnet.Workers is
+
+   function Normal_Text return IBM_3270_Orders.Intensity renames
+     IBM_3270_Orders.Normal_Text;
 
    type State is (Data, Data_IAC, Will, Wont, Do_It, Dont, Opt, Opt_IAC);
 
@@ -49,6 +59,47 @@ package body Telnet.Workers is
       IBM_3270.IBM_Write_Erase_Alternate,
       IBM_3270.WCC_Go_Ahead);
 
+   procedure Rx_Record (Bytes_In : Byte_Vectors.Vector) is
+      X : Natural;
+      Y : Natural;
+   begin
+      Put ("[Length = ");
+      Put (Bytes_In.Length'Image);
+      Put ("]");
+      case Bytes_In.Element (Bytes_In.First_Index) is
+         when IBM_3270.AID_Enter =>
+            Put ("[Enter]");
+         when IBM_3270.AID_PA1 =>
+            Put ("[PA1]");
+         when IBM_3270.AID_PA2 =>
+            Put ("[PA2]");
+         when IBM_3270.AID_PA3 =>
+            Put ("[PA3]");
+         when IBM_3270.AID_PF7 =>
+            Put ("[PF7]");
+         when IBM_3270.AID_PF8 =>
+            Put ("[PF8]");
+         when IBM_3270.AID_CrSel =>
+            Put ("[CrSel]");
+         when others =>
+            Put ("[AID ");
+            Byte_Text_IO.Put (Bytes_In.Element (Bytes_In.First_Index));
+            Put ("]");
+      end case;
+
+      IBM_3270_Orders.To_Buffer_Address (
+         Bytes_In.Element (Bytes_In.First_Index + 1),
+         Bytes_In.Element (Bytes_In.First_Index + 2),
+         x,
+         Y);
+
+      Put ("Cursor = (");
+      Ada.Text_IO.Put (Natural'Image (X));
+      Ada.Text_IO.Put (Natural'Image (Y));
+      Put (")");
+
+   end Rx_Record;
+
    task body Worker is
       S : State := Data;
       C : Buffer.Byte;
@@ -62,59 +113,14 @@ package body Telnet.Workers is
       Option_In : Byte_Vectors.Vector;
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
+      Document : Login_Views.Login_View;
    begin
 
       for J in Screen_Message'Range loop
          Bytes_Out.Append (Screen_Message (J));
       end loop;
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
-
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
-      IBM_3270_Orders.Insert_Cursor (Bytes_Out);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 3);
-      IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-
-      for J in 4 .. 39 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Start_Field (Bytes_Out, False, False);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, False);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      end loop;
-
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 40);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
-
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " PF7=Prev PF8=Next");
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 42);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
+      Document.To_Physical (Bytes_Out);
 
       for J in 1 .. 11 loop -- only 8 options to send
 
@@ -185,9 +191,9 @@ package body Telnet.Workers is
                   S := Data_IAC;
                else
                   Bytes_In.Append (C);
-                  Put ("[");
-                  Ada.Text_IO.Put (Character'Val (C));
-                  Put ("]");
+                  -- Put ("[");
+                  -- Ada.Text_IO.Put (Character'Val (C));
+                  -- Put ("]");
                end if;  
             when Data_IAC =>
                case C is
@@ -212,9 +218,8 @@ package body Telnet.Workers is
                      Got_Reply := True;
                   when Telnet.Protocol.EOR =>
                      Put ("[EOR]");
-                     Put ("[Length = ");
-                     Put (Bytes_In.Length'Image);
-                     Put ("]");
+                     Document.From_Physical (Bytes_In);
+                     Rx_Record (Bytes_In);
                      Bytes_In.Clear;
                      S := Data;
                      Got_Reply := True;
