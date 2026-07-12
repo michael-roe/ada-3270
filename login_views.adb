@@ -1,8 +1,15 @@
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
+with IBM_3270;
 with IBM_3270_Orders;
+with Input_Stream;
+with Ada.Text_IO;
+with Ada.Wide_Text_IO;
 with Byte_Text_IO;
+with Buffer;
+use type Buffer.Byte;
+with Lines;
 
 package body Login_Views is
 
@@ -14,6 +21,20 @@ package body Login_Views is
 
    function Hidden return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Hidden;
+
+   procedure CallBack (X : Integer; Y : Integer; L : Lines.Bounded_Wide_String) is
+   begin
+      Ada.Text_IO.Put ("Field = (");
+      Ada.Text_IO.Put (Natural'Image (X));
+      Ada.Text_IO.Put (",");
+      Ada.Text_IO.Put (Natural'Image (Y));
+      Ada.Text_IO.Put (",");
+      Ada.Wide_Text_IO.Put (Lines.To_Wide_String (L));
+      Ada.Text_IO.Put (")");
+      Ada.Text_IO.New_Line;
+   end Callback;
+
+   procedure Parse is new Input_Stream.Parse (Callback => Callback);
 
    procedure To_Physical (
       V : Login_View;
@@ -71,7 +92,7 @@ package body Login_Views is
       V : Login_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
-      null;
+      Parse (Bytes_In);
    end From_Physical;
 
 end Login_Views;

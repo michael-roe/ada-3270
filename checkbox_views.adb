@@ -1,13 +1,28 @@
+with Ada.Text_IO;
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
+with Input_Stream;
 with Byte_Text_IO;
+with Lines;
 
 package body Checkbox_Views is
 
    function Normal_Text return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Normal_Text;
+
+   procedure CallBack (X : Integer; Y : Integer; L : Lines.Bounded_Wide_String) is
+   begin
+      Ada.Text_IO.Put ("Field = (");
+      Ada.Text_IO.Put (Natural'Image (X));
+      Ada.Text_IO.Put (",");
+      Ada.Text_IO.Put (Natural'Image (Y));
+      Ada.Text_IO.Put (")");
+      Ada.Text_IO.New_Line;
+   end Callback;
+
+   procedure Parse is new Input_Stream.Parse (Callback => Callback);
 
    procedure To_Physical (
       V : Checkbox_View;
@@ -30,7 +45,7 @@ package body Checkbox_Views is
       IBM_3270_Orders.Start_Field (Bytes_Out,
          False,
          IBM_3270_Orders.Detectable);
-      Code_Page_500.Append (Bytes_Out, "?");
+      Code_Page_500.Append (Bytes_Out, ">");
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       Code_Page_310.Append (Bytes_Out, ']');
 
@@ -40,7 +55,7 @@ package body Checkbox_Views is
       V : Checkbox_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
-      null;
+      Parse (Bytes_In);
    end From_Physical;
 
 end Checkbox_Views;
