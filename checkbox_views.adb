@@ -9,7 +9,6 @@ with IBM_3270;
 with IBM_3270_Orders;
 with Input_Stream;
 with Byte_Text_IO;
-with Lines;
 
 package body Checkbox_Views is
 
@@ -18,20 +17,6 @@ package body Checkbox_Views is
 
    function Highlighted return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Highlighted;
-
-   procedure CallBack (X : Integer; Y : Integer; L : Lines.Bounded_Wide_String) is
-   begin
-      Ada.Text_IO.Put ("Field = (");
-      Ada.Text_IO.Put (Natural'Image (X));
-      Ada.Text_IO.Put (",");
-      Ada.Text_IO.Put (Natural'Image (Y));
-      Ada.Text_IO.Put (",");
-      Ada.Wide_Text_IO.Put (Lines.To_Wide_String (L));
-      Ada.Text_IO.Put (")");
-      Ada.Text_IO.New_Line;
-   end Callback;
-
-   procedure Parse is new Input_Stream.Parse (Callback => Callback);
 
    procedure To_Physical (
       V : Checkbox_View;
@@ -110,9 +95,24 @@ package body Checkbox_Views is
          for J in 1 .. 4 loop
             V.Checkboxes (J) := False;
          end loop;
-         Parse (Bytes_In);
+         Input_Stream.Parse (V, Bytes_In);
       end if;
    end From_Physical;
 
-end Checkbox_Views;
+   procedure Update_Field (
+      V : in out Checkbox_View;
+      X : Natural;
+      Y : Natural;
+      L : Lines.Bounded_Wide_String) is
+   begin
+      Ada.Text_IO.Put ("Field = (");
+      Ada.Text_IO.Put (Natural'Image (X));
+      Ada.Text_IO.Put (",");
+      Ada.Text_IO.Put (Natural'Image (Y));
+      Ada.Text_IO.Put (",");
+      Ada.Wide_Text_IO.Put (Lines.To_Wide_String (L));
+      Ada.Text_IO.Put (")");
+      Ada.Text_IO.New_Line;
+   end Update_Field;
 
+end Checkbox_Views;

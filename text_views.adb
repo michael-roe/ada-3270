@@ -74,4 +74,13 @@ package body Text_Views is
       null;
    end From_Physical;
 
+   procedure Update_Field (
+      V : in out Text_View;
+      X : Natural;
+      Y : Natural;
+      L : Lines.Bounded_Wide_String) is
+   begin
+      null;
+   end Update_Field;
+
 end Text_Views;

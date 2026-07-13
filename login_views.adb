@@ -22,20 +22,6 @@ package body Login_Views is
    function Hidden return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Hidden;
 
-   procedure CallBack (X : Integer; Y : Integer; L : Lines.Bounded_Wide_String) is
-   begin
-      Ada.Text_IO.Put ("Field = (");
-      Ada.Text_IO.Put (Natural'Image (X));
-      Ada.Text_IO.Put (",");
-      Ada.Text_IO.Put (Natural'Image (Y));
-      Ada.Text_IO.Put (",");
-      Ada.Wide_Text_IO.Put (Lines.To_Wide_String (L));
-      Ada.Text_IO.Put (")");
-      Ada.Text_IO.New_Line;
-   end Callback;
-
-   procedure Parse is new Input_Stream.Parse (Callback => Callback);
-
    procedure To_Physical (
       V : Login_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
@@ -92,8 +78,17 @@ package body Login_Views is
       V : in out Login_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
-      Parse (Bytes_In);
+      Input_Stream.Parse (V, Bytes_In);
    end From_Physical;
+
+   procedure Update_Field (
+      V : in out Login_View;
+      X : Natural;
+      Y : Natural;
+      L : Lines.Bounded_Wide_String) is
+   begin
+      null;
+   end Update_Field;
 
 end Login_Views;
 

@@ -1,5 +1,6 @@
 with Byte_Vectors;
 with Views;
+with Lines;
 
 package Checkbox_Views is
 
@@ -17,4 +18,10 @@ package Checkbox_Views is
       V : in out Checkbox_View;
       Bytes_In : Byte_Vectors.Vector);
       
+   procedure Update_Field ( 
+      V : in out Checkbox_View;
+      X : Natural;
+      Y : Natural;
+      L : Lines.Bounded_Wide_String);
+
 end Checkbox_Views;

@@ -1,5 +1,6 @@
 with Byte_Vectors;
 with Views;
+with Lines;
 
 package Text_Views is
 
@@ -12,5 +13,11 @@ package Text_Views is
    procedure From_Physical (
       V : in out Text_View;
       Bytes_In : Byte_Vectors.Vector);
+
+   procedure Update_Field (
+      V : in out Text_View;
+      X : Natural;
+      Y : Natural;
+      L : Lines.Bounded_Wide_String);
 
 end Text_Views;

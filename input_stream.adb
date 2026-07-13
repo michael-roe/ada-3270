@@ -7,10 +7,13 @@ with IBM_3270_Orders;
 with Buffer;
 use type Buffer.Byte;
 with Lines;
+with Views;
 
 package body Input_Stream is
 
-   procedure Parse (Bytes_In : Byte_Vectors.Vector) is
+   procedure Parse (
+      V : in out Views.View'Class;
+      Bytes_In : Byte_Vectors.Vector) is
       L : Lines.Bounded_Wide_String;
       To_Do : Natural;
       Index : Natural;
@@ -38,7 +41,7 @@ package body Input_Stream is
                   if First_Field then
                      First_Field := False;
                   else
-                     Callback (X, Y, L);
+                     Views.Update_Field (V, X, Y, L);
                      Lines.Set_Bounded_Wide_String (L, "");
                   end if; 
                   if To_Do >= 3 then
@@ -54,7 +57,10 @@ package body Input_Stream is
                   end if;
                when IBM_3270.Graphic_Escape =>
                   if To_Do >= 2 then
-                     Lines.Append (L, Code_Page_310.To_Wide_Character (Bytes_In.Element (Index + 1)));
+                     Lines.Append (
+                        L,
+                        Code_Page_310.To_Wide_Character (
+                           Bytes_In.Element (Index + 1)));
                      To_Do := To_Do - 2;
                      Index := Index + 2;
                   else
@@ -64,13 +70,16 @@ package body Input_Stream is
                   To_Do := To_Do - 1;
                   Index := Index + 1;
                when others =>
-                  Lines.Append (L, Code_Page_500.To_Wide_Character (Bytes_In.Element (Index)));
+                  Lines.Append (
+                     L,
+                     Code_Page_500.To_Wide_Character (
+                        Bytes_In.Element (Index)));
                   To_Do := To_Do - 1;
                   Index := Index + 1;
                end case;
          end loop;
          if not First_Field then
-            CallBack (X, Y, L);
+            Views.Update_Field (V, X, Y, L);
          end if;
       end if;
    end Parse;

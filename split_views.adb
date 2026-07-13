@@ -93,4 +93,13 @@ package body Split_Views is
 
    end From_Physical;
 
+   procedure Update_Field (
+      V : in out Split_View;
+      X : Natural;
+      Y : Natural;
+      L : Lines.Bounded_Wide_String) is
+   begin
+      null;
+   end Update_Field;
+
 end Split_Views;

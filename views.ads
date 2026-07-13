@@ -1,4 +1,5 @@
 with Byte_Vectors;
+with Lines;
 
 package Views is
 
@@ -12,4 +13,10 @@ package Views is
       V : in out View;
       Bytes_In : Byte_Vectors.Vector) is abstract;
    
+   procedure Update_Field (
+      V : in out View;
+      X : Natural;
+      Y : Natural;
+      L : Lines.Bounded_Wide_String) is abstract;
+
 end Views;
