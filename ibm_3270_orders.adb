@@ -81,8 +81,8 @@ package body IBM_3270_Orders is
       A : Natural;
    begin
       A := 64*Unpack (C1) + Unpack (C2);
-      X := A / 80;
-      Y := A mod 80;
+      X := A mod 80;
+      Y := A / 80;
    end To_Buffer_Address;
 
 end IBM_3270_Orders;
