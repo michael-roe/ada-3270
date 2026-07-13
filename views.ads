@@ -9,7 +9,7 @@ package Views is
       Bytes_Out: in out Byte_Vectors.Vector) is abstract;
 
    procedure From_Physical (
-      V : View;
+      V : in out View;
       Bytes_In : Byte_Vectors.Vector) is abstract;
    
 end Views;

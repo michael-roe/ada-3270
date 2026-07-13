@@ -10,7 +10,7 @@ package Text_Views is
       Bytes_Out : in out Byte_Vectors.Vector);
 
    procedure From_Physical (
-      V : Text_View;
+      V : in out Text_View;
       Bytes_In : Byte_Vectors.Vector);
 
 end Text_Views;

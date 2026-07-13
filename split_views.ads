@@ -10,7 +10,7 @@ package Split_Views is
       Bytes_Out : in out Byte_Vectors.Vector);
 
    procedure From_Physical (
-      V : Split_View;
+      V : in out Split_View;
       Bytes_In : Byte_Vectors.Vector);
       
 end Split_Views;

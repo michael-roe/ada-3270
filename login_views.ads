@@ -10,7 +10,7 @@ package Login_Views is
       Bytes_Out : in out Byte_Vectors.Vector);
 
    procedure From_Physical (
-      V : Login_View;
+      V : in out Login_View;
       Bytes_In : Byte_Vectors.Vector);
       
 end Login_Views;

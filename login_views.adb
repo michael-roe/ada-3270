@@ -89,7 +89,7 @@ package body Login_Views is
    end To_Physical;
 
    procedure From_Physical (
-      V : Login_View;
+      V : in out Login_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
       Parse (Bytes_In);
