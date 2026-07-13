@@ -104,15 +104,15 @@ package body Checkbox_Views is
       X : Natural;
       Y : Natural;
       L : Lines.Bounded_Wide_String) is
+      F : Natural;
    begin
-      Ada.Text_IO.Put ("Field = (");
-      Ada.Text_IO.Put (Natural'Image (X));
-      Ada.Text_IO.Put (",");
-      Ada.Text_IO.Put (Natural'Image (Y));
-      Ada.Text_IO.Put (",");
-      Ada.Wide_Text_IO.Put (Lines.To_Wide_String (L));
-      Ada.Text_IO.Put (")");
-      Ada.Text_IO.New_Line;
+      if (X = 4) and (Y >= 4) and (Y <= 10) and (Y mod 2 = 0) then
+         F := (Y - 4)/2 + 1;
+         Ada.Text_IO.Put ("Updating field ");
+         Ada.Text_IO.Put (Natural'Image (F));
+         Ada.Text_IO.New_Line;
+         V.Checkboxes (F) := True;
+      end if;
    end Update_Field;
 
 end Checkbox_Views;
