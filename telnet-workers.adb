@@ -113,16 +113,15 @@ package body Telnet.Workers is
       Option_In : Byte_Vectors.Vector;
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
-      Document : Login_Views.Login_View;
+      Document : Checkbox_Views.Checkbox_View;
    begin
 
-      for J in Screen_Message'Range loop
-         Bytes_Out.Append (Screen_Message (J));
-      end loop;
+      Document.Checkboxes (1) := True;
+      Document.Checkboxes (2) := True;
+      Document.Checkboxes (3) := False;
+      Document.Checkboxes (4) := False;
 
-      Document.To_Physical (Bytes_Out);
-
-      for J in 1 .. 11 loop -- only 8 options to send
+      for J in 1 .. 12 loop -- only 8 options to send
 
          Next_Option (Direction, Option);
 
@@ -168,6 +167,13 @@ package body Telnet.Workers is
                   end loop;
                   Terminal_Sent := True;
                else
+                  Bytes_Out.Clear;
+                  for J in Screen_Message'Range loop
+                     Bytes_Out.Append (Screen_Message (J));
+                  end loop;
+
+                  Document.To_Physical (Bytes_Out);
+
                   if Bytes_Out.Length > 0 then
                      for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
                         Tx.Enqueue (Bytes_Out.Element (J));
