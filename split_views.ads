@@ -1,13 +1,15 @@
 with Byte_Vectors;
 with Views;
 with Lines;
+with Line_Vectors;
 
 package Split_Views is
 
    type Edit_Window is array (0 .. 18) of Lines.Bounded_Wide_String;
 
    type Split_View is new Views.View with record
-      Edit : Edit_Window;
+      History : Line_Vectors.Vector;
+      Edit    : Edit_Window;
    end record;
 
    procedure To_Physical (

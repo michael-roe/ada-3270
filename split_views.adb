@@ -43,6 +43,11 @@ package body Split_Views is
       for J in 4 .. 19 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
+         if J - 4 <= V.History.Last_Index then
+            Code_Page_500.Append (
+               Bytes_Out,
+               Lines.To_Wide_String (V.History (J - 4)));
+         end if;
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
