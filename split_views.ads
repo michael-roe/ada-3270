@@ -4,7 +4,11 @@ with Lines;
 
 package Split_Views is
 
-   type Split_View is new Views.View with null record;
+   type Edit_Window is array (0 .. 18) of Lines.Bounded_Wide_String;
+
+   type Split_View is new Views.View with record
+      Edit : Edit_Window;
+   end record;
 
    procedure To_Physical (
       V : Split_View;
