@@ -91,7 +91,7 @@ package body Checkbox_Views is
    begin
       -- Ought to check there is a first element
       AID := Bytes_In.Element (Bytes_In.First_Index);
-      if AID = IBM_3270.AID_Enter then
+      if not IBM_3270_Orders.Is_Short_Read (AID) then
          for J in 1 .. 4 loop
             V.Checkboxes (J) := False;
          end loop;

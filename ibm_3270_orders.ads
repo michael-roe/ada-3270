@@ -22,4 +22,6 @@ package IBM_3270_Orders is
       X : out Natural;
       Y : out Natural);
 
+   function Is_Short_Read (AID : Buffer.Byte) return Boolean;
+
 end IBM_3270_Orders;

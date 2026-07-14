@@ -85,5 +85,12 @@ package body IBM_3270_Orders is
       Y := A / 80;
    end To_Buffer_Address;
 
-end IBM_3270_Orders;
+   function Is_Short_Read (AID : Buffer.Byte) return Boolean is
+   begin
+      return (AID = IBM_3270.AID_Clear) or
+         (AID = IBM_3270.AID_PA1) or
+         (AID = IBM_3270.AID_PA2) or
+         (AID = IBM_3270.AID_PA3);
+   end Is_Short_Read;
 
+end IBM_3270_Orders;
