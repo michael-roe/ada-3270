@@ -1,5 +1,5 @@
 with Byte_Vectors;
-with Views;
+with Paged_Views;
 with Lines;
 with Line_Vectors;
 
@@ -7,7 +7,8 @@ package Split_Views is
 
    type Edit_Window is array (0 .. 18) of Lines.Bounded_Wide_String;
 
-   type Split_View is new Views.View with record
+   type Split_View is new Paged_Views.Paged_View with record
+      Page_Number : Natural := 0;
       History : Line_Vectors.Vector;
       Edit    : Edit_Window;
    end record;
@@ -25,5 +26,9 @@ package Split_Views is
       X : Natural;
       Y : Natural;
       L : Lines.Bounded_Wide_String);
+
+   procedure Prev_Page (V : in out Split_View);
+
+   procedure Next_Page (V : in out Split_View);
 
 end Split_Views;

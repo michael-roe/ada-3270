@@ -6,6 +6,8 @@ with Box_Drawing;
 with IBM_3270_Orders;
 with Byte_Text_IO;
 with Input_Stream;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 
 package body Split_Views is
 
@@ -16,6 +18,7 @@ package body Split_Views is
       V : Split_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
       B : Byte_Vectors.Vector;
+      Line_Number : Natural;
    begin
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
@@ -37,16 +40,23 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 70, 3);
-      Code_Page_500.Append (Bytes_Out, "More: +- ");
+      Code_Page_500.Append (Bytes_Out, "More: +");
+      if V.Page_Number = 0 then
+         Code_Page_500.Append (Bytes_Out, " ");
+      else
+         Code_Page_500.Append (Bytes_Out, "-");
+      end if;
+      Code_Page_500.Append (Bytes_Out, " ");
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
       for J in 4 .. 19 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-         if J - 4 <= V.History.Last_Index then
+         Line_Number := J - 4 + 16*V.Page_Number;
+         if Line_Number <= V.History.Last_Index then
             Code_Page_500.Append (
                Bytes_Out,
-               Lines.To_Wide_String (V.History (J - 4)));
+               Lines.To_Wide_String (V.History (Line_Number)));
          end if;
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
@@ -81,7 +91,7 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
  
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " PF7=Prev PF8=Next");
+      Code_Page_500.Append (Bytes_Out, " PF3=Exit PF7=Prev PF8=Next");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -119,5 +129,25 @@ package body Split_Views is
       V.Edit (Y - 21) := L;
 
    end Update_Field;
+
+   procedure Prev_Page (V : in out Split_View) is
+   begin
+
+      Ada.Text_IO.Put ("Prev_Page");
+      Ada.Text_IO.New_Line;
+      if V.Page_Number > 0 then
+         V.Page_Number := V.Page_Number - 1;
+      end if;
+
+   end Prev_Page;
+
+   procedure Next_Page (V : in out Split_View) is
+   begin
+
+      if V.Page_Number < Natural (V.History.Length/16) then
+         V.Page_Number := V.Page_Number + 1;
+      end if;
+
+   end Next_Page;
 
 end Split_Views;
