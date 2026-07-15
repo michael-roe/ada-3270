@@ -28,6 +28,7 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Code_Page_500.Append (Bytes_Out, " Split Panel Test");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -91,7 +92,11 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
  
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " PF3=Exit PF7=Prev PF8=Next");
+      Code_Page_500.Append (Bytes_Out, " PF1=Help");
+      Code_Page_500.Append (Bytes_Out, " PF3=Exit");
+      Code_Page_500.Append (Bytes_Out, " PF7=Prev");
+      Code_Page_500.Append (Bytes_Out, " PF8=Next");
+      Code_Page_500.Append (Bytes_Out, " PF9=Swap");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
