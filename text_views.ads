@@ -1,10 +1,14 @@
 with Byte_Vectors;
-with Views;
+with Paged_Views;
 with Lines;
+with Line_Vectors;
 
 package Text_Views is
 
-   type Text_View is new Views.View with null record;
+   type Text_View is new Paged_Views.Paged_View with record
+      Page_Number : Natural := 0;
+      Text : Line_Vectors.Vector;
+   end record;
 
    procedure To_Physical (
       V : Text_View;
@@ -19,5 +23,9 @@ package Text_Views is
       X : Natural;
       Y : Natural;
       L : Lines.Bounded_Wide_String);
+
+   procedure Prev_Page (V : in out Text_View);
+
+   procedure Next_Page (V : in out Text_View);
 
 end Text_Views;
