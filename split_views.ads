@@ -1,3 +1,4 @@
+with Ada.Streams;
 with Byte_Vectors;
 with Paged_Views;
 with Lines;
@@ -30,5 +31,9 @@ package Split_Views is
    procedure Prev_Page (V : in out Split_View);
 
    procedure Next_Page (V : in out Split_View);
+
+   procedure To_JSON (
+      V : Split_View;
+      S : access Ada.Streams.Root_Stream_Type'Class);
 
 end Split_Views;

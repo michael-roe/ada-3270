@@ -8,6 +8,7 @@ with Byte_Text_IO;
 with Input_Stream;
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
+with Ada.Characters.Latin_1;
 
 package body Split_Views is
 
@@ -154,5 +155,44 @@ package body Split_Views is
       end if;
 
    end Next_Page;
+
+   type Paragraph_State is (At_Start, Nonblank_Line, Blank_Line);
+
+   procedure To_JSON (
+      V : Split_View;
+      S : access Ada.Streams.Root_Stream_Type'Class) is
+      State : Paragraph_State;
+      New_Line : Wide_String := "" & Wide_Character'Val (10);
+   begin
+
+      --
+      -- The stream ends up being encoded in UTF16, and I'm not sure why.
+      --
+
+      State := At_Start;
+      Wide_String'Write (S, """");
+      for J in V.Edit'Range loop
+         -- Ought to trim trailing white space
+         if Lines.Length (V.Edit (J)) = 0 then
+            if State /= At_Start then
+               State := Blank_Line;
+            end if;
+         else
+            if State = Blank_Line then
+               Wide_String'Write (S, "\n");
+            elsif State = Nonblank_Line then
+               Wide_String'Write (S, " ");
+            end if;
+            State := Nonblank_Line;
+         end if;
+         Wide_String'Write (S, Lines.To_Wide_String (V.Edit (J)));
+      end loop;
+      if State /= At_Start then
+         Wide_String'Write (S, "\n");
+      end if;
+      Wide_String'Write (S, """");
+      Wide_String'Write (S, New_Line);
+
+   end To_JSON;
 
 end Split_Views;
