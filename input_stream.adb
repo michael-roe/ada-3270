@@ -1,5 +1,6 @@
 with Ada.Text_IO;
 with Ada.Wide_Text_IO;
+with Ada.Strings;
 with Code_Page_500;
 with Code_Page_310;
 with IBM_3270;
@@ -60,7 +61,8 @@ package body Input_Stream is
                      Lines.Append (
                         L,
                         Code_Page_310.To_Wide_Character (
-                           Bytes_In.Element (Index + 1)));
+                           Bytes_In.Element (Index + 1)),
+                           Ada.Strings.Right);
                      To_Do := To_Do - 2;
                      Index := Index + 2;
                   else
@@ -73,12 +75,14 @@ package body Input_Stream is
                   Lines.Append (
                      L,
                      Code_Page_500.To_Wide_Character (
-                        Bytes_In.Element (Index)));
+                        Bytes_In.Element (Index)),
+                     Ada.Strings.Right);
                   To_Do := To_Do - 1;
                   Index := Index + 1;
                end case;
          end loop;
          if not First_Field then
+            Lines.Trim (L, Ada.Strings.Right);
             Views.Update_Field (V, X, Y, L);
          end if;
       end if;
