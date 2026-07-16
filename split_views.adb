@@ -41,8 +41,10 @@ package body Split_Views is
        
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 70, 3);
-      Code_Page_500.Append (Bytes_Out, "More: +");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
+      Code_Page_500.Append (Bytes_Out, "More: ");
+      Code_Page_500.Append (Bytes_Out, "+");
+      Code_Page_500.Append (Bytes_Out, " ");
       if V.Page_Number = 0 then
          Code_Page_500.Append (Bytes_Out, " ");
       else
