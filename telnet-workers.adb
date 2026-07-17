@@ -1,6 +1,9 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Wide_Text_IO;
+with Ada.Text_IO.Text_Streams;
+with Ada.Wide_Text_IO.Text_Streams;
 with Ada.Containers;
+with Ada.Streams;
 use type Ada.Containers.Count_Type;
 with Buffer; use type Buffer.Byte;
 with Byte_Vectors;
@@ -22,6 +25,8 @@ with Split_Views;
 with Checkbox_Views;
 with Menu_Views;
 with Login_Views;
+with Lines;
+with Line_Vectors;
 
 package body Telnet.Workers is
 
@@ -87,16 +92,18 @@ package body Telnet.Workers is
             Put ("]");
       end case;
 
-      IBM_3270_Orders.To_Buffer_Address (
-         Bytes_In.Element (Bytes_In.First_Index + 1),
-         Bytes_In.Element (Bytes_In.First_Index + 2),
-         x,
-         Y);
+      if Bytes_In.Length > 2 then
+         IBM_3270_Orders.To_Buffer_Address (
+            Bytes_In.Element (Bytes_In.First_Index + 1),
+            Bytes_In.Element (Bytes_In.First_Index + 2),
+            X,
+            Y);
 
-      Put ("Cursor = (");
-      Ada.Text_IO.Put (Natural'Image (X));
-      Ada.Text_IO.Put (Natural'Image (Y));
-      Put (")");
+         Put ("Cursor = (");
+         Ada.Text_IO.Put (Natural'Image (X));
+         Ada.Text_IO.Put (Natural'Image (Y));
+         Put (")");
+      end if;
 
    end Rx_Record;
 
@@ -113,15 +120,33 @@ package body Telnet.Workers is
       Option_In : Byte_Vectors.Vector;
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
-      Document : Checkbox_Views.Checkbox_View;
+      Document : Split_Views.Split_View;
+      L : Lines.Bounded_Wide_String;
+      JSON_Stream : access Ada.Streams.Root_Stream_Type'Class;
+      F1 : Ada.Text_IO.File_Type;
    begin
 
-      Document.Checkboxes (1) := True;
-      Document.Checkboxes (2) := True;
-      Document.Checkboxes (3) := False;
-      Document.Checkboxes (4) := False;
+      TX2.Enqueue (42);
 
-      for J in 1 .. 12 loop -- only 8 options to send
+      Ada.Text_IO.Create (
+         F1,
+         Ada.Text_IO.Out_File,
+         "json.txt",
+         "WCEM=8");
+
+      JSON_Stream := Ada.Text_IO.Text_Streams.Stream (F1);
+
+      for J in 1 .. 50 loop
+         Lines.Set_Bounded_Wide_String (L, "Line" & Natural'Wide_Image (J));
+         Line_Vectors.Append (Document.History, L);
+      end loop;
+
+      -- Document.Checkboxes (1) := True;
+      -- Document.Checkboxes (2) := True;
+      -- Document.Checkboxes (3) := False;
+      -- Document.Checkboxes (4) := False;
+
+      for J in 1 .. 30 loop -- only 8 options to send
 
          Next_Option (Direction, Option);
 
@@ -225,7 +250,17 @@ package body Telnet.Workers is
                   when Telnet.Protocol.EOR =>
                      Put ("[EOR]");
                      Document.From_Physical (Bytes_In);
+                     if Bytes_In.Element (Bytes_In.First_Index) =
+                        IBM_3270.AID_PF7 then
+                        Document.Prev_Page;
+                     elsif Bytes_In.Element (Bytes_In.First_Index) =
+                        IBM_3270.AID_PF8 then
+                        Document.Next_Page;
+                     end if;
                      Rx_Record (Bytes_In);
+                     Split_Views.To_JSON (Document,
+                        TX2);
+                     Ada.Text_IO.Flush (F1);
                      Bytes_In.Clear;
                      S := Data;
                      Got_Reply := True;

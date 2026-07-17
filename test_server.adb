@@ -47,6 +47,10 @@ procedure Test_Server is
       Shared_Buffers.Terminal_Socket'Access,
       Shared_Buffers.TX'Access);
 
+   Backend_Transmitter_Task : Transmitter (
+      Shared_Buffers.Backend_Session_Socket'Access,
+      Shared_Buffers.TX2'Access);
+
    task type Receiver (Client_Socket : access Socket_Type;
       RX : access Buffer_Queues.Queue) is
       entry Connect;
@@ -77,6 +81,10 @@ procedure Test_Server is
    Receiver_Task : Receiver (Shared_Buffers.Terminal_Socket'Access,
       Shared_Buffers.RX'Access);
 
+   Backend_Receiver_Task : Receiver (
+      Shared_Buffers.Backend_Session_Socket'Access,
+      Shared_Buffers.RX2'Access);
+
 begin
 
    Server_Address.Addr := Inet_Addr ("127.0.0.1");
@@ -91,16 +99,26 @@ begin
    Create_Socket (Backend_Socket);
    Set_Socket_Option (Backend_Socket, Socket_Level,
       (Reuse_Address, True));
-   Bind_Socket (Backend_Socket, Server_Address);
+   Bind_Socket (Backend_Socket, Backend_Address);
+
+   Listen_Socket (Backend_Socket);
+   Accept_Socket (Backend_Socket,
+      Shared_Buffers.Backend_Session_Socket, Client_Address);
+   Backend_Transmitter_Task.Connect;
+   Backend_Receiver_Task.Connect;
 
    Listen_Socket (Server_Socket);
    Accept_Socket (Server_Socket,
       Shared_Buffers.Terminal_Socket, Client_Address);
    Transmitter_Task.Connect;
    Receiver_Task.Connect;
+
    Receiver_Task.Disconnect;
    abort Transmitter_Task;
    abort Worker;
    abort Receiver_Task;
     
+   Backend_Receiver_Task.Disconnect;
+   abort Backend_Transmitter_Task;
+
 end Test_Server;

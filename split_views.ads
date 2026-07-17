@@ -3,6 +3,7 @@ with Byte_Vectors;
 with Paged_Views;
 with Lines;
 with Line_Vectors;
+with Buffer_Queues;
 
 package Split_Views is
 
@@ -33,7 +34,7 @@ package Split_Views is
    procedure Next_Page (V : in out Split_View);
 
    procedure To_JSON (
-      V : Split_View;
-      S : access Ada.Streams.Root_Stream_Type'Class);
+      V   : Split_View;
+      TX2 : access Buffer_Queues.Queue);
 
 end Split_Views;

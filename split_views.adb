@@ -164,24 +164,25 @@ package body Split_Views is
 
    procedure To_JSON (
       V : Split_View;
-      S : access Ada.Streams.Root_Stream_Type'Class) is
+      TX2 : access Buffer_Queues.Queue) is
       State : Paragraph_State;
       New_Line : String := "" & Character'Val (10);
    begin
 
       State := At_Start;
-      String'Write (S, """");
+      
+      TX2.Enqueue (Character'Pos ('"'));
       for J in V.Edit'Range loop
-         -- Ought to trim trailing white space
          if Lines.Length (V.Edit (J)) = 0 then
             if State /= At_Start then
                State := Blank_Line;
             end if;
          else
             if State = Blank_Line then
-               String'Write (S, "\n");
+               TX2.Enqueue (Character'Pos ('/'));
+               TX2.Enqueue (Character'Pos ('n'));
             elsif State = Nonblank_Line then
-               String'Write (S, " ");
+               TX2.Enqueue (Character'Pos (' '));
             end if;
             State := Nonblank_Line;
          end if;
@@ -190,14 +191,19 @@ package body Split_Views is
               Ada.Strings.UTF_Encoding.Wide_Strings.Encode (
                  Lines.To_Wide_String (V.Edit (J)));
          begin
-            String'Write (S, Encoded);
+            for J in Encoded'Range loop
+              TX2.Enqueue (Character'Pos (Encoded (J)));
+            end loop;
          end;
       end loop;
       if State /= At_Start then
-         String'Write (S, "\n");
+         null;
+         TX2.Enqueue (Character'Pos ('\'));
+         TX2.Enqueue (Character'Pos ('n'));
       end if;
-      String'Write (S, """");
-      String'Write (S, New_Line);
+      TX2.Enqueue (Character'Pos ('"'));
+      TX2.Enqueue (13);
+      TX2.Enqueue (10);
 
    end To_JSON;
 
