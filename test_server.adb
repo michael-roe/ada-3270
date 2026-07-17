@@ -60,7 +60,8 @@ procedure Test_Server is
    task body Receiver is
       Finished : Boolean;
       RX_Offset : Ada.Streams.Stream_Element_Offset;
-      Stream_Data : Ada.Streams.Stream_Element_Array (1 .. 1024) := (others => 0);
+      Stream_Data : Ada.Streams.Stream_Element_Array (1 .. 1024) :=
+         (others => 0);
    begin
       accept Connect;
       Finished := False;
@@ -90,7 +91,7 @@ begin
    Server_Address.Addr := Inet_Addr ("127.0.0.1");
    Server_Address.Port := 17002;
    Create_Socket (Server_Socket);
-   Set_Socket_Option (Server_Socket, Socket_Level, 
+   Set_Socket_Option (Server_Socket, Socket_Level,
       (Reuse_Address, True));
    Bind_Socket (Server_Socket, Server_Address);
 
@@ -117,7 +118,7 @@ begin
    abort Transmitter_Task;
    abort Worker;
    abort Receiver_Task;
-    
+
    Backend_Receiver_Task.Disconnect;
    abort Backend_Transmitter_Task;
 
