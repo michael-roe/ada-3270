@@ -40,7 +40,7 @@ package body Split_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
       end loop;
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
-       
+
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
@@ -58,7 +58,7 @@ package body Split_Views is
       for J in 4 .. 19 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-         Line_Number := J - 4 + 16*V.Page_Number;
+         Line_Number := J - 4 + 16 * V.Page_Number;
          if Line_Number <= V.History.Last_Index then
             Code_Page_500.Append (
                Bytes_Out,
@@ -95,7 +95,7 @@ package body Split_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
       end loop;
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
- 
+
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       Code_Page_500.Append (Bytes_Out, " PF1=Help");
       Code_Page_500.Append (Bytes_Out, " PF3=Exit");
@@ -111,7 +111,7 @@ package body Split_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
       end loop;
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
-      
+
    end To_Physical;
 
    procedure From_Physical (
@@ -154,7 +154,7 @@ package body Split_Views is
    procedure Next_Page (V : in out Split_View) is
    begin
 
-      if V.Page_Number < Natural (V.History.Length/16) then
+      if V.Page_Number < Natural (V.History.Length / 16) then
          V.Page_Number := V.Page_Number + 1;
       end if;
 
@@ -170,7 +170,7 @@ package body Split_Views is
    begin
 
       State := At_Start;
-      
+
       TX2.Enqueue (Character'Pos ('"'));
       for J in V.Edit'Range loop
          if Lines.Length (V.Edit (J)) = 0 then
@@ -187,12 +187,12 @@ package body Split_Views is
             State := Nonblank_Line;
          end if;
          declare
-           Encoded : Ada.Strings.UTF_Encoding.UTF_8_String :=
-              Ada.Strings.UTF_Encoding.Wide_Strings.Encode (
-                 Lines.To_Wide_String (V.Edit (J)));
+            Encoded : Ada.Strings.UTF_Encoding.UTF_8_String :=
+               Ada.Strings.UTF_Encoding.Wide_Strings.Encode (
+                  Lines.To_Wide_String (V.Edit (J)));
          begin
             for J in Encoded'Range loop
-              TX2.Enqueue (Character'Pos (Encoded (J)));
+               TX2.Enqueue (Character'Pos (Encoded (J)));
             end loop;
          end;
       end loop;
