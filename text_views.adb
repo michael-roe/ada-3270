@@ -39,8 +39,14 @@ package body Text_Views is
        
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 70, 3);
-      Code_Page_500.Append (Bytes_Out, "More: +");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
+      Code_Page_500.Append (Bytes_Out, "More: ");
+      if V.Page_Number <= Natural (V.Text.Length)/36 then
+         Code_Page_500.Append (Bytes_Out, "+");
+      else
+         Code_Page_500.Append (Bytes_Out, " ");
+      end if;
+      Code_Page_500.Append (Bytes_Out, " ");
       if V.Page_Number = 0 then
          Code_Page_500.Append (Bytes_Out, " ");
       else
@@ -103,15 +109,23 @@ package body Text_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String) is
       Line_Number : Natural;
+      Blank_Line : Lines.Bounded_Wide_String;
+      Extra_Lines : Natural;
    begin
-      Ada.Text_IO.Put ("(");
-      Ada.Text_IO.Put (Natural'Image (X));
-      Ada.Text_IO.Put (",");
-      Ada.Text_IO.Put (Natural'Image (Y));
-      Ada.Text_IO.Put (")");
-      Ada.Text_IO.New_Line;
+      --  Ada.Text_IO.Put ("(");
+      --  Ada.Text_IO.Put (Natural'Image (X));
+      --  Ada.Text_IO.Put (",");
+      --  Ada.Text_IO.Put (Natural'Image (Y));
+      --  Ada.Text_IO.Put (")");
+      --  Ada.Text_IO.New_Line;
       Line_Number := 36*V.Page_Number + Y - 4;
-      if Line_Number <= V.Text.Last_Index then
+      if Line_Number > V.Text.Last_Index then
+        Extra_Lines := Line_Number - V.Text.Last_Index;
+        for J in 1 .. Extra_Lines - 1 loop
+           Line_Vectors.Append (V.Text, Blank_Line);
+        end loop;
+        Line_Vectors.Append (V.Text, L);
+      else
          Line_Vectors.Replace_Element (
             V.Text,
             Line_Number,
@@ -133,7 +147,13 @@ package body Text_Views is
    procedure Next_Page (V : in out Text_View) is
    begin
 
-      if V.Page_Number < Natural (V.Text.Length)/36 then
+      --
+      --  Allow Next_Page to advance to a completely blank page
+      --  beyond the end of the document so that the user can
+      --  increase the number of pages. But don't allow two blank
+      --  pages at the end.
+      --
+      if V.Page_Number <= Natural (V.Text.Length)/36 then
          V.Page_Number := V.Page_Number + 1;
       end if;
 
