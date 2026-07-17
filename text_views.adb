@@ -5,7 +5,7 @@ with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
--- use type IBM_3270_Orders.Intensity;
+--  use type IBM_3270_Orders.Intensity;
 with Input_Stream;
 
 package body Text_Views is
@@ -36,12 +36,12 @@ package body Text_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
       end loop;
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
-       
+
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
       Code_Page_500.Append (Bytes_Out, "More: ");
-      if V.Page_Number <= Natural (V.Text.Length)/36 then
+      if V.Page_Number <= Natural (V.Text.Length) / 36 then
          Code_Page_500.Append (Bytes_Out, "+");
       else
          Code_Page_500.Append (Bytes_Out, " ");
@@ -61,7 +61,7 @@ package body Text_Views is
          if J = 4 then
             IBM_3270_Orders.Insert_Cursor (Bytes_Out);
          end if;
-         Line_Number := 36*V.Page_Number + J - 4;
+         Line_Number := 36 * V.Page_Number + J - 4;
          if Line_Number <= V.Text.Last_Index then
             Code_Page_500.Append (
                Bytes_Out,
@@ -78,7 +78,7 @@ package body Text_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
       end loop;
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
- 
+
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       Code_Page_500.Append (Bytes_Out, " PF1=Help");
       Code_Page_500.Append (Bytes_Out, " PF3=Exit");
@@ -93,7 +93,7 @@ package body Text_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
       end loop;
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
-      
+
    end To_Physical;
 
    procedure From_Physical (
@@ -118,13 +118,13 @@ package body Text_Views is
       --  Ada.Text_IO.Put (Natural'Image (Y));
       --  Ada.Text_IO.Put (")");
       --  Ada.Text_IO.New_Line;
-      Line_Number := 36*V.Page_Number + Y - 4;
+      Line_Number := 36 * V.Page_Number + Y - 4;
       if Line_Number > V.Text.Last_Index then
-        Extra_Lines := Line_Number - V.Text.Last_Index;
-        for J in 1 .. Extra_Lines - 1 loop
-           Line_Vectors.Append (V.Text, Blank_Line);
-        end loop;
-        Line_Vectors.Append (V.Text, L);
+         Extra_Lines := Line_Number - V.Text.Last_Index;
+         for J in 1 .. Extra_Lines - 1 loop
+            Line_Vectors.Append (V.Text, Blank_Line);
+         end loop;
+         Line_Vectors.Append (V.Text, L);
       else
          Line_Vectors.Replace_Element (
             V.Text,
@@ -153,7 +153,7 @@ package body Text_Views is
       --  increase the number of pages. But don't allow two blank
       --  pages at the end.
       --
-      if V.Page_Number <= Natural (V.Text.Length)/36 then
+      if V.Page_Number <= Natural (V.Text.Length) / 36 then
          V.Page_Number := V.Page_Number + 1;
       end if;
 
