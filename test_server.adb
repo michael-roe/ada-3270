@@ -13,12 +13,11 @@ procedure Test_Server is
    Client_Address : Sock_Addr_Type;
    Server_Socket : Socket_Type;
    Terminal_Socket : aliased Socket_Type;
-   Stream_Data : Ada.Streams.Stream_Element_Array (1 .. 1024);
    Offset : Ada.Streams.Stream_Element_Offset;
-   Finished : Boolean;
    RX : aliased Buffer_Queues.Queue;
    TX : aliased Buffer_Queues.Queue;
    Worker : Telnet.Workers.Worker (RX'Access, TX'Access, True);
+   Stream_Data : Ada.Streams.Stream_Element_Array (1 .. 1024) := (others => 0);
 
    task type Responder (Client_Socket : access Socket_Type) is
       entry Connect;
@@ -40,6 +39,32 @@ procedure Test_Server is
 
    Responder_Task : Responder (Terminal_Socket'Access);
 
+   task type Receiver (Client_Socket : access Socket_Type) is
+      entry Connect;
+      entry Disconnect;
+   end Receiver;
+
+   task body Receiver is
+      Finished : Boolean;
+   begin
+      accept Connect;
+      Finished := False;
+      while not Finished loop
+         Receive_Socket (Client_Socket.all, Stream_Data, Offset);
+         if Offset = Stream_Data'First then
+            Finished := True;
+         else
+            for J in Stream_Data'First .. Offset loop
+               RX.Enqueue (Buffer.Byte (Stream_Data (J)));
+            end loop;
+         end if;
+      end loop;
+      Close_Socket (Client_Socket.all);
+      accept Disconnect;
+   end Receiver;
+
+   Receiver_Task : Receiver (Terminal_Socket'Access);
+
 begin
    Server_Address.Addr := Inet_Addr ("127.0.0.1");
    Server_Address.Port := 17002;
@@ -50,19 +75,10 @@ begin
    Listen_Socket (Server_Socket);
    Accept_Socket (Server_Socket, Terminal_Socket, Client_Address);
    Responder_Task.Connect;
-   Finished := False;
-   while not Finished loop
-      Receive_Socket (Terminal_Socket, Stream_Data, Offset);
-      if Offset = Stream_Data'First then
-         Finished := True;
-      else
-         for J in Stream_Data'First .. Offset loop
-            RX.Enqueue (Buffer.Byte (Stream_Data (J)));
-         end loop;
-      end if;
-   end loop;
-   Close_Socket (Terminal_Socket);
+   Receiver_Task.Connect;
+   Receiver_Task.Disconnect;
    abort Responder_Task;
    abort Worker;
+    
    
 end Test_Server; 
