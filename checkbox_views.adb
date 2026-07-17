@@ -44,7 +44,7 @@ package body Checkbox_Views is
       for J in 1 .. 4 loop
 
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2*J + 1);
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 1);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -68,7 +68,7 @@ package body Checkbox_Views is
 
          if V.Checkboxes (J) then
             Code_Page_500.Append (Bytes_Out, ">");
-         else 
+         else
             Code_Page_500.Append (Bytes_Out, "?");
          end if;
 
@@ -77,9 +77,9 @@ package body Checkbox_Views is
          Code_Page_500.Append (Bytes_Out, " Box ");
          Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (J));
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2*J + 2);
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 2);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      
+
       end loop;
 
    end To_Physical;
@@ -89,7 +89,7 @@ package body Checkbox_Views is
       Bytes_In : Byte_Vectors.Vector) is
       AID : Buffer.Byte;
    begin
-      -- Ought to check there is a first element
+      --  Ought to check there is a first element
       AID := Bytes_In.Element (Bytes_In.First_Index);
       if not IBM_3270_Orders.Is_Short_Read (AID) then
          for J in 1 .. 4 loop
@@ -107,7 +107,7 @@ package body Checkbox_Views is
       F : Natural;
    begin
       if (X = 4) and (Y >= 4) and (Y <= 10) and (Y mod 2 = 0) then
-         F := (Y - 4)/2 + 1;
+         F := (Y - 4) / 2 + 1;
          Ada.Text_IO.Put ("Updating field ");
          Ada.Text_IO.Put (Natural'Image (F));
          Ada.Text_IO.New_Line;
