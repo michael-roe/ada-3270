@@ -44,7 +44,7 @@ package body Input_Stream is
                   else
                      Views.Update_Field (V, X, Y, L);
                      Lines.Set_Bounded_Wide_String (L, "");
-                  end if; 
+                  end if;
                   if To_Do >= 3 then
                      IBM_3270_Orders.To_Buffer_Address (
                         Bytes_In.Element (Index + 1),
@@ -79,7 +79,7 @@ package body Input_Stream is
                      Ada.Strings.Right);
                   To_Do := To_Do - 1;
                   Index := Index + 1;
-               end case;
+            end case;
          end loop;
          if not First_Field then
             Lines.Trim (L, Ada.Strings.Right);
