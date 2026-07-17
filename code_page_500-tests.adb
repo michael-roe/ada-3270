@@ -7,21 +7,21 @@ use type Buffer.Byte;
 package body Code_Page_500.Tests is
 
    procedure Test_Round_Trip (T : in out Test_Cases.Test_Case'Class) is
-   
+
       V : Byte_Vectors.Vector;
-   
+
    begin
-   
+
       for J in Wide_Character'Val (16#40#) .. Wide_Character'Val (16#7F#) loop
          Code_Page_500.Append (V, "" & J);
       end loop;
-   
+
       for J in V.First_Index .. V.Last_Index loop
          Assert (To_Wide_Character (V.Element (J)) =
             Wide_Character'Val (J + 16#40#),
             "Round-trip conversion of character");
       end loop;
-   
+
    end Test_Round_Trip;
 
    procedure Test_Round_Trip2 (T : in out Test_Cases.Test_Case'Class) is
