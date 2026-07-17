@@ -16,7 +16,7 @@ package Shared_Buffers is
 
    TX : aliased Buffer_Queues.Queue;
 
-   Upstream_Socket : aliased Socket_Type;
+   Backend_Session_Socket : aliased Socket_Type;
 
    RX2 : aliased Buffer_Queues.Queue;
 
