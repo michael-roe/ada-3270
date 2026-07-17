@@ -37,7 +37,7 @@ package body Menu_Views is
 
       for J in 1 .. 4 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2*J + 1);
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 1);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -54,7 +54,7 @@ package body Menu_Views is
          Code_Page_310.Append (Bytes_Out, ']');
          Code_Page_500.Append (Bytes_Out, " Option");
          Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (J));
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 2*J + 2);
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 2 * J + 2);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
@@ -76,6 +76,5 @@ package body Menu_Views is
    begin
       null;
    end Update_Field;
-
 
 end Menu_Views;
