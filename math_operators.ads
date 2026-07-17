@@ -17,7 +17,7 @@ package Math_Operators is
    Intersection : constant Wide_Character := Wide_Character'Val (16#2229#);
 
    Union : constant Wide_Character := Wide_Character'Val (16#222A#);
-   
+
    Because : constant Wide_Character := Wide_Character'Val (16#2235#);
 
    Not_Equal : constant Wide_Character := Wide_Character'Val (16#2260#);

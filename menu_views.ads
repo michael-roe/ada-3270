@@ -13,7 +13,7 @@ package Menu_Views is
    procedure From_Physical (
       V : in out Menu_View;
       Bytes_In : Byte_Vectors.Vector);
-      
+
    procedure Update_Field (
       V : in out Menu_View;
       X : Natural;

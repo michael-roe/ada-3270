@@ -22,4 +22,4 @@ package Shared_Buffers is
 
    TX2 : aliased Buffer_Queues.Queue;
 
-end Shared_Buffers; 
+end Shared_Buffers;

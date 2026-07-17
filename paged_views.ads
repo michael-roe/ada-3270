@@ -8,12 +8,12 @@ package Paged_Views is
 
    procedure To_Physical (
       V : Paged_View;
-      Bytes_Out: in out Byte_Vectors.Vector) is abstract;
+      Bytes_Out : in out Byte_Vectors.Vector) is abstract;
 
    procedure From_Physical (
       V : in out Paged_View;
       Bytes_In : Byte_Vectors.Vector) is abstract;
-   
+
    procedure Update_Field (
       V : in out Paged_View;
       X : Natural;
@@ -21,7 +21,7 @@ package Paged_Views is
       L : Lines.Bounded_Wide_String) is abstract;
 
    procedure Prev_Page (V : in out Paged_View) is abstract;
-   
+
    procedure Next_Page (V : in out Paged_View) is abstract;
 
 end Paged_Views;

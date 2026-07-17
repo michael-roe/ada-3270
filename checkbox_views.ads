@@ -17,8 +17,8 @@ package Checkbox_Views is
    procedure From_Physical (
       V : in out Checkbox_View;
       Bytes_In : Byte_Vectors.Vector);
-      
-   procedure Update_Field ( 
+
+   procedure Update_Field (
       V : in out Checkbox_View;
       X : Natural;
       Y : Natural;

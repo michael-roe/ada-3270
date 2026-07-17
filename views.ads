@@ -7,12 +7,12 @@ package Views is
 
    procedure To_Physical (
       V : View;
-      Bytes_Out: in out Byte_Vectors.Vector) is abstract;
+      Bytes_Out : in out Byte_Vectors.Vector) is abstract;
 
    procedure From_Physical (
       V : in out View;
       Bytes_In : Byte_Vectors.Vector) is abstract;
-   
+
    procedure Update_Field (
       V : in out View;
       X : Natural;

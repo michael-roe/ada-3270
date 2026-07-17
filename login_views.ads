@@ -13,7 +13,7 @@ package Login_Views is
    procedure From_Physical (
       V : in out Login_View;
       Bytes_In : Byte_Vectors.Vector);
-      
+
    procedure Update_Field (
       V : in out Login_View;
       X : Natural;
