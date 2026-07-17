@@ -101,11 +101,11 @@ package body Buffer_Tests is
       Clear (Buff);
 
       Success := Enqueue_Tail (Buff, Sent_A);
-      Assert(Success,
+      Assert (Success,
          "Enqueue of first byte should succeed");
 
       Success := Enqueue_Tail (Buff, Sent_B);
-      Assert(Success,
+      Assert (Success,
          "Enqueue of second byte should succeed");
 
       for J in 1 .. Buffer.Buffer_Size * 2 loop
@@ -126,20 +126,20 @@ package body Buffer_Tests is
          Assert (Received_Byte = Sent_B,
            "Received byte should equal sent byte");
 
-        Success := Enqueue_Tail (Buff, Sent_A);
+         Success := Enqueue_Tail (Buff, Sent_A);
          Assert (Success,
            "Enqueue in loop should succeed");
 
-        Success := Dequeue_Head (Buff, Received_Byte);
-        Assert (Success,
-           "Dequeue in loop should succeed");
-        Assert (Received_Byte = Sent_C,
-           "Received byte should equal sent byte");
-
-        Success := Enqueue_Tail (Buff, Sent_B);
+         Success := Dequeue_Head (Buff, Received_Byte);
          Assert (Success,
-           "Enqueue in loop should succeed");
- 
+            "Dequeue in loop should succeed");
+         Assert (Received_Byte = Sent_C,
+            "Received byte should equal sent byte");
+
+         Success := Enqueue_Tail (Buff, Sent_B);
+         Assert (Success,
+            "Enqueue in loop should succeed");
+
       end loop;
 
       Success := Dequeue_Head (Buff, Received_Byte);
@@ -154,7 +154,7 @@ package body Buffer_Tests is
       Assert (Received_Byte = Sent_B,
          "Received byte should equal sent byte");
 
-      Assert (Is_Empty(Buff),
+      Assert (Is_Empty (Buff),
          "Buffer should be empty at end of test");
 
       Assert (Current_Use (Buff) = 0,
