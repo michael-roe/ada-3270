@@ -12,16 +12,18 @@ procedure Test_Server is
    Server_Address : Sock_Addr_Type;
    Client_Address : Sock_Addr_Type;
    Server_Socket : Socket_Type;
-   Client_Socket : Socket_Type;
+   Terminal_Socket : aliased Socket_Type;
    Stream_Data : Ada.Streams.Stream_Element_Array (1 .. 1024);
    Offset : Ada.Streams.Stream_Element_Offset;
    Finished : Boolean;
    RX : aliased Buffer_Queues.Queue;
    TX : aliased Buffer_Queues.Queue;
    Worker : Telnet.Workers.Worker (RX'Access, TX'Access, True);
-   task Responder is
+
+   task type Responder (Client_Socket : access Socket_Type) is
       entry Connect;
    end Responder;
+
    task body Responder is
       Sent_Byte : Buffer.Byte;
       TX_Offset : Ada.Streams.Stream_Element_Offset;
@@ -32,9 +34,12 @@ procedure Test_Server is
          TX.Dequeue (Sent_Byte);
          Response (1) := Ada.Streams.Stream_Element (Sent_Byte);
          TX_Offset := 1;
-         Send_Socket (Client_Socket, Response (1 .. 1), TX_Offset);
+         Send_Socket (Client_Socket.all, Response (1 .. 1), TX_Offset);
       end loop;
    end Responder;
+
+   Responder_Task : Responder (Terminal_Socket'Access);
+
 begin
    Server_Address.Addr := Inet_Addr ("127.0.0.1");
    Server_Address.Port := 17002;
@@ -43,11 +48,11 @@ begin
       (Reuse_Address, True));
    Bind_Socket (Server_Socket, Server_Address);
    Listen_Socket (Server_Socket);
-   Accept_Socket (Server_Socket, Client_Socket, Client_Address);
-   Responder.Connect;
+   Accept_Socket (Server_Socket, Terminal_Socket, Client_Address);
+   Responder_Task.Connect;
    Finished := False;
    while not Finished loop
-      Receive_Socket (Client_Socket, Stream_Data, Offset);
+      Receive_Socket (Terminal_Socket, Stream_Data, Offset);
       if Offset = Stream_Data'First then
          Finished := True;
       else
@@ -56,8 +61,8 @@ begin
          end loop;
       end if;
    end loop;
-   Close_Socket (Client_Socket);
-   abort Responder;
+   Close_Socket (Terminal_Socket);
+   abort Responder_Task;
    abort Worker;
    
 end Test_Server; 
