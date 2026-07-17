@@ -29,7 +29,7 @@ package body IBM_3270_Orders is
       --  to check against the screen size of the current terminal.
       --
       if X >= 0 and X < 80 and Y >= 0 and Y < 44 then
-         Addr := Interfaces.Unsigned_16 (X + 80*Y);
+         Addr := Interfaces.Unsigned_16 (X + 80 * Y);
          V.Append (IBM_3270.Set_Buffer_Address);
          V.Append (Table (Unsigned_6 (Addr / 64)));
          V.Append (Table (Unsigned_6 (Addr
@@ -56,9 +56,11 @@ package body IBM_3270_Orders is
       if Protect then
          Attr := Attr + 16#20#;
       end if;
-      Attr := Attr + 4*Intensity'Pos (Intense);
+      Attr := Attr + 4 * Intensity'Pos (Intense);
       V.Append (Attr);
    end Start_Field;
+
+   function Unpack (B : Buffer.Byte) return Natural;
 
    function Unpack (B : Buffer.Byte) return Natural is
    begin
@@ -80,7 +82,7 @@ package body IBM_3270_Orders is
       Y : out Natural) is
       A : Natural;
    begin
-      A := 64*Unpack (C1) + Unpack (C2);
+      A := 64 * Unpack (C1) + Unpack (C2);
       X := A mod 80;
       Y := A / 80;
    end To_Buffer_Address;
