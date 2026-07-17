@@ -18,6 +18,8 @@ procedure Test_Server is
    Worker : Telnet.Workers.Worker (
       Shared_Buffers.RX'Access,
       Shared_Buffers.TX'Access,
+      Shared_Buffers.RX2'Access,
+      Shared_Buffers.TX2'Access,
       True);
 
    task type Transmitter (
