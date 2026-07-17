@@ -11,8 +11,10 @@ with Shared_Buffers;
 
 procedure Test_Server is
    Server_Address : Sock_Addr_Type;
+   Backend_Address : Sock_Addr_Type;
    Client_Address : Sock_Addr_Type;
    Server_Socket : Socket_Type;
+   Backend_Socket : Socket_Type;
    Offset : Ada.Streams.Stream_Element_Offset;
 
    Worker : Telnet.Workers.Worker (
@@ -76,12 +78,21 @@ procedure Test_Server is
       Shared_Buffers.RX'Access);
 
 begin
+
    Server_Address.Addr := Inet_Addr ("127.0.0.1");
    Server_Address.Port := 17002;
    Create_Socket (Server_Socket);
    Set_Socket_Option (Server_Socket, Socket_Level, 
       (Reuse_Address, True));
    Bind_Socket (Server_Socket, Server_Address);
+
+   Backend_Address.Addr := Inet_Addr ("127.0.0.1");
+   Backend_Address.Port := 17010;
+   Create_Socket (Backend_Socket);
+   Set_Socket_Option (Backend_Socket, Socket_Level,
+      (Reuse_Address, True));
+   Bind_Socket (Backend_Socket, Server_Address);
+
    Listen_Socket (Server_Socket);
    Accept_Socket (Server_Socket,
       Shared_Buffers.Terminal_Socket, Client_Address);
@@ -92,4 +103,4 @@ begin
    abort Worker;
    abort Receiver_Task;
     
-end Test_Server; 
+end Test_Server;
