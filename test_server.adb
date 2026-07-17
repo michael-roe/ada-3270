@@ -15,7 +15,6 @@ procedure Test_Server is
    Client_Address : Sock_Addr_Type;
    Server_Socket : Socket_Type;
    Backend_Socket : Socket_Type;
-   Offset : Ada.Streams.Stream_Element_Offset;
 
    Worker : Telnet.Workers.Worker (
       Shared_Buffers.RX'Access,
@@ -56,16 +55,17 @@ procedure Test_Server is
 
    task body Receiver is
       Finished : Boolean;
+      RX_Offset : Ada.Streams.Stream_Element_Offset;
       Stream_Data : Ada.Streams.Stream_Element_Array (1 .. 1024) := (others => 0);
    begin
       accept Connect;
       Finished := False;
       while not Finished loop
-         Receive_Socket (Client_Socket.all, Stream_Data, Offset);
-         if Offset = Stream_Data'First then
+         Receive_Socket (Client_Socket.all, Stream_Data, RX_Offset);
+         if RX_Offset = Stream_Data'First then
             Finished := True;
          else
-            for J in Stream_Data'First .. Offset loop
+            for J in Stream_Data'First .. RX_Offset loop
                RX.Enqueue (Buffer.Byte (Stream_Data (J)));
             end loop;
          end if;
