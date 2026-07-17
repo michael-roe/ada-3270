@@ -8,4 +8,3 @@ procedure Buffer_Runner is
 begin
    Run (Reporter);
 end Buffer_Runner;
-
