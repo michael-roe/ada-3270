@@ -20,13 +20,13 @@ procedure Test_Server is
       Shared_Buffers.TX'Access,
       True);
 
-   task type Responder (
+   task type Transmitter (
       Client_Socket : access Socket_Type;
       TX : access Buffer_Queues.Queue) is
       entry Connect;
-   end Responder;
+   end Transmitter;
 
-   task body Responder is
+   task body Transmitter is
       Sent_Byte : Buffer.Byte;
       TX_Offset : Ada.Streams.Stream_Element_Offset;
       Response : Ada.Streams.Stream_Element_Array (1 .. 2);
@@ -38,9 +38,9 @@ procedure Test_Server is
          TX_Offset := 1;
          Send_Socket (Client_Socket.all, Response (1 .. 1), TX_Offset);
       end loop;
-   end Responder;
+   end Transmitter;
 
-   Transmitter_Task : Responder (
+   Transmitter_Task : Transmitter (
       Shared_Buffers.Terminal_Socket'Access,
       Shared_Buffers.TX'Access);
 
