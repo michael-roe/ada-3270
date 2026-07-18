@@ -7,10 +7,32 @@ package body Code_Page_310 is
       To : Buffer.Byte;
    end record;
 
-   subtype Table_Index is Integer range 0 .. 57;
+   subtype Table_Index is Integer range 0 .. 79;
 
    Table : constant array (Table_Index) of Mapping :=
    (
+(Wide_Character'Val (16#0020#), Buffer.Byte (16#40#)),
+(Wide_Character'Val (16#0021#), Buffer.Byte (16#db#)),
+(Wide_Character'Val (16#002b#), Buffer.Byte (16#c2#)),
+(Wide_Character'Val (16#002d#), Buffer.Byte (16#d2#)),
+(Wide_Character'Val (16#005b#), Buffer.Byte (16#ad#)),
+(Wide_Character'Val (16#005c#), Buffer.Byte (16#b7#)),
+(Wide_Character'Val (16#005d#), Buffer.Byte (16#bd#)),
+(Wide_Character'Val (16#007b#), Buffer.Byte (16#c0#)),
+(Wide_Character'Val (16#007d#), Buffer.Byte (16#d0#)),
+(Wide_Character'Val (16#00a4#), Buffer.Byte (16#9c#)),
+(Wide_Character'Val (16#00a7#), Buffer.Byte (16#c8#)),
+(Wide_Character'Val (16#00a8#), Buffer.Byte (16#72#)),
+(Wide_Character'Val (16#00af#), Buffer.Byte (16#a0#)),
+(Wide_Character'Val (16#00b0#), Buffer.Byte (16#a1#)),
+(Wide_Character'Val (16#00b1#), Buffer.Byte (16#9e#)),
+(Wide_Character'Val (16#00b2#), Buffer.Byte (16#f2#)),
+(Wide_Character'Val (16#00b3#), Buffer.Byte (16#f3#)),
+(Wide_Character'Val (16#00b6#), Buffer.Byte (16#d8#)),
+(Wide_Character'Val (16#00b9#), Buffer.Byte (16#f1#)),
+(Wide_Character'Val (16#00d7#), Buffer.Byte (16#b6#)),
+(Wide_Character'Val (16#00f7#), Buffer.Byte (16#b8#)),
+(Wide_Character'Val (16#2022#), Buffer.Byte (16#a3#)),
 (Wide_Character'Val (16#2070#), Buffer.Byte (16#f0#)),
 (Wide_Character'Val (16#2074#), Buffer.Byte (16#f4#)),
 (Wide_Character'Val (16#2075#), Buffer.Byte (16#f5#)),
@@ -34,7 +56,7 @@ package body Code_Page_310 is
 (Wide_Character'Val (16#2207#), Buffer.Byte (16#ba#)),
 (Wide_Character'Val (16#220e#), Buffer.Byte (16#c3#)),
 (Wide_Character'Val (16#2218#), Buffer.Byte (16#af#)),
-(Wide_Character'Val (16#2022#), Buffer.Byte (16#a3#)),
+(Wide_Character'Val (16#2223#), Buffer.Byte (16#bf#)),
 (Wide_Character'Val (16#2227#), Buffer.Byte (16#71#)),
 (Wide_Character'Val (16#2228#), Buffer.Byte (16#78#)),
 (Wide_Character'Val (16#2229#), Buffer.Byte (16#aa#)),
@@ -329,7 +351,6 @@ Wide_Character'Val (16#235f#),
 Wide_Character'Val (16#234e#),
 Wide_Character'Val (16#0000#));
 
-
    procedure Append (V : in out Byte_Vectors.Vector; S : Wide_Character) is
    begin
       for J in Table_Index loop
@@ -342,7 +363,7 @@ Wide_Character'Val (16#0000#));
 
    function To_Wide_Character (B : Buffer.Byte) return Wide_Character is
    begin
-      return ITable (B); 
-   end;
+      return ITable (B);
+   end To_Wide_Character;
 
 end Code_Page_310;
