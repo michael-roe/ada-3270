@@ -3,6 +3,7 @@ with Buffer_Queues_Tests;
 with Telnet_Options_Tests;
 with Code_Page_500.Tests;
 with Code_Page_310.Tests;
+with Line_Vectors_Tests;
 
 package body Buffer_Suite is
 
@@ -17,6 +18,7 @@ package body Buffer_Suite is
    Test_3 : aliased Telnet_Options_Tests.Telnet_Options_Test;
    Test_4 : aliased Code_Page_500.Tests.Code_Page_Test;
    Test_5 : aliased Code_Page_310.Tests.Code_Page_Test;
+   Test_6 : aliased Line_Vectors_Tests.Line_Vectors_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -25,6 +27,7 @@ package body Buffer_Suite is
       Add_Test (Result'Access, Test_3'Access);
       Add_Test (Result'Access, Test_4'Access);
       Add_Test (Result'Access, Test_5'Access);
+      Add_Test (Result'Access, Test_6'Access);
       return Result'Access;
    end Suite;
 
