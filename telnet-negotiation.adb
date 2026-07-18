@@ -42,7 +42,7 @@ package body Telnet.Negotiation is
       (Offer,   Telnet.Options.Supress_Go_Ahead),
       (Done, 0)
    );
- 
+
    Wanted_Index : Wanted_Index_Type := 1;
 
    function Find (Option : Buffer.Byte) return Option_Id;
@@ -323,8 +323,8 @@ package body Telnet.Negotiation is
       end case;
    end Disable;
 
-   procedure Next_Option
-      (Direction : out Request_Offer; 
+   procedure Next_Option (
+       Direction : out Request_Offer;
        Option    : out Buffer.Byte) is
       Found : Boolean;
    begin
@@ -336,12 +336,14 @@ package body Telnet.Negotiation is
                Found := True;
             when Offer =>
                if States (Find (Wanted_Options
-                  (Wanted_Index).Option)).Us /= Yes then
+                  (Wanted_Index).Option)).Us /= Yes
+               then
                   Found := True;
                end if;
             when Request =>
                if States (Find (Wanted_Options
-                  (Wanted_Index).Option)).Them /= Yes then
+                  (Wanted_Index).Option)).Them /= Yes
+               then
                   Found := True;
                end if;
          end case;
@@ -349,7 +351,7 @@ package body Telnet.Negotiation is
             Wanted_Index := Wanted_Index + 1;
          end if;
       end loop;
-      
+
       Direction := Wanted_Options (Wanted_Index).Direction;
       Option := Wanted_Options (Wanted_Index).Option;
 
