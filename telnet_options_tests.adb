@@ -191,7 +191,7 @@ package body Telnet_Options_Tests is
 
       --  We haven't negotiated the option, so it will still be the
       --  next option when we ask again.
-    
+
       Telnet.Negotiation.Next_Option (Direction, Option);
       Assert (Direction = Telnet.Negotiation.Request,
         "Expected option negotiation to be a request");
