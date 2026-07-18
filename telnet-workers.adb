@@ -122,29 +122,17 @@ package body Telnet.Workers is
       Terminal_Sent : Boolean := False;
       Document : Split_Views.Split_View;
       L : Lines.Bounded_Wide_String;
-      JSON_Stream : access Ada.Streams.Root_Stream_Type'Class;
-      F1 : Ada.Text_IO.File_Type;
    begin
-
-      TX2.Enqueue (42);
-
-      Ada.Text_IO.Create (
-         F1,
-         Ada.Text_IO.Out_File,
-         "json.txt",
-         "WCEM=8");
-
-      JSON_Stream := Ada.Text_IO.Text_Streams.Stream (F1);
 
       for J in 1 .. 50 loop
          Lines.Set_Bounded_Wide_String (L, "Line" & Natural'Wide_Image (J));
          Line_Vectors.Append (Document.History, L);
       end loop;
 
-      -- Document.Checkboxes (1) := True;
-      -- Document.Checkboxes (2) := True;
-      -- Document.Checkboxes (3) := False;
-      -- Document.Checkboxes (4) := False;
+      --  Document.Checkboxes (1) := True;
+      --  Document.Checkboxes (2) := True;
+      --  Document.Checkboxes (3) := False;
+      --  Document.Checkboxes (4) := False;
 
       for J in 1 .. 30 loop -- only 8 options to send
 
@@ -201,7 +189,7 @@ package body Telnet.Workers is
 
                   if Bytes_Out.Length > 0 then
                      for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
-                        Tx.Enqueue (Bytes_Out.Element (J));
+                        TX.Enqueue (Bytes_Out.Element (J));
                      end loop;
                   end if;
                   TX.Enqueue (Telnet.Protocol.IAC);
@@ -209,133 +197,134 @@ package body Telnet.Workers is
                end if;
          end case;
 
-      Got_Reply := False;
-      while not Got_Reply loop
-         RX.Dequeue (C);
-         -- Put ("[");
-         -- Put (Buffer.Byte'Image (C));
-         -- Put ("]");
-         case S is
-            when Data =>
-               if C = Telnet.Protocol.IAC then
-                  Put ("[IAC]");
-                  S := Data_IAC;
-               else
-                  Bytes_In.Append (C);
-                  -- Put ("[");
-                  -- Ada.Text_IO.Put (Character'Val (C));
-                  -- Put ("]");
-               end if;  
-            when Data_IAC =>
-               case C is
-                  when Telnet.Protocol.WILL =>
-                     Put ("[WILL]");
-                     S := Will;
-                  when Telnet.Protocol.WONT =>
-                     Put ("[WONT]");
-                     S := Wont;
-                  when Telnet.Protocol.DOIT =>
-                     Put ("[DO]");
-                     S := Do_It;
-                  when Telnet.Protocol.DONT =>
-                     Put ("[DONT]");
-                     S := Dont;
-                  when Telnet.Protocol.SB =>
-                     Put ("[SB]");
-                     S := Opt;
-                  when Telnet.Protocol.BRK =>
-                     Put ("[BREAK]");
-                     S := Data;
-                     Got_Reply := True;
-                  when Telnet.Protocol.EOR =>
-                     Put ("[EOR]");
-                     Document.From_Physical (Bytes_In);
-                     if Bytes_In.Element (Bytes_In.First_Index) =
-                        IBM_3270.AID_PF7 then
-                        Document.Prev_Page;
-                     elsif Bytes_In.Element (Bytes_In.First_Index) =
-                        IBM_3270.AID_PF8 then
-                        Document.Next_Page;
-                     end if;
-                     Rx_Record (Bytes_In);
-                     Split_Views.To_JSON (Document,
-                        TX2);
-                     Ada.Text_IO.Flush (F1);
-                     Bytes_In.Clear;
-                     S := Data;
-                     Got_Reply := True;
-                  when Telnet.Protocol.IAC =>
-                     Bytes_In.Append (C);
+         Got_Reply := False;
+         while not Got_Reply loop
+            RX.Dequeue (C);
+            --  Put ("[");
+            --  Put (Buffer.Byte'Image (C));
+            --  Put ("]");
+            case S is
+               when Data =>
+                  if C = Telnet.Protocol.IAC then
                      Put ("[IAC]");
-                     s := Data;
-                  when others =>
-                     S := Data;
-               end case;
-            when Will =>
-               Put ("[");
-               Byte_Text_IO.Put (C);
-               Put ("]");
-               Telnet.Negotiation.Will (C, DD);
-               if Telnet.Negotiation.Is_Peer_Enabled (C) then
-                  Put_Line ("[Enabled]");
-               end if;
-               S := Data;
-               Got_Reply := True;
-            when Do_It =>
-               Put ("[");
-               Byte_Text_IO.Put (C);
-               Put ("]");
-               Telnet.Negotiation.Do_It (C, WW);
-               if Telnet.Negotiation.Is_Enabled (C) then
-                  Put ("[Enabled]");
-               end if;
-               S := Data;
-               Got_Reply := True;
-            when Wont =>
-               Telnet.Negotiation.Wont (C, DD);
-               S := Data;
-               Got_Reply := True;
-            when Dont =>
-               Telnet.Negotiation.Dont (C, WW);
-               S := Data;
-               Got_Reply := True;
-            when Opt =>
-               if C = Telnet.Protocol.IAC then
-                  S := Opt_IAC;
-               else
-                  Option_In.Append (C);
-                  if C < 32 then
-                     Put ("[");
-                     Byte_Text_IO.Put (C);
-                     Put ("]");
+                     S := Data_IAC;
                   else
-                     Put ("[");
-                     Put (Character'Val (C));
-                     Put ("]");
+                     Bytes_In.Append (C);
+                     --  Put ("[");
+                     --  Ada.Text_IO.Put (Character'Val (C));
+                     --  Put ("]");
                   end if;
-               end if;
-            when Opt_IAC =>
-               if C = Telnet.Protocol.IAC then
-                  Option_In.Append (C);
+               when Data_IAC =>
+                  case C is
+                     when Telnet.Protocol.WILL =>
+                        Put ("[WILL]");
+                        S := Will;
+                     when Telnet.Protocol.WONT =>
+                        Put ("[WONT]");
+                        S := Wont;
+                     when Telnet.Protocol.DOIT =>
+                        Put ("[DO]");
+                        S := Do_It;
+                     when Telnet.Protocol.DONT =>
+                        Put ("[DONT]");
+                        S := Dont;
+                     when Telnet.Protocol.SB =>
+                        Put ("[SB]");
+                        S := Opt;
+                     when Telnet.Protocol.BRK =>
+                        Put ("[BREAK]");
+                        S := Data;
+                        Got_Reply := True;
+                     when Telnet.Protocol.EOR =>
+                        Put ("[EOR]");
+                        Document.From_Physical (Bytes_In);
+                        if Bytes_In.Element (Bytes_In.First_Index) =
+                           IBM_3270.AID_PF7
+                        then
+                           Document.Prev_Page;
+                        elsif Bytes_In.Element (Bytes_In.First_Index) =
+                           IBM_3270.AID_PF8
+                        then
+                           Document.Next_Page;
+                        end if;
+                        Rx_Record (Bytes_In);
+                        Split_Views.To_JSON (Document,
+                           TX2);
+                        Bytes_In.Clear;
+                        S := Data;
+                        Got_Reply := True;
+                     when Telnet.Protocol.IAC =>
+                        Bytes_In.Append (C);
+                        Put ("[IAC]");
+                        S := Data;
+                     when others =>
+                        S := Data;
+                  end case;
+               when Will =>
                   Put ("[");
                   Byte_Text_IO.Put (C);
                   Put ("]");
-                  S := Opt;
-               elsif C = Telnet.Protocol.SE then
-                  Put ("[SE]");
-                  Put ("[Length = ");
-                  Put (Option_In.Length'Image);
-                  Put ("]");
-                  Option_In.Clear;
+                  Telnet.Negotiation.Will (C, DD);
+                  if Telnet.Negotiation.Is_Peer_Enabled (C) then
+                     Put_Line ("[Enabled]");
+                  end if;
                   S := Data;
                   Got_Reply := True;
-               else
-                  S := Opt;
-               end if;
-            when others =>
-               null;
-         end case;
-      end loop;
+               when Do_It =>
+                  Put ("[");
+                  Byte_Text_IO.Put (C);
+                  Put ("]");
+                  Telnet.Negotiation.Do_It (C, WW);
+                  if Telnet.Negotiation.Is_Enabled (C) then
+                     Put ("[Enabled]");
+                  end if;
+                  S := Data;
+                  Got_Reply := True;
+               when Wont =>
+                  Telnet.Negotiation.Wont (C, DD);
+                  S := Data;
+                  Got_Reply := True;
+               when Dont =>
+                  Telnet.Negotiation.Dont (C, WW);
+                  S := Data;
+                  Got_Reply := True;
+               when Opt =>
+                  if C = Telnet.Protocol.IAC then
+                     S := Opt_IAC;
+                  else
+                     Option_In.Append (C);
+                     if C < 32 then
+                        Put ("[");
+                        Byte_Text_IO.Put (C);
+                        Put ("]");
+                     else
+                        Put ("[");
+                        Put (Character'Val (C));
+                        Put ("]");
+                     end if;
+                  end if;
+               when Opt_IAC =>
+                  if C = Telnet.Protocol.IAC then
+                     Option_In.Append (C);
+                     Put ("[");
+                     Byte_Text_IO.Put (C);
+                     Put ("]");
+                     S := Opt;
+                  elsif C = Telnet.Protocol.SE then
+                     Put ("[SE]");
+                     Put ("[Length = ");
+                     Put (Option_In.Length'Image);
+                     Put ("]");
+                     Option_In.Clear;
+                     S := Data;
+                     Got_Reply := True;
+                  else
+                     S := Opt;
+                  end if;
+               when others =>
+                  null;
+            end case;
+         end loop;
       end loop;
       Put_Line ("Worker done");
    end Worker;
