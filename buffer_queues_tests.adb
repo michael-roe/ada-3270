@@ -139,12 +139,12 @@ package body Buffer_Queues_Tests is
             else
                Count_Server := Count_Server + 1;
                if Count_Server = 2 then
-                 RX.Enqueue (1);
+                  RX.Enqueue (1);
                end if;
             end if;
          end loop;
          RX.Enqueue (0);
-      end Server; 
+      end Server;
    begin
       null;
       TX.Clear;
