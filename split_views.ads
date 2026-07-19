@@ -37,4 +37,6 @@ package Split_Views is
       V   : Split_View;
       TX2 : access Buffer_Queues.Queue);
 
+   procedure Edit_To_History (V : in out Split_View);
+
 end Split_Views;

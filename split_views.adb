@@ -220,4 +220,27 @@ package body Split_Views is
 
    end To_JSON;
 
+   procedure Edit_To_History (V : in out Split_View) is
+      Last_Line : Natural;
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      Last_Line := V.Edit'Last;
+
+      while Last_Line > V.Edit'First and
+         Lines.Length (V.Edit (Last_Line)) = 0
+      loop
+         Last_Line := Last_Line - 1;
+      end loop;
+
+      for J in V.Edit'First .. Last_Line loop
+         Line_Vectors.Append (V.History, V.Edit (J));
+      end loop;
+
+      for J in V.Edit'Range loop
+         Lines.Set_Bounded_Wide_String (V.Edit (J), "");
+      end loop;
+
+   end Edit_To_History;
+
 end Split_Views;
