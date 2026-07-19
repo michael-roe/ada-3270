@@ -41,6 +41,27 @@ package body IBM_3270_Orders.Tests is
 
    end Test_Insert_Cursor;
 
+   procedure Test_Is_Short_Read (
+      T : in out Test_Cases.Test_Case'Class) is
+   begin
+
+      Assert (Is_Short_Read (IBM_3270.AID_PA1),
+         "PA1 is a short read");
+
+      Assert (Is_Short_Read (IBM_3270.AID_PA2),
+         "PA2 is a short read");
+
+      Assert (Is_Short_Read (IBM_3270.AID_PA3),
+         "PA3 is a short read");
+
+      Assert (Is_Short_Read (IBM_3270.AID_Clear),
+         "Clear is a short read");
+
+      Assert (not Is_Short_Read (IBM_3270.AID_Enter),
+         "Enter is not a short read");
+
+   end Test_Is_Short_Read;
+
    procedure Register_Tests (T : in out IBM_3270_Orders_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -50,6 +71,9 @@ package body IBM_3270_Orders.Tests is
 
       Register_Routine (T, Test_Insert_Cursor'Access,
          "Test_Insert_Cursor");
+
+      Register_Routine (T, Test_Is_Short_Read'Access,
+         "Test_Is_Short_Read");
 
    end Register_Tests;
 

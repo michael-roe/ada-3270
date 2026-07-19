@@ -7,7 +7,21 @@ package IBM_3270_Orders.Tests is
 
    procedure Test_Set_Buffer_Address (T : in out Test_Cases.Test_Case'Class);
 
+   --
+   --  Should also test for X and Y out of range
+   --
+
    procedure Test_Insert_Cursor (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   --  Should also test Start_Field
+   --
+
+   --
+   --  Should also test To_Buffer_Address with bad character
+   --
+
+   procedure Test_Is_Short_Read (T : in out Test_Cases.Test_Case'Class);
 
    procedure Register_Tests (T : in out IBM_3270_Orders_Test);
 
