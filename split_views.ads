@@ -39,4 +39,8 @@ package Split_Views is
 
    procedure Edit_To_History (V : in out Split_View);
 
+   procedure Put_Character (
+      V : in out Split_View;
+      C : Wide_Character);
+
 end Split_Views;

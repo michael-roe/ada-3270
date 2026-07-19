@@ -243,4 +243,25 @@ package body Split_Views is
 
    end Edit_To_History;
 
+   procedure Put_Character (
+      V : in out Split_View;
+      C : in Wide_Character) is
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      if Lines.Length (V.History.Element (V.History.Last_Index)) > 75 then
+         Lines.Set_Bounded_Wide_String (L, "");
+         Line_Vectors.Append (V.History, L);
+      end if;
+
+      --
+      --  This is inefficient. There must be a better way to do it.
+      --
+
+      L := V.History.Element (V.History.Last_Index);
+      Lines.Append (L, "" & C);
+      Line_Vectors.Replace_Element (V.History, V.History.Last_Index, L);
+
+   end Put_Character;
+
 end Split_Views;
