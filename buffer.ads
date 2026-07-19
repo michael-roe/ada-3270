@@ -86,14 +86,14 @@ private
    subtype Buffer_Length is Ada.Containers.Count_Type
       range 0 .. Buffer_Size;
 
-   type InternalBuffer is array (Buffer_Index) of Byte;
+   type Internal_Buffer is array (Buffer_Index) of Byte;
 
    type T is record
       Length : Buffer_Length := 0;
       Head   : Buffer_Index;
       Tail   : Buffer_Index;
       Peak   : Buffer_Length;
-      Data   : InternalBuffer;
+      Data   : Internal_Buffer;
    end record;
 
 end Buffer;
