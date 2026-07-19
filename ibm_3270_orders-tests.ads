@@ -17,9 +17,7 @@ package IBM_3270_Orders.Tests is
    --  Should also test Start_Field
    --
 
-   --
-   --  Should also test To_Buffer_Address with bad character
-   --
+   procedure Test_To_Buffer_Address_Invalid (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Is_Short_Read (T : in out Test_Cases.Test_Case'Class);
 

@@ -41,6 +41,22 @@ package body IBM_3270_Orders.Tests is
 
    end Test_Insert_Cursor;
 
+   procedure Test_To_Buffer_Address_Invalid (
+      T : in out Test_Cases.Test_Case'Class) is
+      X : Natural;
+      Y : Natural;
+      C1 : Buffer.Byte;
+      C2 : Buffer.Byte;
+   begin
+
+      C1 := 16#A1#;
+      C2 := 16#A1#;
+      To_Buffer_Address (C1, C2, X, Y);
+      Assert (X = 0, "Invalid character should decode as 0");
+      Assert (Y = 0, "Invalid character should decode as 0");
+
+   end Test_To_Buffer_Address_Invalid;   
+
    procedure Test_Is_Short_Read (
       T : in out Test_Cases.Test_Case'Class) is
    begin
@@ -71,6 +87,9 @@ package body IBM_3270_Orders.Tests is
 
       Register_Routine (T, Test_Insert_Cursor'Access,
          "Test_Insert_Cursor");
+
+      Register_Routine (T, Test_To_Buffer_Address_Invalid'Access,
+         "Test_To_Buffer_Address_Invalid");
 
       Register_Routine (T, Test_Is_Short_Read'Access,
          "Test_Is_Short_Read");
