@@ -192,7 +192,20 @@ package body Split_Views is
                   Lines.To_Wide_String (V.Edit (J)));
          begin
             for J in Encoded'Range loop
-               TX2.Enqueue (Character'Pos (Encoded (J)));
+               --
+               --  Escaping quotes on the UTF-8 encoded version of the string
+               --  is a bit inelegant, but works due to property of the
+               --  UTF-8 encoding.
+               --
+               if Encoded (J) = '\' then
+                  TX2.Enqueue (Character'Pos ('\'));
+                  TX2.Enqueue (Character'Pos ('\'));
+               elsif Encoded (J) = '"' then
+                  TX2.Enqueue (Character'Pos ('\'));
+                  TX2.Enqueue (Character'Pos ('q'));
+               else
+                  TX2.Enqueue (Character'Pos (Encoded (J)));
+               end if;
             end loop;
          end;
       end loop;
