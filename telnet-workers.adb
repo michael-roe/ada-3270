@@ -124,6 +124,7 @@ package body Telnet.Workers is
       L : Lines.Bounded_Wide_String;
       Backend_Byte : Buffer.Byte;
       After_Backslash : Boolean;
+      Hex_Digits : String := "16#0000#";
    begin
 
       for J in 1 .. 50 loop
@@ -265,8 +266,26 @@ package body Telnet.Workers is
                               if After_Backslash then
                                  if Backend_Byte = Character'Pos ('\') then
                                     Document.Put_Character ('\');
-                                  elsif Backend_Byte = Character'Pos ('q') then
+                                  elsif Backend_Byte = Character'Pos ('"') then
                                      Document.Put_Character ('"');
+                                  elsif Backend_Byte = Character'Pos ('u') then
+                                     Ada.Text_IO.Put_Line ("Hex string");
+                                     RX2.Dequeue (Backend_Byte);
+                                     Hex_Digits (4) :=
+                                        Character'Val (Backend_Byte);
+                                     RX2.Dequeue (Backend_Byte);
+                                     Hex_Digits (5) :=
+                                        Character'Val (Backend_Byte);
+                                     RX2.Dequeue (Backend_Byte);
+                                     Hex_Digits (6) :=
+                                        Character'Val (Backend_Byte);
+                                     RX2.Dequeue (Backend_Byte);
+                                     Hex_Digits (7) :=
+                                        Character'Val (Backend_Byte);
+                                     Ada.Text_IO.Put_Line (Hex_Digits);
+                                     Document.Put_Character (
+                                        Wide_Character'Val (
+                                           Integer'Value (Hex_Digits)));
                                   end if;
                                   After_Backslash := False;
                               else
@@ -274,9 +293,14 @@ package body Telnet.Workers is
                                     null;
                                  elsif Backend_Byte = Character'Pos ('\') then
                                     After_Backslash := True;
-                                 else
+                                 elsif Backend_Byte < 128 then
                                     Document.Put_Character (
                                        Wide_Character'Val (Backend_Byte));
+                                 else
+                                    --
+                                    --  Multi-byte UTF-8 character
+                                    --
+                                    Document.Put_Character ('?');
                                  end if;
                               end if;
                            end loop;
