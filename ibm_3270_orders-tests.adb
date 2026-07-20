@@ -37,9 +37,50 @@ package body IBM_3270_Orders.Tests is
       Assert (Bytes_Out.Length = 1, "Insert Cursor order should be 1 byte");
       Assert (Bytes_Out.Element (Bytes_Out.First_Index) =
          IBM_3270.Insert_Cursor,
-         "Insert Cursor order should be Insert Cursor tag");
+         "Insert Cursor order should start with Insert Cursor tag");
 
    end Test_Insert_Cursor;
+
+   procedure Test_Start_Field_Normal (
+      T : in out Test_Cases.Test_Case'Class) is
+      Bytes_Out : Byte_Vectors.Vector;
+   begin
+
+      Start_Field (Bytes_Out, False, Normal_Text);
+
+      Assert (Bytes_Out.Length = 2, "Start Field order should be 2 bytes");
+
+      Assert (Bytes_Out.Element (Bytes_Out.First_Index) =
+         IBM_3270.Start_Field,
+         "Start Field order should start with Start Field tag");
+
+      Assert ((Bytes_Out.Element (Bytes_Out.First_Index + 1)
+         and 16#20#) = 0, "Protect bit should be False");
+
+      Assert ((Bytes_Out.Element (Bytes_Out.First_Index + 1)
+         and 16#1#) = 0, "Modified bit should be False");
+
+      Assert ((Bytes_Out.Element (Bytes_Out.First_Index + 1)
+         and 16#C#) = 0, "Field type should be normal text");
+
+   end Test_Start_Field_Normal;
+
+   procedure Test_Start_Field_Highlighted (
+      T : in out Test_Cases.Test_Case'Class) is
+      Bytes_Out : Byte_Vectors.Vector;
+   begin
+
+      Start_Field (Bytes_Out, True, Highlighted);
+
+      Assert (Bytes_Out.Length = 2, "Start Field order should be 2 bytes");
+
+      Assert ((Bytes_Out.Element (Bytes_Out.First_Index + 1)
+         and 16#20#) = 16#20#, "Protected bit should be True");
+
+      Assert ((Bytes_Out.Element (Bytes_Out.First_Index + 1)
+         and 16#C#) = 16#8#, "Field type should be highlighted");
+
+   end Test_Start_Field_Highlighted;
 
    procedure Test_To_Buffer_Address_Invalid (
       T : in out Test_Cases.Test_Case'Class) is
@@ -55,7 +96,7 @@ package body IBM_3270_Orders.Tests is
       Assert (X = 0, "Invalid character should decode as 0");
       Assert (Y = 0, "Invalid character should decode as 0");
 
-   end Test_To_Buffer_Address_Invalid;   
+   end Test_To_Buffer_Address_Invalid;
 
    procedure Test_Is_Short_Read (
       T : in out Test_Cases.Test_Case'Class) is
@@ -87,6 +128,12 @@ package body IBM_3270_Orders.Tests is
 
       Register_Routine (T, Test_Insert_Cursor'Access,
          "Test_Insert_Cursor");
+
+      Register_Routine (T, Test_Start_Field_Normal'Access,
+         "Test_Start_Field_Normal");
+
+      Register_Routine (T, Test_Start_Field_Highlighted'Access,
+         "Test_Start_Field_Highlighted");
 
       Register_Routine (T, Test_To_Buffer_Address_Invalid'Access,
          "Test_To_Buffer_Address_Invalid");

@@ -13,11 +13,13 @@ package IBM_3270_Orders.Tests is
 
    procedure Test_Insert_Cursor (T : in out Test_Cases.Test_Case'Class);
 
-   --
-   --  Should also test Start_Field
-   --
+   procedure Test_Start_Field_Normal (T : in out Test_Cases.Test_Case'Class);
 
-   procedure Test_To_Buffer_Address_Invalid (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Start_Field_Highlighted (
+      T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_To_Buffer_Address_Invalid (
+      T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Is_Short_Read (T : in out Test_Cases.Test_Case'Class);
 
