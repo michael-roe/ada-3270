@@ -123,6 +123,7 @@ package body Telnet.Workers is
       Document : Split_Views.Split_View;
       L : Lines.Bounded_Wide_String;
       Backend_Byte : Buffer.Byte;
+      After_Backslash : Boolean;
    begin
 
       for J in 1 .. 50 loop
@@ -257,12 +258,26 @@ package body Telnet.Workers is
                            Document.Edit_To_History;
                            Lines.Set_Bounded_Wide_String (L, "");
                            Line_Vectors.Append (Document.History, L);
+                           After_Backslash := False;
                            Backend_Byte := 0;
                            while Backend_Byte /= 10 loop
                               RX2.Dequeue (Backend_Byte);
-                              if Backend_Byte /= 13 then
-                                 Document.Put_Character (
-                                    Wide_Character'Val (Backend_Byte));
+                              if After_Backslash then
+                                 if Backend_Byte = Character'Pos ('\') then
+                                    Document.Put_Character ('\');
+                                  elsif Backend_Byte = Character'Pos ('q') then
+                                     Document.Put_Character ('"');
+                                  end if;
+                                  After_Backslash := False;
+                              else
+                                 if Backend_Byte = 13 then
+                                    null;
+                                 elsif Backend_Byte = Character'Pos ('\') then
+                                    After_Backslash := True;
+                                 else
+                                    Document.Put_Character (
+                                       Wide_Character'Val (Backend_Byte));
+                                 end if;
                               end if;
                            end loop;
                         end if;
