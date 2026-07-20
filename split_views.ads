@@ -43,4 +43,6 @@ package Split_Views is
       V : in out Split_View;
       C : Wide_Character);
 
+   procedure New_Line (V : in out Split_View);
+   
 end Split_Views;

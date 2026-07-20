@@ -268,6 +268,8 @@ package body Telnet.Workers is
                                     Document.Put_Character ('\');
                                   elsif Backend_Byte = Character'Pos ('"') then
                                      Document.Put_Character ('"');
+                                  elsif Backend_Byte = Character'Pos ('n') then
+                                     Document.New_Line;
                                   elsif Backend_Byte = Character'Pos ('u') then
                                      Ada.Text_IO.Put_Line ("Hex string");
                                      RX2.Dequeue (Backend_Byte);

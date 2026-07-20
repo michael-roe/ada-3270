@@ -264,4 +264,13 @@ package body Split_Views is
 
    end Put_Character;
 
+   procedure New_Line (V : in out Split_View) is
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      Lines.Set_Bounded_Wide_String (L, "");
+      Line_Vectors.Append (V.History, L);
+
+   end New_Line;
+
 end Split_Views;
