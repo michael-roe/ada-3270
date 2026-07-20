@@ -122,6 +122,7 @@ package body Telnet.Workers is
       Terminal_Sent : Boolean := False;
       Document : Split_Views.Split_View;
       L : Lines.Bounded_Wide_String;
+      Backend_Byte : Buffer.Byte;
    begin
 
       for J in 1 .. 50 loop
@@ -248,8 +249,23 @@ package body Telnet.Workers is
                            Document.Next_Page;
                         end if;
                         Rx_Record (Bytes_In);
-                        Split_Views.To_JSON (Document,
-                           TX2);
+                        if Bytes_In.Element (Bytes_In.First_Index) =
+                           IBM_3270.AID_Enter
+                        then
+                           Split_Views.To_JSON (Document,
+                              TX2);
+                           Document.Edit_To_History;
+                           Lines.Set_Bounded_Wide_String (L, "");
+                           Line_Vectors.Append (Document.History, L);
+                           Backend_Byte := 0;
+                           while Backend_Byte /= 10 loop
+                              RX2.Dequeue (Backend_Byte);
+                              if Backend_Byte /= 13 then
+                                 Document.Put_Character (
+                                    Wide_Character'Val (Backend_Byte));
+                              end if;
+                           end loop;
+                        end if;
                         Bytes_In.Clear;
                         S := Data;
                         Got_Reply := True;
