@@ -55,6 +55,19 @@ package body Input_Stream.Tests is
 
    end Update_Field;
 
+   procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_PA1);
+
+      V.From_Physical (Bytes_In);
+
+      Assert (not V.Cursor_Set, "Update_Cursor should not have been called");
+
+   end Test_Short_Read;
+
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;
       Bytes_In : Byte_Vectors.Vector;
@@ -149,6 +162,9 @@ package body Input_Stream.Tests is
    procedure Register_Tests (T : in out Input_Stream_Test) is
       use AUnit.Test_Cases.Registration;
    begin
+
+      Register_Routine (T, Test_Short_Read'Access,
+         "Test_Short_Read");
 
       Register_Routine (T, Test_Buffer_Address'Access,
          "Test_Buffer_Address");

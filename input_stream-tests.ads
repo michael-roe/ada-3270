@@ -36,6 +36,8 @@ package Input_Stream.Tests is
 
    type Input_Stream_Test is new Test_Cases.Test_Case with null record;
 
+   procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class);
+
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Duplicate (T : in out Test_Cases.Test_Case'Class);
