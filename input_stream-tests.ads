@@ -7,6 +7,8 @@ package Input_Stream.Tests is
 
    type Test_View is new Views.View with record
       Field_Count : Natural := 0;
+      Last_X      : Natural := 0;
+      Last_Y      : Natural := 0;
       Last_Field : Lines.Bounded_Wide_String;
    end record;
 
@@ -25,6 +27,8 @@ package Input_Stream.Tests is
       L : Lines.Bounded_Wide_String);
 
    type Input_Stream_Test is new Test_Cases.Test_Case with null record;
+
+   procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Duplicate (T : in out Test_Cases.Test_Case'Class);
 

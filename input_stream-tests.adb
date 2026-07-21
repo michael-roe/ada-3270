@@ -38,8 +38,29 @@ package body Input_Stream.Tests is
 
       V.Field_Count := V.Field_Count + 1;
       V.Last_Field := L;
+      V.Last_X := X;
+      V.Last_Y := Y;
 
    end Update_Field;
+
+   procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+      Code_Page_500.Append (Bytes_In, "*");
+
+      V.From_Physical (Bytes_In);
+
+      Assert (V.Field_Count = 1, "Update_Field should be called once");
+      Assert (V.Last_X = 1, "X should be 1");
+      Assert (V.Last_Y = 2, "Y should be 2");
+
+   end Test_Buffer_Address;
 
    procedure Test_Duplicate (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;
@@ -114,6 +135,9 @@ package body Input_Stream.Tests is
    procedure Register_Tests (T : in out Input_Stream_Test) is
       use AUnit.Test_Cases.Registration;
    begin
+
+      Register_Routine (T, Test_Buffer_Address'Access,
+         "Test_Buffer_Address");
 
       Register_Routine (T, Test_Duplicate'Access,
          "Test_Duplicate");
