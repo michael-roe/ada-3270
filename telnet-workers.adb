@@ -20,6 +20,7 @@ with Math_Operators;
 with Code_Page_310;
 with Code_Page_500;
 with IBM_3270_Orders;
+with Views;
 with Text_Views;
 with Split_Views;
 with Checkbox_Views;
@@ -107,6 +108,8 @@ package body Telnet.Workers is
 
    end Rx_Record;
 
+   Split : aliased Split_Views.Split_View;
+
    task body Worker is
       S : State := Data;
       C : Buffer.Byte;
@@ -120,7 +123,7 @@ package body Telnet.Workers is
       Option_In : Byte_Vectors.Vector;
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
-      Document : Split_Views.Split_View;
+      Document : Views.View_Access;
       L : Lines.Bounded_Wide_String;
       Backend_Byte : Buffer.Byte;
       After_Backslash : Boolean;
@@ -129,8 +132,10 @@ package body Telnet.Workers is
 
       for J in 1 .. 50 loop
          Lines.Set_Bounded_Wide_String (L, "Line" & Natural'Wide_Image (J));
-         Line_Vectors.Append (Document.History, L);
+         Line_Vectors.Append (Split.History, L);
       end loop;
+
+      Document := Split'Access;
 
       --  Document.Checkboxes (1) := True;
       --  Document.Checkboxes (2) := True;
@@ -244,65 +249,65 @@ package body Telnet.Workers is
                         if Bytes_In.Element (Bytes_In.First_Index) =
                            IBM_3270.AID_PF7
                         then
-                           Document.Prev_Page;
+                           Split.Prev_Page;
                         elsif Bytes_In.Element (Bytes_In.First_Index) =
                            IBM_3270.AID_PF8
                         then
-                           Document.Next_Page;
+                           Split.Next_Page;
                         end if;
                         Rx_Record (Bytes_In);
                         if Bytes_In.Element (Bytes_In.First_Index) =
                            IBM_3270.AID_Enter
                         then
-                           Split_Views.To_JSON (Document,
+                           Split_Views.To_JSON (Split,
                               TX2);
-                           Document.Edit_To_History;
+                           Split.Edit_To_History;
                            Lines.Set_Bounded_Wide_String (L, "");
-                           Line_Vectors.Append (Document.History, L);
+                           Line_Vectors.Append (Split.History, L);
                            After_Backslash := False;
                            Backend_Byte := 0;
                            while Backend_Byte /= 10 loop
                               RX2.Dequeue (Backend_Byte);
                               if After_Backslash then
                                  if Backend_Byte = Character'Pos ('\') then
-                                    Document.Put_Character ('\');
-                                  elsif Backend_Byte = Character'Pos ('"') then
-                                     Document.Put_Character ('"');
-                                  elsif Backend_Byte = Character'Pos ('n') then
-                                     Document.New_Line;
-                                  elsif Backend_Byte = Character'Pos ('u') then
-                                     Ada.Text_IO.Put_Line ("Hex string");
-                                     RX2.Dequeue (Backend_Byte);
-                                     Hex_Digits (4) :=
-                                        Character'Val (Backend_Byte);
-                                     RX2.Dequeue (Backend_Byte);
-                                     Hex_Digits (5) :=
-                                        Character'Val (Backend_Byte);
-                                     RX2.Dequeue (Backend_Byte);
-                                     Hex_Digits (6) :=
-                                        Character'Val (Backend_Byte);
-                                     RX2.Dequeue (Backend_Byte);
-                                     Hex_Digits (7) :=
-                                        Character'Val (Backend_Byte);
-                                     Ada.Text_IO.Put_Line (Hex_Digits);
-                                     Document.Put_Character (
-                                        Wide_Character'Val (
-                                           Integer'Value (Hex_Digits)));
-                                  end if;
-                                  After_Backslash := False;
+                                    Split.Put_Character ('\');
+                                 elsif Backend_Byte = Character'Pos ('"') then
+                                    Split.Put_Character ('"');
+                                 elsif Backend_Byte = Character'Pos ('n') then
+                                    Split.New_Line;
+                                 elsif Backend_Byte = Character'Pos ('u') then
+                                    Ada.Text_IO.Put_Line ("Hex string");
+                                    RX2.Dequeue (Backend_Byte);
+                                    Hex_Digits (4) :=
+                                       Character'Val (Backend_Byte);
+                                    RX2.Dequeue (Backend_Byte);
+                                    Hex_Digits (5) :=
+                                       Character'Val (Backend_Byte);
+                                    RX2.Dequeue (Backend_Byte);
+                                    Hex_Digits (6) :=
+                                       Character'Val (Backend_Byte);
+                                    RX2.Dequeue (Backend_Byte);
+                                    Hex_Digits (7) :=
+                                       Character'Val (Backend_Byte);
+                                    Ada.Text_IO.Put_Line (Hex_Digits);
+                                    Split.Put_Character (
+                                       Wide_Character'Val (
+                                          Integer'Value (Hex_Digits)));
+                                 end if;
+                                 After_Backslash := False;
                               else
                                  if Backend_Byte = 13 then
                                     null;
                                  elsif Backend_Byte = Character'Pos ('\') then
                                     After_Backslash := True;
                                  elsif Backend_Byte < 128 then
-                                    Document.Put_Character (
+                                    Split.Put_Character (
                                        Wide_Character'Val (Backend_Byte));
                                  else
                                     --
                                     --  Multi-byte UTF-8 character
                                     --
-                                    Document.Put_Character ('?');
+                                    Split.Put_Character ('?');
                                  end if;
                               end if;
                            end loop;
