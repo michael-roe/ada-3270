@@ -1,6 +1,7 @@
 with AUnit.Assertions; use AUnit.Assertions;
 with Ada.Text_IO;
 with Ada.Wide_Text_IO;
+with Ada.Containers; use type Ada.Containers.Count_Type;
 with Views;
 with Byte_Vectors;
 with IBM_3270;
@@ -85,6 +86,31 @@ package body Input_Stream.Tests is
 
    end Test_Field_Mark;
 
+   procedure Test_Overflow (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+
+      Code_Page_500.Append (Bytes_In, "(");
+
+      for J in 1 .. 256 loop
+         Code_Page_500.Append (Bytes_In, "*");
+      end loop;
+
+      Code_Page_500.Append (Bytes_In, ")");
+
+      V.From_Physical (Bytes_In);
+
+      Assert (Lines.Length (V.Last_Field) = Lines.Max_Length,
+         "A too long field should be truncated to fit");
+
+   end Test_Overflow;
+
    procedure Register_Tests (T : in out Input_Stream_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -94,6 +120,9 @@ package body Input_Stream.Tests is
 
       Register_Routine (T, Test_Field_Mark'Access,
          "Test_Field_Mark");
+
+      Register_Routine (T, Test_Overflow'Access,
+         "Test_Overflow");
 
    end Register_Tests;
 
