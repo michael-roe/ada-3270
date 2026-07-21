@@ -62,12 +62,38 @@ package body Input_Stream.Tests is
 
    end Test_Duplicate;
 
+   procedure Test_Field_Mark (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+      Code_Page_500.Append (Bytes_In, "(");
+      Bytes_In.Append (IBM_3270.Field_Mark);
+      Code_Page_500.Append (Bytes_In, ")");
+
+      V.From_Physical (Bytes_In);
+
+      Assert (V.Field_Count = 1, "Update_Field should be called once");
+      Lines.Set_Bounded_Wide_String (L, "()");
+      Ada.Wide_Text_IO.Put_Line (Lines.To_Wide_String (V.Last_Field));
+      Assert (V.Last_Field = L, "FM should be omitted from field");
+
+   end Test_Field_Mark;
+
    procedure Register_Tests (T : in out Input_Stream_Test) is
       use AUnit.Test_Cases.Registration;
    begin
 
       Register_Routine (T, Test_Duplicate'Access,
          "Test_Duplicate");
+
+      Register_Routine (T, Test_Field_Mark'Access,
+         "Test_Field_Mark");
 
    end Register_Tests;
 

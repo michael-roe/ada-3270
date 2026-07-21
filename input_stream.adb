@@ -71,6 +71,9 @@ package body Input_Stream is
                when IBM_3270.Duplicate =>
                   To_Do := To_Do - 1;
                   Index := Index + 1;
+               when IBM_3270.Field_Mark =>
+                  To_Do := To_Do - 1;
+                  Index := Index + 1;
                when others =>
                   Lines.Append (
                      L,

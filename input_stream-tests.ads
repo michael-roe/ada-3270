@@ -28,6 +28,8 @@ package Input_Stream.Tests is
 
    procedure Test_Duplicate (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Field_Mark (T : in out Test_Cases.Test_Case'Class);
+
    procedure Register_Tests (T : in out Input_Stream_Test);
 
    function Name (T : Input_Stream_Test) return Message_String;
