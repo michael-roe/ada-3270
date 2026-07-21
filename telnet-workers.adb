@@ -25,6 +25,7 @@ with Pageable_Views;
 with Text_Views;
 with Split_Views;
 with Checkbox_Views;
+with Numbered_Menu_Views;
 with Menu_Views;
 with Login_Views;
 with Lines;
@@ -113,6 +114,10 @@ package body Telnet.Workers is
 
    Text : aliased Text_Views.Text_View;
 
+   Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
+
+   type Panel_Type is (Menu_Panel, Split_Panel);
+
    task body Worker is
       S : State := Data;
       C : Buffer.Byte;
@@ -132,6 +137,7 @@ package body Telnet.Workers is
       Backend_Byte : Buffer.Byte;
       After_Backslash : Boolean;
       Hex_Digits : String := "16#0000#";
+      Panel_State : Panel_Type := Menu_Panel;
    begin
 
       for J in 1 .. 50 loop
@@ -139,9 +145,9 @@ package body Telnet.Workers is
          Line_Vectors.Append (Split.History, L);
       end loop;
 
-      Document := Split'Access;
+      Document := Menu'Access;
 
-      Pageable := Split'Access;
+      Pageable := Menu'Access;
 
       --  Document.Checkboxes (1) := True;
       --  Document.Checkboxes (2) := True;
@@ -317,6 +323,12 @@ package body Telnet.Workers is
                                  end if;
                               end if;
                            end loop;
+                           if Panel_State = Menu_Panel and Menu.Option /= 0
+                           then
+                              Panel_State := Split_Panel;
+                              Document := Split'Access;
+                              Pageable := Split'Access;
+                           end if;
                         end if;
                         Bytes_In.Clear;
                         S := Data;
