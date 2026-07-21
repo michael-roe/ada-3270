@@ -1,10 +1,12 @@
 with Views;
 with Lines;
 with Byte_Vectors;
+with Pageable_Views;
 
 package Paged_Views is
 
-   type Paged_View is abstract new Views.View with null record;
+   type Paged_View is abstract new Views.View and
+      Pageable_Views.Pageable_View with null record;
 
    procedure To_Physical (
       V : Paged_View;
