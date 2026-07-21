@@ -7,6 +7,9 @@ package Input_Stream.Tests is
 
    type Test_View is new Views.View with record
       Field_Count : Natural := 0;
+      Cursor_X    : Natural := 0;
+      Cursor_Y    : Natural := 0;
+      Cursor_Set  : Boolean := False;
       Last_X      : Natural := 0;
       Last_Y      : Natural := 0;
       Last_Field : Lines.Bounded_Wide_String;
@@ -19,6 +22,11 @@ package Input_Stream.Tests is
    procedure From_Physical (
       V : in out Test_View;
       Bytes_In : Byte_Vectors.Vector);
+
+   procedure Update_Cursor (
+      V : in out Test_View;
+      X : Natural;
+      Y : Natural);
 
    procedure Update_Field (
       V : in out Test_View;

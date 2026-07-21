@@ -29,6 +29,18 @@ package body Input_Stream.Tests is
 
    end From_Physical;
 
+   procedure Update_Cursor (
+      V : in out Test_View;
+      X : Natural;
+      Y : Natural) is
+   begin    
+
+      V.Cursor_X := X;
+      V.Cursor_Y := Y;
+      V.Cursor_Set := True;
+         
+   end Update_Cursor;
+
    procedure Update_Field (
       V : in out Test_View;
       X : Natural;
@@ -50,12 +62,15 @@ package body Input_Stream.Tests is
 
       Bytes_In.Append (IBM_3270.AID_Enter);
       Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#C1#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       Code_Page_500.Append (Bytes_In, "*");
 
       V.From_Physical (Bytes_In);
 
+      Assert (V.Cursor_Set, "Update_Cursor should have been called");
+      Assert (V.Cursor_X = 1, "Cursor_X should be 1");
+      Assert (V.Cursor_Y = 0, "Cursor_Y should be 0");
       Assert (V.Field_Count = 1, "Update_Field should be called once");
       Assert (V.Last_X = 1, "X should be 1");
       Assert (V.Last_Y = 2, "Y should be 2");
@@ -102,7 +117,6 @@ package body Input_Stream.Tests is
 
       Assert (V.Field_Count = 1, "Update_Field should be called once");
       Lines.Set_Bounded_Wide_String (L, "()");
-      Ada.Wide_Text_IO.Put_Line (Lines.To_Wide_String (V.Last_Field));
       Assert (V.Last_Field = L, "FM should be omitted from field");
 
    end Test_Field_Mark;
