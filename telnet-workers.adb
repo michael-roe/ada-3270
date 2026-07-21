@@ -21,6 +21,7 @@ with Code_Page_310;
 with Code_Page_500;
 with IBM_3270_Orders;
 with Views;
+with Pageable_Views;
 with Text_Views;
 with Split_Views;
 with Checkbox_Views;
@@ -110,6 +111,8 @@ package body Telnet.Workers is
 
    Split : aliased Split_Views.Split_View;
 
+   Text : aliased Text_Views.Text_View;
+
    task body Worker is
       S : State := Data;
       C : Buffer.Byte;
@@ -124,6 +127,7 @@ package body Telnet.Workers is
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
       Document : Views.View_Access;
+      Pageable : Pageable_Views.Pageable_Access;
       L : Lines.Bounded_Wide_String;
       Backend_Byte : Buffer.Byte;
       After_Backslash : Boolean;
@@ -136,6 +140,8 @@ package body Telnet.Workers is
       end loop;
 
       Document := Split'Access;
+
+      Pageable := Split'Access;
 
       --  Document.Checkboxes (1) := True;
       --  Document.Checkboxes (2) := True;
@@ -249,11 +255,11 @@ package body Telnet.Workers is
                         if Bytes_In.Element (Bytes_In.First_Index) =
                            IBM_3270.AID_PF7
                         then
-                           Split.Prev_Page;
+                           Pageable.Prev_Page;
                         elsif Bytes_In.Element (Bytes_In.First_Index) =
                            IBM_3270.AID_PF8
                         then
-                           Split.Next_Page;
+                           Pageable.Next_Page;
                         end if;
                         Rx_Record (Bytes_In);
                         if Bytes_In.Element (Bytes_In.First_Index) =

@@ -24,4 +24,6 @@ package Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String) is abstract;
 
+   type View_Access is access all View'Class;
+
 end Views;

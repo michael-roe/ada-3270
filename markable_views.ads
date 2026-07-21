@@ -9,4 +9,6 @@ package Markable_Views is
 
    procedure Unmark (V : in out Markable_View) is abstract;
 
+   type Markable_Access is access all Markable_View'Class;
+
 end Markable_Views;
