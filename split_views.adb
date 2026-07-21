@@ -101,7 +101,7 @@ package body Split_Views is
       Code_Page_500.Append (Bytes_Out, " PF3=Exit");
       Code_Page_500.Append (Bytes_Out, " PF7=Prev");
       Code_Page_500.Append (Bytes_Out, " PF8=Next");
-      Code_Page_500.Append (Bytes_Out, " PF9=Swap");
+      Code_Page_500.Append (Bytes_Out, " PF11=Undo");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
