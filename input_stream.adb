@@ -28,6 +28,15 @@ package body Input_Stream is
       X := 0;
       Y := 0;
       if To_Do > 3 then
+
+         IBM_3270_Orders.To_Buffer_Address (
+            Bytes_In.Element (Index + 1),
+            Bytes_In.Element (Index + 2),
+            X,
+            Y);
+
+         Views.Update_Cursor (V, X, Y);
+
          --
          --  Skip over the Attention ID and the cursor address
          --
