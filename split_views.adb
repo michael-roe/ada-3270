@@ -257,11 +257,39 @@ package body Split_Views is
       V : in out Split_View;
       C : in Wide_Character) is
       L : Lines.Bounded_Wide_String;
+      L2 : Lines.Bounded_Wide_String;
+      Last_Space : Natural;
    begin
 
       if Lines.Length (V.History.Element (V.History.Last_Index)) > 75 then
-         Lines.Set_Bounded_Wide_String (L, "");
-         Line_Vectors.Append (V.History, L);
+         L := V.History.Element (V.History.Last_Index);
+         Last_Space := Lines.Length (L);
+         Ada.Text_IO.Put ("Last_Space = ");
+         Ada.Text_IO.Put_Line (Natural'Image (Last_Space));
+         while (Last_Space > 0) and
+            (Lines.Element (L, Last_Space) /= ' ')
+         loop
+            Last_Space := Last_Space - 1;
+         end loop;
+         if (Lines.Element (L, Last_Space) /= ' ') then
+            --
+            --  There's nowhere to break the line
+            --
+            Lines.Set_Bounded_Wide_String (L, "");
+            Line_Vectors.Append (V.History, L);
+         elsif Last_Space = Lines.Length (L) then
+            --
+            --  The line ends in a space
+            --  (ought to trim it)
+            --
+            Lines.Set_Bounded_Wide_String (L, "");
+            Line_Vectors.Append (V.History, L);
+         else
+            Lines.Bounded_Slice (L, L2, Last_Space + 1, Lines.Length (L));
+            Lines.Head (L, Last_Space - 1, ' ');
+            Line_Vectors.Replace_Element (V.History, V.History.Last_Index, L);
+            Line_Vectors.Append (V.History, L2);
+         end if;
       end if;
 
       --
