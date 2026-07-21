@@ -68,6 +68,16 @@ package body Menu_Views is
       null;
    end From_Physical;
 
+   procedure Update_Cursor (
+      V : in out Menu_View;
+      X : Natural;
+      Y : Natural) is
+   begin
+
+      null;
+
+   end Update_Cursor;
+
    procedure Update_Field (
       V : in out Menu_View;
       X : Natural;

@@ -18,6 +18,11 @@ package Checkbox_Views is
       V : in out Checkbox_View;
       Bytes_In : Byte_Vectors.Vector);
 
+   procedure Update_Cursor (
+      V : in out Checkbox_View;
+      X : Natural;
+      Y : Natural);
+
    procedure Update_Field (
       V : in out Checkbox_View;
       X : Natural;

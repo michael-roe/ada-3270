@@ -99,6 +99,16 @@ package body Checkbox_Views is
       end if;
    end From_Physical;
 
+   procedure Update_Cursor (
+      V : in out Checkbox_View;
+      X : Natural;
+      Y : Natural) is
+   begin
+
+      null;
+
+   end Update_Cursor;
+
    procedure Update_Field (
       V : in out Checkbox_View;
       X : Natural;

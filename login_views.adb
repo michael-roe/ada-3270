@@ -81,6 +81,16 @@ package body Login_Views is
       Input_Stream.Parse (V, Bytes_In);
    end From_Physical;
 
+   procedure Update_Cursor (
+      V : in out Login_View;
+      X : Natural;
+      Y : Natural) is
+   begin
+
+      null;
+
+   end Update_Cursor;
+
    procedure Update_Field (
       V : in out Login_View;
       X : Natural;
