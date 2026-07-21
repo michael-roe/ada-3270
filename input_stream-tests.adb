@@ -6,8 +6,10 @@ with Views;
 with Byte_Vectors;
 with IBM_3270;
 with IBM_3270_Orders;
+with Code_Page_310;
 with Code_Page_500;
 with Lines; use type Lines.Bounded_Wide_String;
+with Math_Operators;
 
 package body Input_Stream.Tests is
 
@@ -71,6 +73,7 @@ package body Input_Stream.Tests is
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;
       Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
@@ -78,6 +81,7 @@ package body Input_Stream.Tests is
       Bytes_In.Append (16#C1#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       Code_Page_500.Append (Bytes_In, "*");
+      Code_Page_310.Append (Bytes_In, Math_Operators.Logical_And);
 
       V.From_Physical (Bytes_In);
 
@@ -87,6 +91,10 @@ package body Input_Stream.Tests is
       Assert (V.Field_Count = 1, "Update_Field should be called once");
       Assert (V.Last_X = 1, "X should be 1");
       Assert (V.Last_Y = 2, "Y should be 2");
+      Assert (Lines.Length (V.Last_Field) = 2,
+         "Field length should be 2");
+      Lines.Set_Bounded_Wide_String (L, "*" & Math_Operators.Logical_And);
+      Assert (V.Last_Field = L, "Field should contain 2 wide characters");
 
    end Test_Buffer_Address;
 
