@@ -1,8 +1,10 @@
+with Ada.Text_IO;
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
 with Byte_Text_IO;
+with Input_Stream;
 
 package body Numbered_Menu_Views is
 
@@ -79,9 +81,17 @@ package body Numbered_Menu_Views is
       Code_Page_500.Append (Bytes_Out, "Option ==>");
       IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
       IBM_3270_Orders.Insert_Cursor (Bytes_Out);
-      Code_Page_500.Append (Bytes_Out, "    ");
+      if V.Option = 0 then
+         Code_Page_500.Append (Bytes_Out, "    ");
+      else
+         --
+         --  Ought to make this fixed width
+         --
+         Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (V.Option));
+         Code_Page_500.Append (Bytes_Out, "   ");
+      end if;
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 39); 
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 39);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 40);
@@ -113,7 +123,9 @@ package body Numbered_Menu_Views is
       V : in out Numbered_Menu_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
-      null;
+
+      Input_Stream.Parse (V, Bytes_In);
+
    end From_Physical;
 
    procedure Update_Cursor (
@@ -132,7 +144,30 @@ package body Numbered_Menu_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String) is
    begin
-      null;
+
+      if Y = 39 then
+         begin
+            V.Option := Natural'Wide_Value (Lines.To_Wide_String (L));
+         exception
+            when others =>
+               V.Option := 0;
+         end;
+      end if;
+
    end Update_Field;
+
+   procedure Prev_Page (V : in out Numbered_Menu_View) is
+   begin
+
+      null;
+
+   end Prev_Page;
+
+   procedure Next_Page (V : in out Numbered_Menu_View) is
+   begin
+
+      null;
+
+   end Next_Page;
 
 end Numbered_Menu_Views;
