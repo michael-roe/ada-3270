@@ -4,7 +4,12 @@ with Lines;
 
 package Numbered_Menu_Views is
 
-   type Numbered_Menu_View is new Paged_Views.Paged_View with null record;
+   type Label_Array is array (1 .. 10) of Lines.Bounded_Wide_String;
+
+   type Numbered_Menu_View is new Paged_Views.Paged_View with record
+      Option : Natural;
+      Option_Labels : Label_Array;
+   end record;
 
    procedure To_Physical (
       V : Numbered_Menu_View;
@@ -28,5 +33,10 @@ package Numbered_Menu_Views is
    procedure Prev_Page (V : in out Numbered_Menu_View);
 
    procedure Next_Page (V : in out Numbered_Menu_View);
+
+   procedure Set_Label (
+      V : in out Numbered_Menu_View;
+      N : Natural;
+      L : Lines.Bounded_Wide_String);
 
 end Numbered_Menu_Views;

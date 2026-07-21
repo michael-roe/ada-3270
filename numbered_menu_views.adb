@@ -57,7 +57,9 @@ package body Numbered_Menu_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          Code_Page_500.Append (Bytes_Out, " ");
          Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (J));
-         Code_Page_500.Append (Bytes_Out, " Option");
+         Code_Page_500.Append (Bytes_Out, " ");
+         Code_Page_500.Append (Bytes_Out,
+            Lines.To_Wide_String (V.Option_Labels (J)));
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 4);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -169,5 +171,17 @@ package body Numbered_Menu_Views is
       null;
 
    end Next_Page;
+
+   procedure Set_Label (
+      V : in out Numbered_Menu_View;
+      N : Natural;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      if N >= V.Option_Labels'First and N <= V.Option_Labels'Last then
+         V.Option_Labels (N) := L;
+      end if;
+
+   end Set_Label;
 
 end Numbered_Menu_Views;
