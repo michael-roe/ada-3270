@@ -1,10 +1,10 @@
 with Byte_Vectors;
-with Views;
+with Paged_Views;
 with Lines;
 
 package Numbered_Menu_Views is
 
-   type Numbered_Menu_View is new Views.View with null record;
+   type Numbered_Menu_View is new Paged_Views.Paged_View with null record;
 
    procedure To_Physical (
       V : Numbered_Menu_View;
@@ -24,5 +24,9 @@ package Numbered_Menu_Views is
       X : Natural;
       Y : Natural;
       L : Lines.Bounded_Wide_String);
+
+   procedure Prev_Page (V : in out Numbered_Menu_View);
+
+   procedure Next_Page (V : in out Numbered_Menu_View);
 
 end Numbered_Menu_Views;
