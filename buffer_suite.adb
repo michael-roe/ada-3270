@@ -5,6 +5,7 @@ with Code_Page_500.Tests;
 with Code_Page_310.Tests;
 with Line_Vectors_Tests;
 with IBM_3270_Orders.Tests;
+with Input_Stream.Tests;
 
 package body Buffer_Suite is
 
@@ -21,6 +22,7 @@ package body Buffer_Suite is
    Test_5 : aliased Code_Page_310.Tests.Code_Page_Test;
    Test_6 : aliased Line_Vectors_Tests.Line_Vectors_Test;
    Test_7 : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
+   Test_8 : aliased Input_Stream.Tests.Input_Stream_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -31,6 +33,7 @@ package body Buffer_Suite is
       Add_Test (Result'Access, Test_5'Access);
       Add_Test (Result'Access, Test_6'Access);
       Add_Test (Result'Access, Test_7'Access);
+      Add_Test (Result'Access, Test_8'Access);
       return Result'Access;
    end Suite;
 
