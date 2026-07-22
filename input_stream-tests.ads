@@ -44,6 +44,13 @@ package Input_Stream.Tests is
 
    type Input_Stream_Test is new Test_Cases.Test_Case with null record;
 
+   procedure Test_Empty_Stream (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   --  Test_Empty_Stream tests an input stream containing 0 bytes. This
+   --  is a protocol error.
+   --
+   
    procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class);
 
    --
