@@ -14,28 +14,9 @@ with Telnet.Terminal;
 with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
 with IBM_3270;
-with Box_Drawing;
-with Block_Elements;
-with Math_Operators;
-with Code_Page_310;
-with Code_Page_500;
-with IBM_3270_Orders;
-with Views;
-with Pageable_Views;
-with Text_Views;
-with Split_Views;
-with Checkbox_Views;
-with Numbered_Menu_Views;
-with Menu_Views;
-with Login_Views;
-with Lines;
-with Line_Vectors;
 with IBM_3270_Event_Handlers;
 
 package body Telnet.Workers is
-
-   function Normal_Text return IBM_3270_Orders.Intensity renames
-     IBM_3270_Orders.Normal_Text;
 
    type State is (Data, Data_IAC, Will, Wont, Do_It, Dont, Opt, Opt_IAC);
 
