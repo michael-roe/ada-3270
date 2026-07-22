@@ -2,6 +2,7 @@ with AUnit.Assertions; use AUnit.Assertions;
 with Ada.Text_IO;
 with Ada.Wide_Text_IO;
 with Ada.Containers; use type Ada.Containers.Count_Type;
+with Buffer; use type Buffer.Byte;
 with Views;
 with Byte_Vectors;
 with IBM_3270;
@@ -31,6 +32,16 @@ package body Input_Stream.Tests is
 
    end From_Physical;
 
+   procedure Update_AID (
+      V : in out Test_View;
+      AID : Buffer.Byte) is
+   begin
+
+      V.AID := AID;
+      V.AID_Set := True;
+
+   end Update_AID;
+
    procedure Update_Cursor (
       V : in out Test_View;
       X : Natural;
@@ -50,10 +61,13 @@ package body Input_Stream.Tests is
       L : Lines.Bounded_Wide_String) is
    begin
 
-      V.Field_Count := V.Field_Count + 1;
       V.Last_Field := L;
       V.Last_X := X;
       V.Last_Y := Y;
+      V.Field_Count := V.Field_Count + 1;
+      if V.Field_Count = 1 then
+         V.First_Field := L;
+      end if;
 
    end Update_Field;
 
@@ -63,6 +77,7 @@ package body Input_Stream.Tests is
    begin
 
       V.From_Physical (Bytes_In);
+      Assert (not V.AID_Set, "Update AID should not have been called");
       Assert (not V.Cursor_Set, "Update_Cursor should not have been called");
       Assert (V.Field_Count = 0, "Update_Field should not have been called");
 
@@ -77,6 +92,9 @@ package body Input_Stream.Tests is
 
       V.From_Physical (Bytes_In);
 
+      Assert (V.AID_Set, "Update_AID should have been called");
+      Assert (V.AID = IBM_3270.AID_PA1,
+         "AID should be PA1");
       Assert (not V.Cursor_Set, "Update_Cursor should not have been called");
       Assert (V.Field_Count = 0, "Update_Field should not have been called");
 
@@ -93,6 +111,8 @@ package body Input_Stream.Tests is
 
       V.From_Physical (Bytes_In);
 
+      Assert (V.AID_Set, "Update_AID should have been called");
+      Assert (V.AID = IBM_3270.AID_Enter, "AID should be Enter");
       Assert (V.Cursor_Set, "Update_Cursor should have been called");
       Assert (V.Cursor_X = 1, "Cursor_X should be 1");
       Assert (V.Cursor_Y = 0, "Cursor_Y should be 0");
@@ -115,6 +135,8 @@ package body Input_Stream.Tests is
 
       V.From_Physical (Bytes_In);
 
+      Assert (V.AID_Set, "Update_AID should have been called");
+      Assert (V.AID = IBM_3270.AID_Enter, "AID should be Enter");
       Assert (V.Cursor_Set, "Update_Cursor should have been called");
       Assert (V.Cursor_X = 1, "Cursor_X should be 1");
       Assert (V.Cursor_Y = 0, "Cursor_Y should be 0");
@@ -172,6 +194,27 @@ package body Input_Stream.Tests is
 
    end Test_Field_Mark;
 
+   procedure Test_Trim (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+
+      Code_Page_500.Append (Bytes_In, "Hello   ");
+
+      V.From_Physical (Bytes_In);
+
+      Lines.Set_Bounded_Wide_String (L, "Hello");
+      Assert (V.Last_Field = L,
+         "Trailing spaces should be trimmed from field");
+
+  end Test_Trim;
+
    procedure Test_Overflow (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;
       Bytes_In : Byte_Vectors.Vector;
@@ -223,6 +266,30 @@ package body Input_Stream.Tests is
 
    end Test_Two_Fields;
 
+   procedure Test_Trim_Two (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+      Code_Page_500.Append (Bytes_In, "Hello   ");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 4);
+      Code_Page_500.Append (Bytes_In, "World   ");
+
+      V.From_Physical (Bytes_In);
+
+      Assert (V.Field_Count = 2, "There should be two fields");
+      Lines.Set_Bounded_Wide_String (L, "Hello");
+      Assert (V.First_Field = L, "First_Field should be ""Hello""");
+      Lines.Set_Bounded_Wide_String (L, "World");
+      Assert (V.Last_Field = L, "Last_Field should be ""World""");
+
+   end Test_Trim_Two;
+
    procedure Register_Tests (T : in out Input_Stream_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -245,11 +312,17 @@ package body Input_Stream.Tests is
       Register_Routine (T, Test_Field_Mark'Access,
          "Test_Field_Mark");
 
+      Register_Routine (T, Test_Trim'Access,
+         "Test_Trim");
+
       Register_Routine (T, Test_Overflow'Access,
          "Test_Overflow");
 
       Register_Routine (T, Test_Two_Fields'Access,
          "Test_Two_Fields");
+
+      Register_Routine (T, Test_Trim_Two'Access,
+         "Test_Trim_Two");
 
    end Register_Tests;
 

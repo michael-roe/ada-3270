@@ -28,6 +28,10 @@ package body Input_Stream is
       X := 0;
       Y := 0;
 
+      if To_Do >= 1 then
+         Views.Update_AID (V, Bytes_In.Element (Index));
+      end if;
+
       if To_Do >= 3 then
 
          IBM_3270_Orders.To_Buffer_Address (
@@ -52,6 +56,7 @@ package body Input_Stream is
                   if First_Field then
                      First_Field := False;
                   else
+                     Lines.Trim (L, Ada.Strings.Right);
                      Views.Update_Field (V, X, Y, L);
                      Lines.Set_Bounded_Wide_String (L, "");
                   end if;

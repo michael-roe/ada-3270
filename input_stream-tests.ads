@@ -1,26 +1,31 @@
 with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
+with Buffer;
 with Views;
 with Lines;
 
 package Input_Stream.Tests is
 
    type Test_View is new Views.View with record
-      Field_Count : Natural := 0;
+      AID         : Buffer.Byte;
+      AID_Set     : Boolean := False;
       Cursor_X    : Natural := 0;
       Cursor_Y    : Natural := 0;
       Cursor_Set  : Boolean := False;
       Last_X      : Natural := 0;
       Last_Y      : Natural := 0;
-      Last_Field : Lines.Bounded_Wide_String;
+      First_Field : Lines.Bounded_Wide_String;
+      Last_Field  : Lines.Bounded_Wide_String;
+      Field_Count : Natural := 0;
    end record;
 
    --
-   --  Test_View is only used by tests. It records the X and Y coordinates
+   --  Test_View is only used by tests. It records AID of the last
+   --  Update_AID call it has received, the X and Y coordinates
    --  of the last Update_Cursor and Update_Field calls that it has received,
    --  the Field parameter of the last Update_Field call, the number of times
-   --  Update_Field has been called, and whether Update_Cursor has been
-   --  called.
+   --  Update_Field has been called, and whether Update_AID or Update_Cursor
+   --  have been called.
    --
 
    procedure To_Physical (
@@ -30,6 +35,10 @@ package Input_Stream.Tests is
    procedure From_Physical (
       V : in out Test_View;
       Bytes_In : Byte_Vectors.Vector);
+
+   procedure Update_AID (
+      V : in out Test_View;
+      AID : Buffer.Byte);
 
    procedure Update_Cursor (
       V : in out Test_View;
@@ -106,10 +115,24 @@ package Input_Stream.Tests is
    --  on the right.
    --
 
+   procedure Test_Trim (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   --  Test_Trim tests an input stream with trailing spaces at the end
+   --  of the last field.
+   --
+
    procedure Test_Two_Fields (T : in out Test_Cases.Test_Case'Class);
 
    --
-   --  Test_Two_Fields tests and input stream containing two fields.
+   --  Test_Two_Fields tests an input stream containing two fields.
+   --
+
+   procedure Test_Trim_Two (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   --  Test_Trim_Two tests an input stream containing two fields
+   --  with padding at the end.
    --
 
    procedure Register_Tests (T : in out Input_Stream_Test);
