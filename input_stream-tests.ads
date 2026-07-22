@@ -56,11 +56,11 @@ package Input_Stream.Tests is
    --
    --  Additional tests that could be written
    --
-   --     Truncated cursor address
    --     Truncated field address
    --     Truncated graphics escape
    --     Field address out of range
    --     Bad characters in field address
+   --     Characters before first Set Buffer Address
    --
 
    procedure Test_Empty_Stream (T : in out Test_Cases.Test_Case'Class);
@@ -82,6 +82,13 @@ package Input_Stream.Tests is
    --
    --  Test_Cursor tests an input stream containing an AID, a cursor
    --  address, and nothing else.
+   --
+
+   procedure Test_Cursor_Truncated (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   -- Test_Cursor_Truncated tests an input stream that ends part way
+   -- through the cursor address. This is a protocol error.
    --
 
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class);
