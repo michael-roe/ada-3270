@@ -30,6 +30,7 @@ with Menu_Views;
 with Login_Views;
 with Lines;
 with Line_Vectors;
+with IBM_3270_Event_Handlers;
 
 package body Telnet.Workers is
 
@@ -110,6 +111,8 @@ package body Telnet.Workers is
 
    end Rx_Record;
 
+   Handler : IBM_3270_Event_Handlers.IBM_3270_Handler;
+
    Split : aliased Split_Views.Split_View;
 
    Text : aliased Text_Views.Text_View;
@@ -140,26 +143,8 @@ package body Telnet.Workers is
       Panel_State : Panel_Type := Menu_Panel;
    begin
 
-      Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");
-      Numbered_Menu_Views.Set_Label (Menu, 1, L);
-      Lines.Set_Bounded_Wide_String (L, "GLM-5.2");
-      Numbered_Menu_Views.Set_Label (Menu, 2, L);
-      Lines.Set_Bounded_Wide_String (L, "Kimi-K2.7-Code");
-      Numbered_Menu_Views.Set_Label (Menu, 3, L);
-
-      for J in 1 .. 50 loop
-         Lines.Set_Bounded_Wide_String (L, "Line" & Natural'Wide_Image (J));
-         Line_Vectors.Append (Split.History, L);
-      end loop;
-
-      Document := Menu'Access;
-
-      Pageable := Menu'Access;
-
-      --  Document.Checkboxes (1) := True;
-      --  Document.Checkboxes (2) := True;
-      --  Document.Checkboxes (3) := False;
-      --  Document.Checkboxes (4) := False;
+      Handler.Initialize;
+      Handler.Set_RX_TX (RX2, TX2);
 
       for J in 1 .. 30 loop -- only 8 options to send
 
@@ -208,11 +193,12 @@ package body Telnet.Workers is
                   Terminal_Sent := True;
                else
                   Bytes_Out.Clear;
-                  for J in Screen_Message'Range loop
-                     Bytes_Out.Append (Screen_Message (J));
-                  end loop;
 
-                  Document.To_Physical (Bytes_Out);
+                  --  for J in Screen_Message'Range loop
+                  --     Bytes_Out.Append (Screen_Message (J));
+                  --  end loop;
+
+                  Handler.To_Physical (Bytes_Out);
 
                   if Bytes_Out.Length > 0 then
                      for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
@@ -264,20 +250,9 @@ package body Telnet.Workers is
                         Got_Reply := True;
                      when Telnet.Protocol.EOR =>
                         --  Put ("[EOR]");
-                        Document.From_Physical (Bytes_In);
-                        if Bytes_In.Element (Bytes_In.First_Index) =
-                           IBM_3270.AID_PF7
-                        then
-                           Pageable.Prev_Page;
-                        elsif Bytes_In.Element (Bytes_In.First_Index) =
-                           IBM_3270.AID_PF8
-                        then
-                           Pageable.Next_Page;
-                        end if;
-                        Rx_Record (Bytes_In);
-                        if Bytes_In.Element (Bytes_In.First_Index) =
-                           IBM_3270.AID_Enter
-                        then
+                        Handler.From_Physical (Bytes_In);
+                        --  if Bytes_In.Element (Bytes_In.First_Index) = IBM_3270.AID_Enter
+                        if False then
                            Split_Views.To_JSON (Split,
                               TX2);
                            Split.Edit_To_History;
