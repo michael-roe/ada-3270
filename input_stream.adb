@@ -30,6 +30,8 @@ package body Input_Stream is
 
       if To_Do >= 1 then
          Views.Update_AID (V, Bytes_In.Element (Index));
+      else
+         Views.Update_AID (V, 0);
       end if;
 
       if To_Do >= 3 then

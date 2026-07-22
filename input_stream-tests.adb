@@ -76,8 +76,10 @@ package body Input_Stream.Tests is
       Bytes_In : Byte_Vectors.Vector;
    begin
 
+      V.AID := IBM_3270.AID_Enter;
       V.From_Physical (Bytes_In);
-      Assert (not V.AID_Set, "Update AID should not have been called");
+      Assert (V.AID_Set, "Update AID should have been called");
+      Assert (V.AID = 0, "AID should be 0");
       Assert (not V.Cursor_Set, "Update_Cursor should not have been called");
       Assert (V.Field_Count = 0, "Update_Field should not have been called");
 
