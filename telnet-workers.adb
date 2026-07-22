@@ -64,58 +64,7 @@ package body Telnet.Workers is
       Telnet.Protocol.IAC,
       Telnet.Protocol.SE);
 
-   procedure Rx_Record (Bytes_In : Byte_Vectors.Vector) is
-      X : Natural;
-      Y : Natural;
-   begin
-      Put ("[Length = ");
-      Put (Bytes_In.Length'Image);
-      Put ("]");
-      case Bytes_In.Element (Bytes_In.First_Index) is
-         when IBM_3270.AID_Enter =>
-            Put ("[Enter]");
-         when IBM_3270.AID_PA1 =>
-            Put ("[PA1]");
-         when IBM_3270.AID_PA2 =>
-            Put ("[PA2]");
-         when IBM_3270.AID_PA3 =>
-            Put ("[PA3]");
-         when IBM_3270.AID_PF7 =>
-            Put ("[PF7]");
-         when IBM_3270.AID_PF8 =>
-            Put ("[PF8]");
-         when IBM_3270.AID_CrSel =>
-            Put ("[CrSel]");
-         when others =>
-            Put ("[AID ");
-            Byte_Text_IO.Put (Bytes_In.Element (Bytes_In.First_Index));
-            Put ("]");
-      end case;
-
-      if Bytes_In.Length > 2 then
-         IBM_3270_Orders.To_Buffer_Address (
-            Bytes_In.Element (Bytes_In.First_Index + 1),
-            Bytes_In.Element (Bytes_In.First_Index + 2),
-            X,
-            Y);
-
-         Put ("Cursor = (");
-         Ada.Text_IO.Put (Natural'Image (X));
-         Ada.Text_IO.Put (Natural'Image (Y));
-         Put (")");
-      end if;
-
-   end Rx_Record;
-
    Handler : IBM_3270_Event_Handlers.IBM_3270_Handler;
-
-   Split : aliased Split_Views.Split_View;
-
-   Text : aliased Text_Views.Text_View;
-
-   Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
-
-   type Panel_Type is (Menu_Panel, Split_Panel);
 
    task body Worker is
       S : State := Data;
@@ -130,13 +79,6 @@ package body Telnet.Workers is
       Option_In : Byte_Vectors.Vector;
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
-      Document : Views.View_Access;
-      Pageable : Pageable_Views.Pageable_Access;
-      L : Lines.Bounded_Wide_String;
-      Backend_Byte : Buffer.Byte;
-      After_Backslash : Boolean;
-      Hex_Digits : String := "16#0000#";
-      Panel_State : Panel_Type := Menu_Panel;
    begin
 
       Handler.Initialize;
