@@ -185,6 +185,32 @@ package body Input_Stream.Tests is
 
    end Test_Overflow;
 
+   procedure Test_Two_Fields (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+      Code_Page_500.Append (Bytes_In, "*");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 4);
+      Code_Page_500.Append (Bytes_In, "Hello");
+
+      V.From_Physical (Bytes_In);
+
+      Assert (V.Field_Count = 2, "There should be two fields");
+      Assert (V.Last_X = 1, "Last_X should be 1");
+      Assert (V.Last_Y = 4, "Last_Y should be 4");
+      Assert (Lines.Length (V.Last_Field) = 5,
+         "Last field should be 5 characters long");
+      Lines.Set_Bounded_Wide_String (L, "Hello");
+      Assert (V.Last_Field = L, "Last_Field should be ""Hello""");
+
+   end Test_Two_Fields;
+
    procedure Register_Tests (T : in out Input_Stream_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -206,6 +232,9 @@ package body Input_Stream.Tests is
 
       Register_Routine (T, Test_Overflow'Access,
          "Test_Overflow");
+
+      Register_Routine (T, Test_Two_Fields'Access,
+         "Test_Two_Fields");
 
    end Register_Tests;
 
