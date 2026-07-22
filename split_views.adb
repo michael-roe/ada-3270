@@ -146,14 +146,6 @@ package body Split_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String) is
    begin
-      Ada.Text_IO.Put ("(");
-      Ada.Text_IO.Put (Natural'Image (X));
-      Ada.Text_IO.Put (", ");
-      Ada.Text_IO.Put (Natural'Image (Y));
-      Ada.Text_IO.Put (", ");
-      Ada.Wide_Text_IO.Put (Lines.To_Wide_String (L));
-      Ada.Text_IO.Put (")");
-      Ada.Text_IO.New_Line;
 
       V.Edit (Y - 21) := L;
 
@@ -169,8 +161,6 @@ package body Split_Views is
    procedure Prev_Page (V : in out Split_View) is
    begin
 
-      Ada.Text_IO.Put ("Prev_Page");
-      Ada.Text_IO.New_Line;
       if V.Page_Number > 0 then
          V.Page_Number := V.Page_Number - 1;
       end if;
@@ -280,8 +270,6 @@ package body Split_Views is
       if Lines.Length (V.History.Element (V.History.Last_Index)) > 75 then
          L := V.History.Element (V.History.Last_Index);
          Last_Space := Lines.Length (L);
-         Ada.Text_IO.Put ("Last_Space = ");
-         Ada.Text_IO.Put_Line (Natural'Image (Last_Space));
          while (Last_Space > 0) and
             (Lines.Element (L, Last_Space) /= ' ')
          loop
