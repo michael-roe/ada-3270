@@ -44,6 +44,16 @@ package Input_Stream.Tests is
 
    type Input_Stream_Test is new Test_Cases.Test_Case with null record;
 
+   --
+   --  Additional tests that could be written
+   --
+   --     Truncated cursor address
+   --     Truncated field address
+   --     Truncated graphics escape
+   --     Field address out of range
+   --     Bad characters in field address
+   --
+
    procedure Test_Empty_Stream (T : in out Test_Cases.Test_Case'Class);
 
    --
