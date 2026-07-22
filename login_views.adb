@@ -88,7 +88,7 @@ package body Login_Views is
       AID : Buffer.Byte) is
    begin
 
-      V.AID := AID; 
+      V.AID := AID;
 
    end Update_AID;
 

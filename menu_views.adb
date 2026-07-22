@@ -75,7 +75,7 @@ package body Menu_Views is
       AID : Buffer.Byte) is
    begin
 
-      V.AID := AID; 
+      V.AID := AID;
 
    end Update_AID;
 

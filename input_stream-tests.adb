@@ -227,7 +227,7 @@ package body Input_Stream.Tests is
       Assert (V.Last_Field = L,
          "Trailing spaces should be trimmed from field");
 
-  end Test_Trim;
+   end Test_Trim;
 
    procedure Test_Overflow (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;

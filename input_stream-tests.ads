@@ -69,7 +69,7 @@ package Input_Stream.Tests is
    --  Test_Empty_Stream tests an input stream containing 0 bytes. This
    --  is a protocol error.
    --
-   
+
    procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class);
 
    --
@@ -87,8 +87,8 @@ package Input_Stream.Tests is
    procedure Test_Cursor_Truncated (T : in out Test_Cases.Test_Case'Class);
 
    --
-   -- Test_Cursor_Truncated tests an input stream that ends part way
-   -- through the cursor address. This is a protocol error.
+   --  Test_Cursor_Truncated tests an input stream that ends part way
+   --  through the cursor address. This is a protocol error.
    --
 
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class);

@@ -106,8 +106,8 @@ package body Checkbox_Views is
       AID : Buffer.Byte) is
    begin
 
-      V.AID := AID; 
-   
+      V.AID := AID;
+
    end Update_AID;
 
    procedure Update_Cursor (

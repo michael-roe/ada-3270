@@ -140,6 +140,13 @@ package body Telnet.Workers is
       Panel_State : Panel_Type := Menu_Panel;
    begin
 
+      Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");
+      Numbered_Menu_Views.Set_Label (Menu, 1, L);
+      Lines.Set_Bounded_Wide_String (L, "GLM-5.2");
+      Numbered_Menu_Views.Set_Label (Menu, 2, L);
+      Lines.Set_Bounded_Wide_String (L, "Kimi-K2.7-Code");
+      Numbered_Menu_Views.Set_Label (Menu, 3, L);
+
       for J in 1 .. 50 loop
          Lines.Set_Bounded_Wide_String (L, "Line" & Natural'Wide_Image (J));
          Line_Vectors.Append (Split.History, L);

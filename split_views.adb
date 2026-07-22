@@ -264,7 +264,7 @@ package body Split_Views is
 
    procedure Put_Character (
       V : in out Split_View;
-      C : in Wide_Character) is
+      C : Wide_Character) is
       L : Lines.Bounded_Wide_String;
       L2 : Lines.Bounded_Wide_String;
       Last_Space : Natural;
@@ -280,7 +280,7 @@ package body Split_Views is
          loop
             Last_Space := Last_Space - 1;
          end loop;
-         if (Lines.Element (L, Last_Space) /= ' ') then
+         if  Lines.Element (L, Last_Space) /= ' ' then
             --
             --  There's nowhere to break the line
             --
