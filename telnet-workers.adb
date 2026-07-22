@@ -64,10 +64,6 @@ package body Telnet.Workers is
       Telnet.Protocol.IAC,
       Telnet.Protocol.SE);
 
-   Screen_Message : Buffer.Byte_Array := (
-      IBM_3270.IBM_Write_Erase_Alternate,
-      IBM_3270.WCC_Go_Ahead);
-
    procedure Rx_Record (Bytes_In : Byte_Vectors.Vector) is
       X : Natural;
       Y : Natural;
@@ -194,10 +190,6 @@ package body Telnet.Workers is
                else
                   Bytes_Out.Clear;
 
-                  --  for J in Screen_Message'Range loop
-                  --     Bytes_Out.Append (Screen_Message (J));
-                  --  end loop;
-
                   Handler.To_Physical (Bytes_Out);
 
                   if Bytes_Out.Length > 0 then
@@ -251,67 +243,6 @@ package body Telnet.Workers is
                      when Telnet.Protocol.EOR =>
                         --  Put ("[EOR]");
                         Handler.From_Physical (Bytes_In);
-                        --  if Bytes_In.Element (Bytes_In.First_Index) = IBM_3270.AID_Enter
-                        if False then
-                           Split_Views.To_JSON (Split,
-                              TX2);
-                           Split.Edit_To_History;
-                           Lines.Set_Bounded_Wide_String (L, "");
-                           Line_Vectors.Append (Split.History, L);
-                           After_Backslash := False;
-                           Backend_Byte := 0;
-                           while Backend_Byte /= 10 loop
-                              RX2.Dequeue (Backend_Byte);
-                              if After_Backslash then
-                                 if Backend_Byte = Character'Pos ('\') then
-                                    Split.Put_Character ('\');
-                                 elsif Backend_Byte = Character'Pos ('"') then
-                                    Split.Put_Character ('"');
-                                 elsif Backend_Byte = Character'Pos ('n') then
-                                    Split.New_Line;
-                                 elsif Backend_Byte = Character'Pos ('u') then
-                                    Ada.Text_IO.Put_Line ("Hex string");
-                                    RX2.Dequeue (Backend_Byte);
-                                    Hex_Digits (4) :=
-                                       Character'Val (Backend_Byte);
-                                    RX2.Dequeue (Backend_Byte);
-                                    Hex_Digits (5) :=
-                                       Character'Val (Backend_Byte);
-                                    RX2.Dequeue (Backend_Byte);
-                                    Hex_Digits (6) :=
-                                       Character'Val (Backend_Byte);
-                                    RX2.Dequeue (Backend_Byte);
-                                    Hex_Digits (7) :=
-                                       Character'Val (Backend_Byte);
-                                    Ada.Text_IO.Put_Line (Hex_Digits);
-                                    Split.Put_Character (
-                                       Wide_Character'Val (
-                                          Integer'Value (Hex_Digits)));
-                                 end if;
-                                 After_Backslash := False;
-                              else
-                                 if Backend_Byte = 13 then
-                                    null;
-                                 elsif Backend_Byte = Character'Pos ('\') then
-                                    After_Backslash := True;
-                                 elsif Backend_Byte < 128 then
-                                    Split.Put_Character (
-                                       Wide_Character'Val (Backend_Byte));
-                                 else
-                                    --
-                                    --  Multi-byte UTF-8 character
-                                    --
-                                    Split.Put_Character ('?');
-                                 end if;
-                              end if;
-                           end loop;
-                           if Panel_State = Menu_Panel and Menu.Option /= 0
-                           then
-                              Panel_State := Split_Panel;
-                              Document := Split'Access;
-                              Pageable := Split'Access;
-                           end if;
-                        end if;
                         Bytes_In.Clear;
                         S := Data;
                         Got_Reply := True;
