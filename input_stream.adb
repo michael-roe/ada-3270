@@ -27,7 +27,8 @@ package body Input_Stream is
       First_Field := True;
       X := 0;
       Y := 0;
-      if To_Do > 3 then
+
+      if To_Do >= 3 then
 
          IBM_3270_Orders.To_Buffer_Address (
             Bytes_In.Element (Index + 1),

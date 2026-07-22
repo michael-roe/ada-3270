@@ -38,6 +38,8 @@ package Input_Stream.Tests is
 
    procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Cursor (T : in out Test_Cases.Test_Case'Class);
+
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Duplicate (T : in out Test_Cases.Test_Case'Class);

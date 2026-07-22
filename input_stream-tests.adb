@@ -35,12 +35,12 @@ package body Input_Stream.Tests is
       V : in out Test_View;
       X : Natural;
       Y : Natural) is
-   begin    
+   begin
 
       V.Cursor_X := X;
       V.Cursor_Y := Y;
       V.Cursor_Set := True;
-         
+
    end Update_Cursor;
 
    procedure Update_Field (
@@ -69,6 +69,24 @@ package body Input_Stream.Tests is
       Assert (not V.Cursor_Set, "Update_Cursor should not have been called");
 
    end Test_Short_Read;
+
+   procedure Test_Cursor (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#C1#);
+
+      V.From_Physical (Bytes_In);
+
+      Assert (V.Cursor_Set, "Update_Cursor should have been called");
+      Assert (V.Cursor_X = 1, "Cursor_X should be 1");
+      Assert (V.Cursor_Y = 0, "Cursor_Y should be 0");
+      Assert (V.Field_Count = 0, "Update_Field should not have been called");
+
+   end Test_Cursor;
 
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;
@@ -173,6 +191,9 @@ package body Input_Stream.Tests is
 
       Register_Routine (T, Test_Short_Read'Access,
          "Test_Short_Read");
+
+      Register_Routine (T, Test_Cursor'Access,
+         "Test_Cursor");
 
       Register_Routine (T, Test_Buffer_Address'Access,
          "Test_Buffer_Address");
