@@ -35,4 +35,6 @@ package Checkbox_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String);
 
+   function Get_AID (V : Checkbox_View) return Buffer.Byte;
+
 end Checkbox_Views;

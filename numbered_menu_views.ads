@@ -36,6 +36,8 @@ package Numbered_Menu_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String);
 
+   function Get_AID (V : Numbered_Menu_View) return Buffer.Byte;
+
    procedure Prev_Page (V : in out Numbered_Menu_View);
 
    procedure Next_Page (V : in out Numbered_Menu_View);

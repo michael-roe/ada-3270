@@ -51,6 +51,8 @@ package Input_Stream.Tests is
       Y : Natural;
       L : Lines.Bounded_Wide_String);
 
+   function Get_AID (V : Test_View) return Buffer.Byte;
+
    type Input_Stream_Test is new Test_Cases.Test_Case with null record;
 
    --

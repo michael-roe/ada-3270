@@ -98,4 +98,11 @@ package body Menu_Views is
       null;
    end Update_Field;
 
+   function Get_AID (V : Menu_View) return Buffer.Byte is
+   begin
+
+      return V.AID;
+
+   end Get_AID;
+
 end Menu_Views;

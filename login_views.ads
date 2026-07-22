@@ -32,4 +32,6 @@ package Login_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String);
 
+   function Get_AID (V : Login_View) return Buffer.Byte;
+
 end Login_Views;

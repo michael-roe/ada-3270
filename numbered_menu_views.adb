@@ -167,6 +167,13 @@ package body Numbered_Menu_Views is
 
    end Update_Field;
 
+   function Get_AID (V : Numbered_Menu_View) return Buffer.Byte is
+   begin
+
+      return V.AID;
+
+   end Get_AID;
+
    procedure Prev_Page (V : in out Numbered_Menu_View) is
    begin
 

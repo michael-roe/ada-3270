@@ -138,4 +138,11 @@ package body Checkbox_Views is
 
    end Update_Field;
 
+   function Get_AID (V : Checkbox_View) return Buffer.Byte is
+   begin
+
+      return V.AID;
+
+   end Get_AID;
+
 end Checkbox_Views;

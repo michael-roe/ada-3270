@@ -156,6 +156,13 @@ package body Text_Views is
 
    end Update_Field;
 
+   function Get_AID (V : Text_View) return Buffer.Byte is
+   begin
+
+      return V.AID;
+
+   end Get_AID;
+
    procedure Prev_Page (V : in out Text_View) is
    begin
 

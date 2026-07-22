@@ -40,6 +40,8 @@ package Split_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String);
 
+   function Get_AID (V : Split_View) return Buffer.Byte;
+
    procedure Prev_Page (V : in out Split_View);
 
    procedure Next_Page (V : in out Split_View);

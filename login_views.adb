@@ -113,4 +113,11 @@ package body Login_Views is
 
    end Update_Field;
 
+   function Get_AID (V : Login_View) return Buffer.Byte is
+   begin
+
+      return V.AID;
+
+   end Get_AID;
+
 end Login_Views;

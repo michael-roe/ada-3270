@@ -27,6 +27,8 @@ package Paged_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String) is abstract;
 
+   function Get_AID (V : Paged_View) return Buffer.Byte is abstract;
+
    procedure Prev_Page (V : in out Paged_View) is abstract;
 
    procedure Next_Page (V : in out Paged_View) is abstract;

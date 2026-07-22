@@ -32,4 +32,6 @@ package Menu_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String);
 
+   function Get_AID (V : Menu_View) return Buffer.Byte;
+
 end Menu_Views;

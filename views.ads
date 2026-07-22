@@ -29,6 +29,8 @@ package Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String) is abstract;
 
+   function Get_AID (V : View) return Buffer.Byte is abstract;
+
    type View_Access is access all View'Class;
 
 end Views;

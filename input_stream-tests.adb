@@ -71,6 +71,13 @@ package body Input_Stream.Tests is
 
    end Update_Field;
 
+   function Get_AID (V : Test_View) return Buffer.Byte is
+   begin
+
+      return V.AID;
+
+   end Get_AID;
+
    procedure Test_Empty_Stream (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;
       Bytes_In : Byte_Vectors.Vector;
