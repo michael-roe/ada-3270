@@ -1,3 +1,4 @@
+with Buffer;
 with Byte_Vectors;
 with Paged_Views;
 with Lines;
@@ -7,6 +8,7 @@ package Numbered_Menu_Views is
    type Label_Array is array (1 .. 10) of Lines.Bounded_Wide_String;
 
    type Numbered_Menu_View is new Paged_Views.Paged_View with record
+      AID : Buffer.Byte := 0;
       Option : Natural;
       Option_Labels : Label_Array;
    end record;
@@ -18,6 +20,10 @@ package Numbered_Menu_Views is
    procedure From_Physical (
       V : in out Numbered_Menu_View;
       Bytes_In : Byte_Vectors.Vector);
+
+   procedure Update_AID (
+      V : in out Numbered_Menu_View;
+      AID : Buffer.Byte);
 
    procedure Update_Cursor (
       V : in out Numbered_Menu_View;

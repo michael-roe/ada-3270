@@ -1,10 +1,13 @@
+with Buffer;
 with Byte_Vectors;
 with Views;
 with Lines;
 
 package Login_Views is
 
-   type Login_View is new Views.View with null record;
+   type Login_View is new Views.View with record
+      AID : Buffer.Byte;
+   end record;
 
    procedure To_Physical (
       V : Login_View;
@@ -13,6 +16,10 @@ package Login_Views is
    procedure From_Physical (
       V : in out Login_View;
       Bytes_In : Byte_Vectors.Vector);
+
+   procedure Update_AID (
+      V : in out Login_View;
+      AID : Buffer.Byte);
 
    procedure Update_Cursor (
       V : in out Login_View;

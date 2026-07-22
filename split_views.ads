@@ -1,4 +1,5 @@
 with Ada.Streams;
+with Buffer;
 with Byte_Vectors;
 with Paged_Views;
 with Lines;
@@ -10,6 +11,7 @@ package Split_Views is
    type Edit_Window is array (0 .. 18) of Lines.Bounded_Wide_String;
 
    type Split_View is new Paged_Views.Paged_View with record
+      AID : Buffer.Byte := 0;
       Page_Number : Natural := 0;
       History : Line_Vectors.Vector;
       Edit    : Edit_Window;
@@ -22,6 +24,10 @@ package Split_Views is
    procedure From_Physical (
       V : in out Split_View;
       Bytes_In : Byte_Vectors.Vector);
+
+   procedure Update_AID (
+      V : in out Split_View;
+      AID : Buffer.Byte);
 
    procedure Update_Cursor (
       V : in out Split_View;

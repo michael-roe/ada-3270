@@ -121,6 +121,15 @@ package body Split_Views is
       Input_Stream.Parse (V, Bytes_In);
    end From_Physical;
 
+   procedure Update_AID (
+      V : in out Split_View;
+      AID : Buffer.Byte) is
+   begin
+
+      V.AID := AID;
+
+   end Update_AID;
+
    procedure Update_Cursor (
       V : in out Split_View;
       X : Natural;

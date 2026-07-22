@@ -1,3 +1,4 @@
+with Buffer;
 with Byte_Vectors;
 with Lines;
 
@@ -12,6 +13,10 @@ package Views is
    procedure From_Physical (
       V : in out View;
       Bytes_In : Byte_Vectors.Vector) is abstract;
+
+   procedure Update_AID (
+      V : in out View;
+      AID : Buffer.Byte) is abstract;
 
    procedure Update_Cursor (
       V : in out View;

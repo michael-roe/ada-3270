@@ -78,8 +78,19 @@ package body Login_Views is
       V : in out Login_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
+
       Input_Stream.Parse (V, Bytes_In);
+
    end From_Physical;
+
+   procedure Update_AID (
+      V : in out Login_View;
+      AID : Buffer.Byte) is
+   begin
+
+      V.AID := AID; 
+
+   end Update_AID;
 
    procedure Update_Cursor (
       V : in out Login_View;
@@ -97,7 +108,9 @@ package body Login_Views is
       Y : Natural;
       L : Lines.Bounded_Wide_String) is
    begin
+
       null;
+
    end Update_Field;
 
 end Login_Views;

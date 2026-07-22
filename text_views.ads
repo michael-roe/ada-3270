@@ -1,11 +1,13 @@
 with Byte_Vectors;
 with Paged_Views;
+with Buffer;
 with Lines;
 with Line_Vectors;
 
 package Text_Views is
 
    type Text_View is new Paged_Views.Paged_View with record
+      AID : Buffer.Byte := 0;
       Page_Number : Natural := 0;
       Text : Line_Vectors.Vector;
    end record;
@@ -17,6 +19,10 @@ package Text_Views is
    procedure From_Physical (
       V : in out Text_View;
       Bytes_In : Byte_Vectors.Vector);
+
+   procedure Update_AID (
+      V : in out Text_View;
+      AID : Buffer.Byte);
 
    procedure Update_Cursor (
       V : in out Text_View;

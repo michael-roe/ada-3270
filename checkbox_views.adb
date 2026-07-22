@@ -89,6 +89,7 @@ package body Checkbox_Views is
       Bytes_In : Byte_Vectors.Vector) is
       AID : Buffer.Byte;
    begin
+
       --  Ought to check there is a first element
       AID := Bytes_In.Element (Bytes_In.First_Index);
       if not IBM_3270_Orders.Is_Short_Read (AID) then
@@ -97,7 +98,17 @@ package body Checkbox_Views is
          end loop;
          Input_Stream.Parse (V, Bytes_In);
       end if;
+
    end From_Physical;
+
+   procedure Update_AID (
+      V : in out Checkbox_View;
+      AID : Buffer.Byte) is
+   begin
+
+      V.AID := AID; 
+   
+   end Update_AID;
 
    procedure Update_Cursor (
       V : in out Checkbox_View;
@@ -116,6 +127,7 @@ package body Checkbox_Views is
       L : Lines.Bounded_Wide_String) is
       F : Natural;
    begin
+
       if (X = 4) and (Y >= 4) and (Y <= 10) and (Y mod 2 = 0) then
          F := (Y - 4) / 2 + 1;
          Ada.Text_IO.Put ("Updating field ");
@@ -123,6 +135,7 @@ package body Checkbox_Views is
          Ada.Text_IO.New_Line;
          V.Checkboxes (F) := True;
       end if;
+
    end Update_Field;
 
 end Checkbox_Views;

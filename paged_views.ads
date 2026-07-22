@@ -1,3 +1,4 @@
+with Buffer;
 with Views;
 with Lines;
 with Byte_Vectors;
@@ -15,6 +16,10 @@ package Paged_Views is
    procedure From_Physical (
       V : in out Paged_View;
       Bytes_In : Byte_Vectors.Vector) is abstract;
+
+   procedure Update_AID (
+      V : in out Paged_View;
+      AID : Buffer.Byte) is abstract;
 
    procedure Update_Field (
       V : in out Paged_View;

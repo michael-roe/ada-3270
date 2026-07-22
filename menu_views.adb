@@ -65,8 +65,19 @@ package body Menu_Views is
       V : in out Menu_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
+
       null;
+
    end From_Physical;
+
+   procedure Update_AID (
+      V : in out Menu_View;
+      AID : Buffer.Byte) is
+   begin
+
+      V.AID := AID; 
+
+   end Update_AID;
 
    procedure Update_Cursor (
       V : in out Menu_View;

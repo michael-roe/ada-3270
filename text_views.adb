@@ -100,7 +100,9 @@ package body Text_Views is
       V : in out Text_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
+
       Input_Stream.Parse (V, Bytes_In);
+
    end From_Physical;
 
    procedure Update_Cursor (
@@ -113,6 +115,15 @@ package body Text_Views is
 
    end Update_Cursor;
 
+   procedure Update_AID (
+      V : in out Text_View;
+      AID : Buffer.Byte) is
+   begin
+
+      V.AID := AID;
+
+   end Update_AID;
+
    procedure Update_Field (
       V : in out Text_View;
       X : Natural;
@@ -122,6 +133,7 @@ package body Text_Views is
       Blank_Line : Lines.Bounded_Wide_String;
       Extra_Lines : Natural;
    begin
+
       --  Ada.Text_IO.Put ("(");
       --  Ada.Text_IO.Put (Natural'Image (X));
       --  Ada.Text_IO.Put (",");
@@ -141,6 +153,7 @@ package body Text_Views is
             Line_Number,
             L);
       end if;
+
    end Update_Field;
 
    procedure Prev_Page (V : in out Text_View) is

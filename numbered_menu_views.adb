@@ -130,6 +130,15 @@ package body Numbered_Menu_Views is
 
    end From_Physical;
 
+   procedure Update_AID (
+      V : in out Numbered_Menu_View;
+      AID : Buffer.Byte) is
+   begin
+
+      V.AID := AID;
+
+   end Update_AID;
+
    procedure Update_Cursor (
       V : in out Numbered_Menu_View;
       X : Natural;
