@@ -98,6 +98,12 @@ package body IBM_3270_Event_Handlers is
                   null;
                elsif Backend_Byte = Character'Pos ('\') then
                   After_Backslash := True;
+               elsif Backend_Byte = Character'Pos ('"') then
+                  --
+                  --  JSON strings can't contain a quote character,
+                  --  but will be terminated by one.
+                  --
+                  null;
                elsif Backend_Byte < 128 then
                   Split.Put_Character (
                      Wide_Character'Val (Backend_Byte));
@@ -137,10 +143,10 @@ package body IBM_3270_Event_Handlers is
       Lines.Set_Bounded_Wide_String (L, "Kimi-K2.7-Code");
       Numbered_Menu_Views.Set_Label (Menu, 3, L);
 
-      for J in 1 .. 50 loop
-         Lines.Set_Bounded_Wide_String (L, "Line" & Natural'Wide_Image (J));
-         Line_Vectors.Append (Split.History, L);
-      end loop;
+      --  for J in 1 .. 50 loop
+      --     Lines.Set_Bounded_Wide_String (L, "Line" & Natural'Wide_Image (J));
+      --     Line_Vectors.Append (Split.History, L);
+      --  end loop;
 
       Checkboxes.Checkboxes (1) := True;
       Checkboxes.Checkboxes (2) := True;
