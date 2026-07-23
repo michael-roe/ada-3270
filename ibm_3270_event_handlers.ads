@@ -3,6 +3,7 @@ with Buffer_Queues;
 with Telnet.Event_Handlers;
 with Views;
 with Pageable_Views;
+with JSON_Views;
 
 package IBM_3270_Event_Handlers is
 
@@ -12,6 +13,7 @@ package IBM_3270_Event_Handlers is
       State    : Panel_Type := Null_Panel;
       Current  : Views.View_Access;
       Pageable : Pageable_Views.Pageable_Access;
+      JSONable : JSON_Views.JSON_Access;
       RX2      : access Buffer_Queues.Queue;
       TX2      : access Buffer_Queues.Queue;
    end record;

@@ -4,6 +4,7 @@ use type Buffer.Byte;
 with Views;
 with Pageable_Views;
 with Text_Views;
+with JSON_Views;
 with Split_Views;
 with Checkbox_Views;
 with Numbered_Menu_Views;
@@ -57,8 +58,7 @@ package body IBM_3270_Event_Handlers is
       elsif AID = IBM_3270.AID_PF8 then
          V.Pageable.Next_Page;
       elsif AID = IBM_3270.AID_Enter then
-         Split_Views.To_JSON (Split,
-            V.TX2);
+         V.JSONable.To_JSON (V.TX2);
          Split.Edit_To_History;
          Lines.Set_Bounded_Wide_String (L, "");
          Line_Vectors.Append (Split.History, L);
@@ -113,6 +113,7 @@ package body IBM_3270_Event_Handlers is
          if V.State = Menu_Panel and then Menu.Option /= 0 then
             V.Current := Split'Access;
             V.Pageable :=  Split'Access;
+            V.JSONable := Split'Access;
             V.State := Split_Panel;
          end if;
 
@@ -126,6 +127,7 @@ package body IBM_3270_Event_Handlers is
 
       V.Current := Menu'Access;
       V.Pageable := Menu'Access;
+      V.JSONable := Split'Access;
       V.State := Menu_Panel;
 
       Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");

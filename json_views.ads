@@ -13,4 +13,6 @@ package JSON_Views is
       V   : JSON_View;
       TX2 : access Buffer_Queues.Queue) is abstract;
 
+   type JSON_Access is access all JSON_View'Class;
+
 end JSON_Views;
