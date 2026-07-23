@@ -62,6 +62,8 @@ package body Telnet.Workers is
       Terminal_Sent : Boolean := False;
    begin
 
+      accept Connect;
+
       Handler.Initialize;
       Handler.Set_RX_TX (RX2, TX2);
 

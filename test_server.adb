@@ -113,6 +113,7 @@ begin
       Shared_Buffers.Terminal_Socket, Client_Address);
    Transmitter_Task.Connect;
    Receiver_Task.Connect;
+   Worker.Connect;
 
    Receiver_Task.Disconnect;
    abort Transmitter_Task;

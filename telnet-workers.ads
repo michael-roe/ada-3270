@@ -8,6 +8,7 @@ package Telnet.Workers is
       RX2 : access Buffer_Queues.Queue;
       TX2 : access Buffer_Queues.Queue;
       Responder : Boolean) is
+      entry Connect;
    end Worker;
 
 end Telnet.Workers;
