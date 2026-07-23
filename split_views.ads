@@ -2,6 +2,7 @@ with Ada.Streams;
 with Buffer;
 with Byte_Vectors;
 with Paged_Views;
+with JSON_Views;
 with Lines;
 with Line_Vectors;
 with Buffer_Queues;
@@ -10,7 +11,8 @@ package Split_Views is
 
    type Edit_Window is array (0 .. 18) of Lines.Bounded_Wide_String;
 
-   type Split_View is new Paged_Views.Paged_View with record
+   type Split_View is new Paged_Views.Paged_View and JSON_Views.JSON_View
+      with record
       AID : Buffer.Byte := 0;
       Page_Number : Natural := 0;
       History : Line_Vectors.Vector;
