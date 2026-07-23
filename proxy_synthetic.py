@@ -32,6 +32,12 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("127.0.0.1", port))
 f = s.makefile("rw", encoding="utf-8", newline="\r\n")
 
+line = f.readline().strip()
+opt = json.loads(line)
+print ("Option:", opt)
+f.write("\"OK\"\n")
+f.flush()
+
 while True:
   line = f.readline().strip()
   query = json.loads(line)
