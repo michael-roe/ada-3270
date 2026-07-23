@@ -14,7 +14,6 @@ with Telnet.Terminal;
 with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
 with IBM_3270;
-with IBM_3270_Event_Handlers;
 
 package body Telnet.Workers is
 
@@ -45,8 +44,6 @@ package body Telnet.Workers is
       Telnet.Protocol.IAC,
       Telnet.Protocol.SE);
 
-   Handler : IBM_3270_Event_Handlers.IBM_3270_Handler;
-
    task body Worker is
       S : State := Data;
       C : Buffer.Byte;
@@ -65,7 +62,6 @@ package body Telnet.Workers is
       accept Connect;
 
       Handler.Initialize;
-      Handler.Set_RX_TX (RX2, TX2);
 
       for J in 1 .. 30 loop -- only 8 options to send
 

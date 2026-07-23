@@ -15,4 +15,6 @@ package Telnet.Event_Handlers is
    procedure Initialize (
       V : in out Handler) is abstract;
 
+   type Handler_Access is access all Handler'Class;
+
 end Telnet.Event_Handlers;

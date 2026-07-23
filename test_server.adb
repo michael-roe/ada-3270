@@ -21,6 +21,7 @@ procedure Test_Server is
       Shared_Buffers.TX'Access,
       Shared_Buffers.RX2'Access,
       Shared_Buffers.TX2'Access,
+      Shared_Buffers.Handler'Access,
       True);
 
    task type Transmitter (
@@ -87,6 +88,8 @@ procedure Test_Server is
       Shared_Buffers.RX2'Access);
 
 begin
+
+   Shared_Buffers.Handler.Set_RX_TX (Shared_Buffers.RX2'Access, Shared_Buffers.TX2'Access);
 
    Server_Address.Addr := Inet_Addr ("127.0.0.1");
    Server_Address.Port := 17002;

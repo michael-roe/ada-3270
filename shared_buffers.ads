@@ -7,6 +7,7 @@ use GNAT.Sockets;
 with Buffer; use type Buffer.Byte;
 with Buffer_Queues;
 with Telnet.Workers;
+with IBM_3270_Event_Handlers;
 
 package Shared_Buffers is
 
@@ -21,5 +22,7 @@ package Shared_Buffers is
    RX2 : aliased Buffer_Queues.Queue;
 
    TX2 : aliased Buffer_Queues.Queue;
+
+   Handler : aliased IBM_3270_Event_Handlers.IBM_3270_Handler;
 
 end Shared_Buffers;
