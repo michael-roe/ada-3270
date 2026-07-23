@@ -188,6 +188,24 @@ package body Numbered_Menu_Views is
 
    end Next_Page;
 
+   procedure To_JSON (
+      V : Numbered_Menu_View;
+      TX2 : access Buffer_Queues.Queue) is
+      S : String := Natural'Image (V.Option);
+   begin
+
+      TX2.Enqueue (Character'Pos ('"')); 
+      for J in S'Range loop
+         if S (J) /= ' ' then
+            TX2.Enqueue (Character'Pos (S (J)));
+         end if;
+      end loop;
+      TX2.Enqueue (Character'Pos ('"')); 
+      TX2.Enqueue (13);
+      TX2.Enqueue (10);
+ 
+   end To_JSON;
+
    procedure Set_Label (
       V : in out Numbered_Menu_View;
       N : Natural;

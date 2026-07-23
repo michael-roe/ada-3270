@@ -127,7 +127,7 @@ package body IBM_3270_Event_Handlers is
 
       V.Current := Menu'Access;
       V.Pageable := Menu'Access;
-      V.JSONable := Split'Access;
+      V.JSONable := Menu'Access;
       V.State := Menu_Panel;
 
       Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");
