@@ -74,7 +74,7 @@ package body IBM_3270_Event_Handlers is
                elsif Backend_Byte = Character'Pos ('n') then
                   Split.New_Line;
                elsif Backend_Byte = Character'Pos ('u') then
-                  Ada.Text_IO.Put_Line ("Hex string");
+                  --  Ada.Text_IO.Put_Line ("Hex string");
                   V.RX2.Dequeue (Backend_Byte);
                   Hex_Digits (4) :=
                      Character'Val (Backend_Byte);
@@ -87,7 +87,7 @@ package body IBM_3270_Event_Handlers is
                   V.RX2.Dequeue (Backend_Byte);
                   Hex_Digits (7) :=
                      Character'Val (Backend_Byte);
-                  Ada.Text_IO.Put_Line (Hex_Digits);
+                  --  Ada.Text_IO.Put_Line (Hex_Digits);
                   Split.Put_Character (
                      Wide_Character'Val (
                         Integer'Value (Hex_Digits)));
