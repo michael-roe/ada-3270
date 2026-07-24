@@ -20,7 +20,7 @@ package Test_Break_Handlers is
    --
 
    procedure To_Physical (
-      V         : Test_Break_Handler;
+      V         : in out Test_Break_Handler;
       Bytes_Out : in out Byte_Vectors.Vector;
       Go_Ahead  : in out Boolean);
 

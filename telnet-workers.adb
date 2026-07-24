@@ -57,7 +57,7 @@ package body Telnet.Workers is
       Option_In : Byte_Vectors.Vector;
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
-      Go_Ahead : Boolean := True;
+      Go_Ahead : Boolean := False;
    begin
 
       accept Connect;
@@ -110,17 +110,23 @@ package body Telnet.Workers is
                   end loop;
                   Terminal_Sent := True;
                else
-                  Bytes_Out.Clear;
+                  Go_Ahead := False;
 
-                  Handler.To_Physical (Bytes_Out, Go_Ahead);
+                  while not Go_Ahead loop
 
-                  if Bytes_Out.Length > 0 then
-                     for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
-                        TX.Enqueue (Bytes_Out.Element (J));
-                     end loop;
-                  end if;
-                  TX.Enqueue (Telnet.Protocol.IAC);
-                  TX.Enqueue (Telnet.Protocol.EOR);
+                     Bytes_Out.Clear;
+
+                     Handler.To_Physical (Bytes_Out, Go_Ahead);
+
+                     if Bytes_Out.Length > 0 then
+                        for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
+                           TX.Enqueue (Bytes_Out.Element (J));
+                        end loop;
+                     end if;
+                     TX.Enqueue (Telnet.Protocol.IAC);
+                     TX.Enqueue (Telnet.Protocol.EOR);
+
+                  end loop;
                end if;
          end case;
 

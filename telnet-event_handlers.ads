@@ -5,12 +5,12 @@ package Telnet.Event_Handlers is
    type Handler is abstract tagged null record;
 
    procedure To_Physical (
-      V         : Handler;
+      V         : in out Handler;
       Bytes_Out : in out Byte_Vectors.Vector;
       Go_Ahead  : in out Boolean) is abstract;
 
    procedure From_Physical (
-      V : in out Handler;
+      V        : in out Handler;
       Bytes_In : Byte_Vectors.Vector) is abstract;
 
    procedure Break (V : in out Handler) is abstract;

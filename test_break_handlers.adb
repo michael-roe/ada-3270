@@ -2,6 +2,7 @@ with Ada.Text_IO;
 with Buffer;
 with Code_Page_500;
 with IBM_3270;
+with IBM_3270_Orders;
 
 package body Test_Break_Handlers is
 
@@ -14,7 +15,7 @@ package body Test_Break_Handlers is
       0);
 
    procedure To_Physical (
-      V         : Test_Break_Handler;
+      V         : in out Test_Break_Handler;
       Bytes_Out : in out Byte_Vectors.Vector;
       Go_Ahead  : in out Boolean) is
    begin
@@ -23,15 +24,29 @@ package body Test_Break_Handlers is
          for J in Screen_Message'Range loop
             Bytes_Out.Append (Screen_Message (J));
          end loop;
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Highlighted);
          Code_Page_500.Append (Bytes_Out, "Press the ENTER key");
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
          Go_Ahead := True;
       else
          for J in Screen_Message'Range loop
             Bytes_Out.Append (Screen_Message_No_GA (J));
          end loop;
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 0);
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Highlighted);
          Code_Page_500.Append (Bytes_Out, "Press the ATTN key");
+         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2);
+         Code_Page_500.Append (Bytes_Out, "[");
+         Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (V.Counter));
+         Code_Page_500.Append (Bytes_Out, "]");
          Go_Ahead := False;
-     end if;
+
+         delay 2.0;
+
+      end if;
+
+      V.Counter := V.Counter + 1;
 
    end To_Physical;
 
@@ -41,7 +56,6 @@ package body Test_Break_Handlers is
    begin
 
       Ada.Text_IO.Put_Line ("From_Physical called");
-      V.Counter := V.Counter + 1;
 
    end From_Physical;
 
