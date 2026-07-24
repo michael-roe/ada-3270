@@ -22,6 +22,8 @@ package body Login_Views is
    function Hidden return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Hidden;
 
+   P : Code_Page_500.Page_500;
+
    procedure To_Physical (
       V : Login_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
@@ -35,7 +37,7 @@ package body Login_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " Login");
+      P.Append (Bytes_Out, " Login");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -51,10 +53,10 @@ package body Login_Views is
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
-      Code_Page_500.Append (Bytes_Out, "User Name");
+      P.Append (Bytes_Out, "User Name");
       IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
       IBM_3270_Orders.Insert_Cursor (Bytes_Out);
-      Code_Page_500.Append (Bytes_Out, "            ");
+      P.Append (Bytes_Out, "            ");
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 4);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -65,9 +67,9 @@ package body Login_Views is
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
-      Code_Page_500.Append (Bytes_Out, "Password ");
+      P.Append (Bytes_Out, "Password ");
       IBM_3270_Orders.Start_Field (Bytes_Out, False, Hidden);
-      Code_Page_500.Append (Bytes_Out, "            ");
+      P.Append (Bytes_Out, "            ");
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 6);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);

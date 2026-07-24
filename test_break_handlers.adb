@@ -14,6 +14,8 @@ package body Test_Break_Handlers is
       IBM_3270.IBM_Write_Erase,
       0);
 
+   P : Code_Page_500.Page_500;
+
    procedure To_Physical (
       V         : in out Test_Break_Handler;
       Bytes_Out : in out Byte_Vectors.Vector;
@@ -25,7 +27,7 @@ package body Test_Break_Handlers is
             Bytes_Out.Append (Screen_Message (J));
          end loop;
          IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Highlighted);
-         Code_Page_500.Append (Bytes_Out, "Press the ENTER key");
+         P.Append (Bytes_Out, "Press the ENTER key");
          IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
          Go_Ahead := True;
       elsif not V.Break_Received then
@@ -34,12 +36,12 @@ package body Test_Break_Handlers is
          end loop;
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 0);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Highlighted);
-         Code_Page_500.Append (Bytes_Out, "Press the ATTN key");
+         P.Append (Bytes_Out, "Press the ATTN key");
          IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2);
-         Code_Page_500.Append (Bytes_Out, "[");
-         Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (V.Counter));
-         Code_Page_500.Append (Bytes_Out, "]");
+         P.Append (Bytes_Out, "[");
+         P.Append (Bytes_Out, Natural'Wide_Image (V.Counter));
+         P.Append (Bytes_Out, "]");
          Go_Ahead := False;
 
          delay 2.0;
@@ -50,14 +52,14 @@ package body Test_Break_Handlers is
   
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 0);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
-         Code_Page_500.Append (Bytes_Out, "Break received.");
+         P.Append (Bytes_Out, "Break received.");
          IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Highlighted);
-         Code_Page_500.Append (Bytes_Out, "Press the ENTER key");
+         P.Append (Bytes_Out, "Press the ENTER key");
          IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2);
-         Code_Page_500.Append (Bytes_Out, "[");
-         Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (V.Counter));
-         Code_Page_500.Append (Bytes_Out, "]");
+         P.Append (Bytes_Out, "[");
+         P.Append (Bytes_Out, Natural'Wide_Image (V.Counter));
+         P.Append (Bytes_Out, "]");
          Go_Ahead := True;
       end if;
 

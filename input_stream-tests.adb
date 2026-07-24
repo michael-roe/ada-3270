@@ -14,6 +14,8 @@ with Math_Operators;
 
 package body Input_Stream.Tests is
 
+   P : Code_Page_500.Page_500;
+
    procedure To_Physical (
       V : Test_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
@@ -153,7 +155,7 @@ package body Input_Stream.Tests is
       Bytes_In.Append (16#40#);
       Bytes_In.Append (16#C1#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      Code_Page_500.Append (Bytes_In, "*");
+      P.Append (Bytes_In, "*");
       Code_Page_310.Append (Bytes_In, Math_Operators.Logical_And);
 
       V.From_Physical (Bytes_In);
@@ -183,9 +185,9 @@ package body Input_Stream.Tests is
       Bytes_In.Append (16#40#);
       Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      Code_Page_500.Append (Bytes_In, "(");
+      P.Append (Bytes_In, "(");
       Bytes_In.Append (IBM_3270.Duplicate);
-      Code_Page_500.Append (Bytes_In, ")");
+      P.Append (Bytes_In, ")");
 
       V.From_Physical (Bytes_In);
 
@@ -205,9 +207,9 @@ package body Input_Stream.Tests is
       Bytes_In.Append (16#40#);
       Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      Code_Page_500.Append (Bytes_In, "(");
+      P.Append (Bytes_In, "(");
       Bytes_In.Append (IBM_3270.Field_Mark);
-      Code_Page_500.Append (Bytes_In, ")");
+      P.Append (Bytes_In, ")");
 
       V.From_Physical (Bytes_In);
 
@@ -228,7 +230,7 @@ package body Input_Stream.Tests is
       Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
 
-      Code_Page_500.Append (Bytes_In, "Hello   ");
+      P.Append (Bytes_In, "Hello   ");
 
       V.From_Physical (Bytes_In);
 
@@ -248,13 +250,13 @@ package body Input_Stream.Tests is
       Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
 
-      Code_Page_500.Append (Bytes_In, "(");
+      P.Append (Bytes_In, "(");
 
       for J in 1 .. 256 loop
-         Code_Page_500.Append (Bytes_In, "*");
+         P.Append (Bytes_In, "*");
       end loop;
 
-      Code_Page_500.Append (Bytes_In, ")");
+      P.Append (Bytes_In, ")");
 
       V.From_Physical (Bytes_In);
 
@@ -273,9 +275,9 @@ package body Input_Stream.Tests is
       Bytes_In.Append (16#40#);
       Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      Code_Page_500.Append (Bytes_In, "*");
+      P.Append (Bytes_In, "*");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 4);
-      Code_Page_500.Append (Bytes_In, "Hello");
+      P.Append (Bytes_In, "Hello");
 
       V.From_Physical (Bytes_In);
 
@@ -299,9 +301,9 @@ package body Input_Stream.Tests is
       Bytes_In.Append (16#40#);
       Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      Code_Page_500.Append (Bytes_In, "Hello   ");
+      P.Append (Bytes_In, "Hello   ");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 4);
-      Code_Page_500.Append (Bytes_In, "World   ");
+      P.Append (Bytes_In, "World   ");
 
       V.From_Physical (Bytes_In);
 

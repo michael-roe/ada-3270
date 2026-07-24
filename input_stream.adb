@@ -12,6 +12,8 @@ with Views;
 
 package body Input_Stream is
 
+   P : Code_Page_500.Page_500;
+
    procedure Parse (
       V : in out Views.View'Class;
       Bytes_In : Byte_Vectors.Vector) is
@@ -94,7 +96,7 @@ package body Input_Stream is
                when others =>
                   Lines.Append (
                      L,
-                     Code_Page_500.To_Wide_Character (
+                     P.To_Wide_Character (
                         Bytes_In.Element (Index)),
                      Ada.Strings.Right);
                   To_Do := To_Do - 1;

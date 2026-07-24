@@ -13,6 +13,8 @@ package body Text_Views is
    function Normal_Text return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Normal_Text;
 
+   P : Code_Page_500.Page_500;
+
    procedure To_Physical (
       V : Text_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
@@ -27,7 +29,7 @@ package body Text_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " Text Input Panel Test");
+      P.Append (Bytes_Out, " Text Input Panel Test");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -40,19 +42,19 @@ package body Text_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
-      Code_Page_500.Append (Bytes_Out, "More: ");
+      P.Append (Bytes_Out, "More: ");
       if V.Page_Number <= Natural (V.Text.Length) / 36 then
-         Code_Page_500.Append (Bytes_Out, "+");
+         P.Append (Bytes_Out, "+");
       else
-         Code_Page_500.Append (Bytes_Out, " ");
+         P.Append (Bytes_Out, " ");
       end if;
-      Code_Page_500.Append (Bytes_Out, " ");
+      P.Append (Bytes_Out, " ");
       if V.Page_Number = 0 then
-         Code_Page_500.Append (Bytes_Out, " ");
+         P.Append (Bytes_Out, " ");
       else
-         Code_Page_500.Append (Bytes_Out, "-");
+         P.Append (Bytes_Out, "-");
       end if;
-      Code_Page_500.Append (Bytes_Out, " ");
+      P.Append (Bytes_Out, " ");
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
       for J in 4 .. 39 loop
@@ -63,7 +65,7 @@ package body Text_Views is
          end if;
          Line_Number := 36 * V.Page_Number + J - 4;
          if Line_Number <= V.Text.Last_Index then
-            Code_Page_500.Append (
+            P.Append (
                Bytes_Out,
                Lines.To_Wide_String (V.Text (Line_Number)));
          end if;
@@ -80,10 +82,10 @@ package body Text_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " PF1=Help");
-      Code_Page_500.Append (Bytes_Out, " PF3=Exit");
-      Code_Page_500.Append (Bytes_Out, " PF7=Prev");
-      Code_Page_500.Append (Bytes_Out, " PF8=Next");
+      P.Append (Bytes_Out, " PF1=Help");
+      P.Append (Bytes_Out, " PF3=Exit");
+      P.Append (Bytes_Out, " PF7=Prev");
+      P.Append (Bytes_Out, " PF8=Next");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 

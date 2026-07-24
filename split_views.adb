@@ -17,6 +17,8 @@ package body Split_Views is
    function Normal_Text return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Normal_Text;
 
+   P : Code_Page_500.Page_500;
+
    procedure To_Physical (
       V : Split_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
@@ -31,7 +33,7 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " Split Panel Test");
+      P.Append (Bytes_Out, " Split Panel Test");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -44,15 +46,15 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
-      Code_Page_500.Append (Bytes_Out, "More: ");
-      Code_Page_500.Append (Bytes_Out, "+");
-      Code_Page_500.Append (Bytes_Out, " ");
+      P.Append (Bytes_Out, "More: ");
+      P.Append (Bytes_Out, "+");
+      P.Append (Bytes_Out, " ");
       if V.Page_Number = 0 then
-         Code_Page_500.Append (Bytes_Out, " ");
+         P.Append (Bytes_Out, " ");
       else
-         Code_Page_500.Append (Bytes_Out, "-");
+         P.Append (Bytes_Out, "-");
       end if;
-      Code_Page_500.Append (Bytes_Out, " ");
+      P.Append (Bytes_Out, " ");
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
       for J in 4 .. 19 loop
@@ -60,7 +62,7 @@ package body Split_Views is
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Line_Number := J - 4 + 16 * V.Page_Number;
          if Line_Number <= V.History.Last_Index then
-            Code_Page_500.Append (
+            P.Append (
                Bytes_Out,
                Lines.To_Wide_String (V.History (Line_Number)));
          end if;
@@ -81,7 +83,7 @@ package body Split_Views is
          if J = 21 then
             IBM_3270_Orders.Insert_Cursor (Bytes_Out);
          end if;
-         Code_Page_500.Append (
+         P.Append (
             Bytes_Out,
             Lines.To_Wide_String (V.Edit (J - 21)));
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
@@ -97,11 +99,11 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " PF1=Help");
-      Code_Page_500.Append (Bytes_Out, " PF3=Exit");
-      Code_Page_500.Append (Bytes_Out, " PF7=Prev");
-      Code_Page_500.Append (Bytes_Out, " PF8=Next");
-      Code_Page_500.Append (Bytes_Out, " PF11=Undo");
+      P.Append (Bytes_Out, " PF1=Help");
+      P.Append (Bytes_Out, " PF3=Exit");
+      P.Append (Bytes_Out, " PF7=Prev");
+      P.Append (Bytes_Out, " PF8=Next");
+      P.Append (Bytes_Out, " PF11=Undo");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 

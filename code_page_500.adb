@@ -296,11 +296,12 @@ package body Code_Page_500 is
       Wide_Character'Val (16#DA#),
       Wide_Character'Val (16#9F#));
 
-   procedure Append (V : in out Byte_Vectors.Vector; S : Wide_String) is
-
+   procedure Append (
+      P : Page_500;
+      V : in out Byte_Vectors.Vector;
+      S : Wide_String) is
       C : Integer;
       B : Buffer.Byte;
-
    begin
 
       for J in S'Range loop
@@ -312,9 +313,13 @@ package body Code_Page_500 is
 
    end Append;
 
-   function To_Wide_Character (B : Buffer.Byte) return Wide_Character is
+   function To_Wide_Character (
+      P : Page_500;
+      B : Buffer.Byte) return Wide_Character is
    begin
+
       return ITable (B);
+
    end To_Wide_Character;
 
 end Code_Page_500;

@@ -14,6 +14,8 @@ package body Numbered_Menu_Views is
    function Highlighted return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Highlighted;
 
+   P : Code_Page_500.Page_500;
+
    procedure To_Physical (
       V : Numbered_Menu_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
@@ -27,7 +29,7 @@ package body Numbered_Menu_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " Menu Test");
+      P.Append (Bytes_Out, " Menu Test");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -43,7 +45,7 @@ package body Numbered_Menu_Views is
 
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 4);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " Select an option and press Enter");
+      P.Append (Bytes_Out, " Select an option and press Enter");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 4);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -55,10 +57,10 @@ package body Numbered_Menu_Views is
       for J in 1 .. 10 loop
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 4);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         Code_Page_500.Append (Bytes_Out, " ");
-         Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (J));
-         Code_Page_500.Append (Bytes_Out, " ");
-         Code_Page_500.Append (Bytes_Out,
+         P.Append (Bytes_Out, " ");
+         P.Append (Bytes_Out, Natural'Wide_Image (J));
+         P.Append (Bytes_Out, " ");
+         P.Append (Bytes_Out,
             Lines.To_Wide_String (V.Option_Labels (J)));
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 4);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -80,17 +82,17 @@ package body Numbered_Menu_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 39);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
-      Code_Page_500.Append (Bytes_Out, "Option ==>");
+      P.Append (Bytes_Out, "Option ==>");
       IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
       IBM_3270_Orders.Insert_Cursor (Bytes_Out);
       if V.Option = 0 then
-         Code_Page_500.Append (Bytes_Out, "    ");
+         P.Append (Bytes_Out, "    ");
       else
          --
          --  Ought to make this fixed width
          --
-         Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (V.Option));
-         Code_Page_500.Append (Bytes_Out, "   ");
+         P.Append (Bytes_Out, Natural'Wide_Image (V.Option));
+         P.Append (Bytes_Out, "   ");
       end if;
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 39);
@@ -105,10 +107,10 @@ package body Numbered_Menu_Views is
 
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " PF1=Help");
-      Code_Page_500.Append (Bytes_Out, " PF3=Exit");
-      Code_Page_500.Append (Bytes_Out, " PF7=Prev");
-      Code_Page_500.Append (Bytes_Out, " PF8=Next");
+      P.Append (Bytes_Out, " PF1=Help");
+      P.Append (Bytes_Out, " PF3=Exit");
+      P.Append (Bytes_Out, " PF7=Prev");
+      P.Append (Bytes_Out, " PF8=Next");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 

@@ -12,6 +12,8 @@ package body Menu_Views is
    function Highlighted return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Highlighted;
 
+   P : Code_Page_500.Page_500;
+
    procedure To_Physical (
       V : Menu_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
@@ -25,7 +27,7 @@ package body Menu_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      Code_Page_500.Append (Bytes_Out, " Menu Test");
+      P.Append (Bytes_Out, " Menu Test");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -49,11 +51,11 @@ package body Menu_Views is
          if J = 1 then
             IBM_3270_Orders.Insert_Cursor (Bytes_Out);
          end if;
-         Code_Page_500.Append (Bytes_Out, " ");
+         P.Append (Bytes_Out, " ");
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
          Code_Page_310.Append (Bytes_Out, ']');
-         Code_Page_500.Append (Bytes_Out, " Option");
-         Code_Page_500.Append (Bytes_Out, Natural'Wide_Image (J));
+         P.Append (Bytes_Out, " Option");
+         P.Append (Bytes_Out, Natural'Wide_Image (J));
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 2 * J + 2);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
