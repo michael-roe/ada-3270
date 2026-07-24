@@ -6,6 +6,7 @@ with Ada.Containers;
 with Ada.Streams;
 use type Ada.Containers.Count_Type;
 with Buffer; use type Buffer.Byte;
+with Buffer_Queues; use Buffer_Queues;
 with Byte_Vectors;
 with Byte_Text_IO;
 with Telnet.Protocol;
@@ -58,6 +59,7 @@ package body Telnet.Workers is
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
       Go_Ahead : Boolean := False;
+      RX_Empty : Boolean;
    begin
 
       accept Connect;
@@ -113,6 +115,37 @@ package body Telnet.Workers is
                   Go_Ahead := False;
 
                   while not Go_Ahead loop
+
+                     declare
+                        Q : access Buffer_Queues.Queue := RX;
+                     begin
+                        RX_Empty := Q.Is_Empty;
+                     end;
+
+                     if not RX_Empty then
+                        RX.Dequeue (C);
+                        if C /= Telnet.Protocol.IAC then
+                           --
+                           --  I think it's a protocol error to receive data
+                           --  when the terminal does not have go ahead.
+                           --
+                           Ada.Text_IO.Put_Line ("Received data unexpectedly");
+                        else
+                           RX.Dequeue (C);
+                           if C /= Telnet.Protocol.BRK then
+                              --
+                              --  It's probably valid protocol for the
+                              --  terminal to send WILL/WONT etc. here, but
+                              --  this implementation doesn't support it.
+                              --
+                              Ada.Text_IO.Put_Line (
+                                 "Was expecting Telnet break");
+                           else
+                              Ada.Text_IO.Put ("[BREAK]");
+                              Handler.Break;
+                           end if;
+                        end if;
+                     end if;
 
                      Bytes_Out.Clear;
 
