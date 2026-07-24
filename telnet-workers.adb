@@ -57,6 +57,7 @@ package body Telnet.Workers is
       Option_In : Byte_Vectors.Vector;
       Environ_Sent : Boolean := False;
       Terminal_Sent : Boolean := False;
+      Go_Ahead : Boolean := True;
    begin
 
       accept Connect;
@@ -111,7 +112,7 @@ package body Telnet.Workers is
                else
                   Bytes_Out.Clear;
 
-                  Handler.To_Physical (Bytes_Out);
+                  Handler.To_Physical (Bytes_Out, Go_Ahead);
 
                   if Bytes_Out.Length > 0 then
                      for J in 0 .. Integer (Bytes_Out.Length) - 1 loop

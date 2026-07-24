@@ -15,7 +15,8 @@ package body Test_Break_Handlers is
 
    procedure To_Physical (
       V         : Test_Break_Handler;
-      Bytes_Out : in out Byte_Vectors.Vector) is
+      Bytes_Out : in out Byte_Vectors.Vector;
+      Go_Ahead  : in out Boolean) is
    begin
 
       if V.Counter = 0 then
@@ -23,11 +24,13 @@ package body Test_Break_Handlers is
             Bytes_Out.Append (Screen_Message (J));
          end loop;
          Code_Page_500.Append (Bytes_Out, "Press the ENTER key");
+         Go_Ahead := True;
       else
          for J in Screen_Message'Range loop
             Bytes_Out.Append (Screen_Message_No_GA (J));
          end loop;
          Code_Page_500.Append (Bytes_Out, "Press the ATTN key");
+         Go_Ahead := False;
      end if;
 
    end To_Physical;

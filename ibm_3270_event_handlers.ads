@@ -20,7 +20,8 @@ package IBM_3270_Event_Handlers is
 
    procedure To_Physical (
       V         : IBM_3270_Handler;
-      Bytes_Out : in out Byte_Vectors.Vector);
+      Bytes_Out : in out Byte_Vectors.Vector;
+      Go_Ahead  : in out Boolean);
 
    procedure From_Physical (
       V        : in out IBM_3270_Handler;

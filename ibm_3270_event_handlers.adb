@@ -27,8 +27,9 @@ package body IBM_3270_Event_Handlers is
    Checkboxes : aliased Checkbox_Views.Checkbox_View;
 
    procedure To_Physical (
-      V : IBM_3270_Handler;
-      Bytes_Out : in out Byte_Vectors.Vector) is
+      V         : IBM_3270_Handler;
+      Bytes_Out : in out Byte_Vectors.Vector;
+      Go_Ahead  : in out Boolean) is
    begin
 
       for J in Screen_Message'Range loop
@@ -36,6 +37,8 @@ package body IBM_3270_Event_Handlers is
       end loop;
 
       V.Current.To_Physical (Bytes_Out);
+
+      Go_Ahead := True;
 
    end To_Physical;
 
