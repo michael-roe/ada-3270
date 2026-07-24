@@ -26,6 +26,8 @@ package IBM_3270_Event_Handlers is
       V        : in out IBM_3270_Handler;
       Bytes_In : Byte_Vectors.Vector);
 
+   procedure Break (V : in out IBM_3270_Handler);
+
    procedure Initialize (V : in out IBM_3270_Handler);
 
    procedure Set_RX_TX (

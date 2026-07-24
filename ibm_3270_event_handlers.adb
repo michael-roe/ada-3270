@@ -127,6 +127,13 @@ package body IBM_3270_Event_Handlers is
 
    end From_Physical;
 
+   procedure Break (V : in out IBM_3270_Handler) is
+   begin
+
+      Ada.Text_IO.Put_Line ("Break called");
+
+   end Break;
+
    procedure Initialize (V : in out IBM_3270_Handler) is
       L : Lines.Bounded_Wide_String;
    begin

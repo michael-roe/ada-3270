@@ -158,7 +158,8 @@ package body Telnet.Workers is
                         --  Put ("[SB]");
                         S := Opt;
                      when Telnet.Protocol.BRK =>
-                        Put ("[BREAK]");
+                        --  Put ("[BREAK]");
+                        Handler.Break;
                         S := Data;
                         Got_Reply := True;
                      when Telnet.Protocol.EOR =>

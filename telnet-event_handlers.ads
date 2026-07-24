@@ -12,6 +12,8 @@ package Telnet.Event_Handlers is
       V : in out Handler;
       Bytes_In : Byte_Vectors.Vector) is abstract;
 
+   procedure Break (V : in out Handler) is abstract;
+
    procedure Initialize (
       V : in out Handler) is abstract;
 
