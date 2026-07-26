@@ -6,7 +6,7 @@ package body Code_Page_870 is
 
    subtype Seven_Bit is Buffer.Byte range 0 .. 127;
 
-   Half_Table : constant  array (Seven_Bit) of Buffer.Byte := (
+   Bottom_Half_Table : constant  array (Seven_Bit) of Buffer.Byte := (
       16#00#, 16#01#, 16#02#, 16#03#, 16#37#, 16#2d#, 16#2e#, 16#2f#, 
       16#16#, 16#05#, 16#25#, 16#0b#, 16#0c#, 16#0d#, 16#0e#, 16#0f#, 
       16#10#, 16#11#, 16#12#, 16#13#, 16#3c#, 16#3d#, 16#32#, 16#26#, 
@@ -23,6 +23,141 @@ package body Code_Page_870 is
       16#88#, 16#89#, 16#91#, 16#92#, 16#93#, 16#94#, 16#95#, 16#96#, 
       16#97#, 16#98#, 16#99#, 16#a2#, 16#a3#, 16#a4#, 16#a5#, 16#a6#, 
       16#a7#, 16#a8#, 16#a9#, 16#c0#, 16#6a#, 16#d0#, 16#a1#, 16#07#);
+
+   type Mapping is record
+      From : Wide_Character;
+      To : Buffer.Byte;
+   end record;
+
+   Top_Half_Table : array (Seven_Bit) of Mapping := (
+(Wide_Character'Val (16#0080#), Buffer.Byte(16#20#)),
+(Wide_Character'Val (16#0081#), Buffer.Byte(16#21#)),
+(Wide_Character'Val (16#0082#), Buffer.Byte(16#22#)),
+(Wide_Character'Val (16#0083#), Buffer.Byte(16#23#)),
+(Wide_Character'Val (16#0084#), Buffer.Byte(16#24#)),
+(Wide_Character'Val (16#0085#), Buffer.Byte(16#15#)),
+(Wide_Character'Val (16#0086#), Buffer.Byte(16#06#)),
+(Wide_Character'Val (16#0087#), Buffer.Byte(16#17#)),
+(Wide_Character'Val (16#0088#), Buffer.Byte(16#28#)),
+(Wide_Character'Val (16#0089#), Buffer.Byte(16#29#)),
+(Wide_Character'Val (16#008a#), Buffer.Byte(16#2a#)),
+(Wide_Character'Val (16#008b#), Buffer.Byte(16#2b#)),
+(Wide_Character'Val (16#008c#), Buffer.Byte(16#2c#)),
+(Wide_Character'Val (16#008d#), Buffer.Byte(16#09#)),
+(Wide_Character'Val (16#008e#), Buffer.Byte(16#0a#)),
+(Wide_Character'Val (16#008f#), Buffer.Byte(16#1b#)),
+(Wide_Character'Val (16#0090#), Buffer.Byte(16#30#)),
+(Wide_Character'Val (16#0091#), Buffer.Byte(16#31#)),
+(Wide_Character'Val (16#0092#), Buffer.Byte(16#1a#)),
+(Wide_Character'Val (16#0093#), Buffer.Byte(16#33#)),
+(Wide_Character'Val (16#0094#), Buffer.Byte(16#34#)),
+(Wide_Character'Val (16#0095#), Buffer.Byte(16#35#)),
+(Wide_Character'Val (16#0096#), Buffer.Byte(16#36#)),
+(Wide_Character'Val (16#0097#), Buffer.Byte(16#08#)),
+(Wide_Character'Val (16#0098#), Buffer.Byte(16#38#)),
+(Wide_Character'Val (16#0099#), Buffer.Byte(16#39#)),
+(Wide_Character'Val (16#009a#), Buffer.Byte(16#3a#)),
+(Wide_Character'Val (16#009b#), Buffer.Byte(16#3b#)),
+(Wide_Character'Val (16#009c#), Buffer.Byte(16#04#)),
+(Wide_Character'Val (16#009d#), Buffer.Byte(16#14#)),
+(Wide_Character'Val (16#009e#), Buffer.Byte(16#3e#)),
+(Wide_Character'Val (16#009f#), Buffer.Byte(16#ff#)),
+(Wide_Character'Val (16#00a0#), Buffer.Byte(16#41#)),
+(Wide_Character'Val (16#00a4#), Buffer.Byte(16#9f#)),
+(Wide_Character'Val (16#00a7#), Buffer.Byte(16#b5#)),
+(Wide_Character'Val (16#00a8#), Buffer.Byte(16#bd#)),
+(Wide_Character'Val (16#00ad#), Buffer.Byte(16#ca#)),
+(Wide_Character'Val (16#00b0#), Buffer.Byte(16#90#)),
+(Wide_Character'Val (16#00b4#), Buffer.Byte(16#be#)),
+(Wide_Character'Val (16#00b7#), Buffer.Byte(16#b0#)),
+(Wide_Character'Val (16#00b8#), Buffer.Byte(16#9d#)),
+(Wide_Character'Val (16#00c1#), Buffer.Byte(16#65#)),
+(Wide_Character'Val (16#00c2#), Buffer.Byte(16#62#)),
+(Wide_Character'Val (16#00c4#), Buffer.Byte(16#63#)),
+(Wide_Character'Val (16#00c7#), Buffer.Byte(16#68#)),
+(Wide_Character'Val (16#00c9#), Buffer.Byte(16#71#)),
+(Wide_Character'Val (16#00cb#), Buffer.Byte(16#73#)),
+(Wide_Character'Val (16#00cd#), Buffer.Byte(16#75#)),
+(Wide_Character'Val (16#00ce#), Buffer.Byte(16#76#)),
+(Wide_Character'Val (16#00d3#), Buffer.Byte(16#ee#)),
+(Wide_Character'Val (16#00d4#), Buffer.Byte(16#eb#)),
+(Wide_Character'Val (16#00d6#), Buffer.Byte(16#ec#)),
+(Wide_Character'Val (16#00d7#), Buffer.Byte(16#bf#)),
+(Wide_Character'Val (16#00da#), Buffer.Byte(16#fe#)),
+(Wide_Character'Val (16#00dc#), Buffer.Byte(16#fc#)),
+(Wide_Character'Val (16#00dd#), Buffer.Byte(16#ad#)),
+(Wide_Character'Val (16#00df#), Buffer.Byte(16#59#)),
+(Wide_Character'Val (16#00e1#), Buffer.Byte(16#45#)),
+(Wide_Character'Val (16#00e2#), Buffer.Byte(16#42#)),
+(Wide_Character'Val (16#00e4#), Buffer.Byte(16#43#)),
+(Wide_Character'Val (16#00e7#), Buffer.Byte(16#48#)),
+(Wide_Character'Val (16#00e9#), Buffer.Byte(16#51#)),
+(Wide_Character'Val (16#00eb#), Buffer.Byte(16#53#)),
+(Wide_Character'Val (16#00ed#), Buffer.Byte(16#55#)),
+(Wide_Character'Val (16#00ee#), Buffer.Byte(16#56#)),
+(Wide_Character'Val (16#00f3#), Buffer.Byte(16#ce#)),
+(Wide_Character'Val (16#00f4#), Buffer.Byte(16#cb#)),
+(Wide_Character'Val (16#00f6#), Buffer.Byte(16#cc#)),
+(Wide_Character'Val (16#00f7#), Buffer.Byte(16#e1#)),
+(Wide_Character'Val (16#00fa#), Buffer.Byte(16#de#)),
+(Wide_Character'Val (16#00fc#), Buffer.Byte(16#dc#)),
+(Wide_Character'Val (16#00fd#), Buffer.Byte(16#8d#)),
+(Wide_Character'Val (16#0102#), Buffer.Byte(16#66#)),
+(Wide_Character'Val (16#0103#), Buffer.Byte(16#46#)),
+(Wide_Character'Val (16#0104#), Buffer.Byte(16#b1#)),
+(Wide_Character'Val (16#0105#), Buffer.Byte(16#a0#)),
+(Wide_Character'Val (16#0106#), Buffer.Byte(16#69#)),
+(Wide_Character'Val (16#0107#), Buffer.Byte(16#49#)),
+(Wide_Character'Val (16#010c#), Buffer.Byte(16#67#)),
+(Wide_Character'Val (16#010d#), Buffer.Byte(16#47#)),
+(Wide_Character'Val (16#010e#), Buffer.Byte(16#fa#)),
+(Wide_Character'Val (16#010f#), Buffer.Byte(16#ea#)),
+(Wide_Character'Val (16#0110#), Buffer.Byte(16#ac#)),
+(Wide_Character'Val (16#0111#), Buffer.Byte(16#8c#)),
+(Wide_Character'Val (16#0118#), Buffer.Byte(16#72#)),
+(Wide_Character'Val (16#0119#), Buffer.Byte(16#52#)),
+(Wide_Character'Val (16#011a#), Buffer.Byte(16#da#)),
+(Wide_Character'Val (16#011b#), Buffer.Byte(16#df#)),
+(Wide_Character'Val (16#0139#), Buffer.Byte(16#78#)),
+(Wide_Character'Val (16#013a#), Buffer.Byte(16#58#)),
+(Wide_Character'Val (16#013d#), Buffer.Byte(16#77#)),
+(Wide_Character'Val (16#013e#), Buffer.Byte(16#57#)),
+(Wide_Character'Val (16#0141#), Buffer.Byte(16#ba#)),
+(Wide_Character'Val (16#0142#), Buffer.Byte(16#9a#)),
+(Wide_Character'Val (16#0143#), Buffer.Byte(16#bb#)),
+(Wide_Character'Val (16#0144#), Buffer.Byte(16#9b#)),
+(Wide_Character'Val (16#0147#), Buffer.Byte(16#ab#)),
+(Wide_Character'Val (16#0148#), Buffer.Byte(16#8b#)),
+(Wide_Character'Val (16#0150#), Buffer.Byte(16#ef#)),
+(Wide_Character'Val (16#0151#), Buffer.Byte(16#cf#)),
+(Wide_Character'Val (16#0154#), Buffer.Byte(16#ed#)),
+(Wide_Character'Val (16#0155#), Buffer.Byte(16#cd#)),
+(Wide_Character'Val (16#0158#), Buffer.Byte(16#ae#)),
+(Wide_Character'Val (16#0159#), Buffer.Byte(16#8e#)),
+(Wide_Character'Val (16#015a#), Buffer.Byte(16#aa#)),
+(Wide_Character'Val (16#015b#), Buffer.Byte(16#8a#)),
+(Wide_Character'Val (16#015e#), Buffer.Byte(16#af#)),
+(Wide_Character'Val (16#015f#), Buffer.Byte(16#8f#)),
+(Wide_Character'Val (16#0160#), Buffer.Byte(16#bc#)),
+(Wide_Character'Val (16#0161#), Buffer.Byte(16#9c#)),
+(Wide_Character'Val (16#0162#), Buffer.Byte(16#b3#)),
+(Wide_Character'Val (16#0163#), Buffer.Byte(16#44#)),
+(Wide_Character'Val (16#0164#), Buffer.Byte(16#fd#)),
+(Wide_Character'Val (16#0165#), Buffer.Byte(16#dd#)),
+(Wide_Character'Val (16#016e#), Buffer.Byte(16#74#)),
+(Wide_Character'Val (16#016f#), Buffer.Byte(16#54#)),
+(Wide_Character'Val (16#0170#), Buffer.Byte(16#fb#)),
+(Wide_Character'Val (16#0171#), Buffer.Byte(16#db#)),
+(Wide_Character'Val (16#0179#), Buffer.Byte(16#b9#)),
+(Wide_Character'Val (16#017a#), Buffer.Byte(16#b7#)),
+(Wide_Character'Val (16#017b#), Buffer.Byte(16#b4#)),
+(Wide_Character'Val (16#017c#), Buffer.Byte(16#b2#)),
+(Wide_Character'Val (16#017d#), Buffer.Byte(16#b8#)),
+(Wide_Character'Val (16#017e#), Buffer.Byte(16#b6#)),
+(Wide_Character'Val (16#02c7#), Buffer.Byte(16#70#)),
+(Wide_Character'Val (16#02d8#), Buffer.Byte(16#80#)),
+(Wide_Character'Val (16#02db#), Buffer.Byte(16#9e#)),
+(Wide_Character'Val (16#02dd#), Buffer.Byte(16#64#)));
 
    ITable : constant array (Buffer.Byte) of Wide_Character := (
       Wide_Character'Val (16#0#),
@@ -288,14 +423,22 @@ package body Code_Page_870 is
       S : Wide_String) is
       C : Integer;
       B : Buffer.Byte;
+      Found : Boolean;
    begin
 
       for J in S'Range loop
          C := Wide_Character'Pos (S (J));
          if C < 128 then
-            V.Append (Half_Table (Seven_Bit (C)));
+            V.Append (Bottom_Half_Table (Seven_Bit (C)));
+         else
+            Found := False;
+            for K in Seven_Bit loop
+              if Top_Half_Table (K).From = S (J) then
+                 V.Append (Top_Half_Table (K).To);
+                 Found := True;
+              end if;
+            end loop;
          end if;
-         --  TODO : case where the top bit is set
       end loop;
 
    end Append;
