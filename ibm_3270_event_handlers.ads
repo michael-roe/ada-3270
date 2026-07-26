@@ -9,10 +9,9 @@ package IBM_3270_Event_Handlers is
 
    type Panel_Type is (
       Null_Panel,
-      Main_Menu_Panel,
-      Model_Menu_Panel,
       Identity_Panel,
-      Split_Panel);
+      Summon_Panel,
+      Intent_Panel);
 
    type IBM_3270_Handler is new Telnet.Event_Handlers.Handler with record
       State    : Panel_Type := Null_Panel;
