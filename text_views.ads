@@ -8,6 +8,8 @@ package Text_Views is
 
    type Text_View is new Paged_Views.Paged_View with record
       AID : Buffer.Byte := 0;
+      Title : Lines.Bounded_Wide_String;
+      Subtitle : Lines.Bounded_Wide_String;
       Page_Number : Natural := 0;
       Text : Line_Vectors.Vector;
    end record;
@@ -36,6 +38,10 @@ package Text_Views is
       L : Lines.Bounded_Wide_String);
 
    function Get_AID (V : Text_View) return Buffer.Byte;
+
+   procedure Set_Title (
+      V : in out Text_View;
+      L : Lines.Bounded_Wide_String);
 
    procedure Prev_Page (V : in out Text_View);
 

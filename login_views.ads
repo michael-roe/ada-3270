@@ -7,6 +7,7 @@ package Login_Views is
 
    type Login_View is new Views.View with record
       AID : Buffer.Byte;
+      Title : Lines.Bounded_Wide_String;
    end record;
 
    procedure To_Physical (
@@ -33,5 +34,9 @@ package Login_Views is
       L : Lines.Bounded_Wide_String);
 
    function Get_AID (V : Login_View) return Buffer.Byte;
+
+   procedure Set_Title (
+      V : in out Login_View;
+      L : Lines.Bounded_Wide_String);
 
 end Login_Views;

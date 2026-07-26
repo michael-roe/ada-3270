@@ -33,7 +33,8 @@ package body Split_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      P.Append (Bytes_Out, " Split Panel Test");
+      P.Append (Bytes_Out, " ");
+      P.Append (Bytes_Out, Lines.To_Wide_String (V.Title));
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -159,6 +160,15 @@ package body Split_Views is
       return V.AID;
 
    end Get_AID;
+
+   procedure Set_Title (
+      V : in out Split_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Title := L;
+
+   end Set_Title;
 
    procedure Prev_Page (V : in out Split_View) is
    begin

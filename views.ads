@@ -31,6 +31,10 @@ package Views is
 
    function Get_AID (V : View) return Buffer.Byte is abstract;
 
+   procedure Set_Title (
+      V : in out View;
+      L : Lines.Bounded_Wide_String) is abstract;
+
    type View_Access is access all View'Class;
 
 end Views;

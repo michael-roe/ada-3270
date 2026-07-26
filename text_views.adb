@@ -13,6 +13,9 @@ package body Text_Views is
    function Normal_Text return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Normal_Text;
 
+   function Highlighted return IBM_3270_Orders.Intensity renames
+      IBM_3270_Orders.Highlighted;
+
    P : aliased Code_Page_500.Page_500;
 
    procedure To_Physical (
@@ -29,7 +32,8 @@ package body Text_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      P.Append (Bytes_Out, " Text Input Panel Test");
+      P.Append (Bytes_Out, " ");
+      P.Append (Bytes_Out, Lines.To_Wide_String (V.Title));
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
@@ -40,6 +44,8 @@ package body Text_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      IBM_3270_Orders.Start_Field (Bytes_Out, True,  Highlighted);
+      P.Append (Bytes_Out, Lines.To_Wide_String (V.Subtitle));
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
       P.Append (Bytes_Out, "More: ");
@@ -190,5 +196,14 @@ package body Text_Views is
       end if;
 
    end Next_Page;
+
+   procedure Set_Title (
+      V : in out Text_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Title := L;
+
+   end Set_Title;
 
 end Text_Views;

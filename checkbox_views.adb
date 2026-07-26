@@ -147,4 +147,13 @@ package body Checkbox_Views is
 
    end Get_AID;
 
+   procedure Set_Title (
+      V : in out Checkbox_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Title := L;
+
+   end Set_Title;
+
 end Checkbox_Views;

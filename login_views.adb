@@ -122,4 +122,13 @@ package body Login_Views is
 
    end Get_AID;
 
+   procedure Set_Title (
+      V : in out Login_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Title := L;
+
+   end Set_Title;
+
 end Login_Views;

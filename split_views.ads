@@ -14,6 +14,7 @@ package Split_Views is
    type Split_View is new Paged_Views.Paged_View and JSON_Views.JSON_View
       with record
       AID : Buffer.Byte := 0;
+      Title : Lines.Bounded_Wide_String;
       Page_Number : Natural := 0;
       History : Line_Vectors.Vector;
       Edit    : Edit_Window;
@@ -43,6 +44,10 @@ package Split_Views is
       L : Lines.Bounded_Wide_String);
 
    function Get_AID (V : Split_View) return Buffer.Byte;
+
+   procedure Set_Title (
+      V : in out Split_View;
+      L : Lines.Bounded_Wide_String);
 
    procedure Prev_Page (V : in out Split_View);
 

@@ -9,6 +9,7 @@ package Checkbox_Views is
 
    type Checkbox_View is new Views.View with record
       AID : Buffer.Byte := 0;
+      Title : Lines.Bounded_Wide_String;
       Checkboxes : Checkbox_Array;
    end record;
 
@@ -36,5 +37,9 @@ package Checkbox_Views is
       L : Lines.Bounded_Wide_String);
 
    function Get_AID (V : Checkbox_View) return Buffer.Byte;
+
+   procedure Set_Title (
+      V : in out Checkbox_View;
+      L : Lines.Bounded_Wide_String);
 
 end Checkbox_Views;

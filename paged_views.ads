@@ -29,6 +29,10 @@ package Paged_Views is
 
    function Get_AID (V : Paged_View) return Buffer.Byte is abstract;
 
+   procedure Set_Title (
+      V : in out Paged_View;
+      L : Lines.Bounded_Wide_String) is abstract;
+
    procedure Prev_Page (V : in out Paged_View) is abstract;
 
    procedure Next_Page (V : in out Paged_View) is abstract;

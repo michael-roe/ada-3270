@@ -7,6 +7,7 @@ package Menu_Views is
 
    type Menu_View is new Views.View with record
       AID : Buffer.Byte;
+      Title : Lines.Bounded_Wide_String;
    end record;
 
    procedure To_Physical (
@@ -33,5 +34,9 @@ package Menu_Views is
       L : Lines.Bounded_Wide_String);
 
    function Get_AID (V : Menu_View) return Buffer.Byte;
+
+   procedure Set_Title (
+      V : in out Menu_View;
+      L : Lines.Bounded_Wide_String);
 
 end Menu_Views;

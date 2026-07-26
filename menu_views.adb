@@ -108,4 +108,13 @@ package body Menu_Views is
 
    end Get_AID;
 
+   procedure Set_Title (
+      V : in out Menu_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Title := L;
+
+   end Set_Title;
+
 end Menu_Views;

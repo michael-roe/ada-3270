@@ -167,6 +167,8 @@ package body IBM_3270_Event_Handlers is
       V.JSONable := Main_Menu'Access;
       V.State := Main_Menu_Panel;
 
+      Lines.Set_Bounded_Wide_String (L, "Cantrip");
+      Main_Menu.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L, "Summon");
       Numbered_Menu_Views.Set_Label (Main_Menu, 1, L);
       Lines.Set_Bounded_Wide_String (L, "Model");
@@ -180,12 +182,22 @@ package body IBM_3270_Event_Handlers is
       Lines.Set_Bounded_Wide_String (L, "Wards");
       Numbered_Menu_Views.Set_Label (Main_Menu, 6, L);
 
+      Lines.Set_Bounded_Wide_String (L, "Cantrip");
+      Model_Menu.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");
       Numbered_Menu_Views.Set_Label (Model_Menu, 1, L);
       Lines.Set_Bounded_Wide_String (L, "GLM-5.2");
       Numbered_Menu_Views.Set_Label (Model_Menu, 2, L);
       Lines.Set_Bounded_Wide_String (L, "Kimi-K2.7-Code");
       Numbered_Menu_Views.Set_Label (Model_Menu, 3, L);
+
+      Lines.Set_Bounded_Wide_String (L, "Cantrip");
+      Identity_Input.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Identity");
+      Identity_Input.Subtitle := L;
+
+      Lines.Set_Bounded_Wide_String (L, "Cantrip");
+      Split.Set_Title (L);
 
       --  for J in 1 .. 50 loop
       --     Lines.Set_Bounded_Wide_String (L,
