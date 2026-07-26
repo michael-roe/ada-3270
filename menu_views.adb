@@ -3,6 +3,7 @@ with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
 with Byte_Text_IO;
+with Input_Stream;
 
 package body Menu_Views is
 
@@ -12,7 +13,7 @@ package body Menu_Views is
    function Highlighted return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Highlighted;
 
-   P : Code_Page_500.Page_500;
+   P : aliased Code_Page_500.Page_500;
 
    procedure To_Physical (
       V : Menu_View;
@@ -68,7 +69,7 @@ package body Menu_Views is
       Bytes_In : Byte_Vectors.Vector) is
    begin
 
-      null;
+      Input_Stream.Parse (V, P'Access, Bytes_In);
 
    end From_Physical;
 

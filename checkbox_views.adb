@@ -18,7 +18,7 @@ package body Checkbox_Views is
    function Highlighted return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Highlighted;
 
-   P : Code_Page_500.Page_500;
+   P : aliased Code_Page_500.Page_500;
 
    procedure To_Physical (
       V : Checkbox_View;
@@ -98,7 +98,7 @@ package body Checkbox_Views is
          for J in 1 .. 4 loop
             V.Checkboxes (J) := False;
          end loop;
-         Input_Stream.Parse (V, Bytes_In);
+         Input_Stream.Parse (V, P'Access, Bytes_In);
       end if;
 
    end From_Physical;

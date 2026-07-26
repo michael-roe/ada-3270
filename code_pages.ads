@@ -14,4 +14,6 @@ package Code_Pages is
       P : Code_Page;
       B : Buffer.Byte) return Wide_Character is abstract;
 
+   type Code_Page_Access is access all Code_Page'Class;
+
 end Code_Pages;

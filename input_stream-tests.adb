@@ -9,12 +9,15 @@ with IBM_3270;
 with IBM_3270_Orders;
 with Code_Page_310;
 with Code_Page_500;
+with Code_Page_870;
 with Lines; use type Lines.Bounded_Wide_String;
 with Math_Operators;
 
 package body Input_Stream.Tests is
 
-   P : Code_Page_500.Page_500;
+   P : aliased Code_Page_500.Page_500;
+
+   P870 : aliased Code_Page_870.Page_870;
 
    procedure To_Physical (
       V : Test_View;
@@ -30,7 +33,11 @@ package body Input_Stream.Tests is
       Bytes_In : Byte_Vectors.Vector) is
    begin
 
-      Input_Stream.Parse (V, Bytes_In);
+      if V.Alternate_Code_Page then
+         Input_Stream.Parse (V, P870'Access, Bytes_In);
+      else
+         Input_Stream.Parse (V, P'Access, Bytes_In);
+      end if;
 
    end From_Physical;
 
@@ -315,6 +322,29 @@ package body Input_Stream.Tests is
 
    end Test_Trim_Two;
 
+   procedure Test_Code_Page (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+
+      P870.Append (Bytes_In,
+        "Dzie" & Wide_Character'Val (16#144#) & " dobry");
+
+      V.Alternate_Code_Page := True;
+      V.From_Physical (Bytes_In);
+
+      Lines.Set_Bounded_Wide_String (L,
+         "Dzie" & Wide_Character'Val (16#144#) & " dobry");
+      Assert (V.Last_Field = L, "Last_Field should be Dzien' dobry");
+
+   end Test_Code_Page;
+
    procedure Register_Tests (T : in out Input_Stream_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -351,6 +381,9 @@ package body Input_Stream.Tests is
 
       Register_Routine (T, Test_Trim_Two'Access,
          "Test_Trim_Two");
+
+      Register_Routine (T, Test_Code_Page'Access,
+         "Test_Code_Page");
 
    end Register_Tests;
 

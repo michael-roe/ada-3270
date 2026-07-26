@@ -22,7 +22,7 @@ package body Login_Views is
    function Hidden return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Hidden;
 
-   P : Code_Page_500.Page_500;
+   P : aliased Code_Page_500.Page_500;
 
    procedure To_Physical (
       V : Login_View;
@@ -81,7 +81,7 @@ package body Login_Views is
       Bytes_In : Byte_Vectors.Vector) is
    begin
 
-      Input_Stream.Parse (V, Bytes_In);
+      Input_Stream.Parse (V, P'Access, Bytes_In);
 
    end From_Physical;
 

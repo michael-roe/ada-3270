@@ -17,6 +17,7 @@ package Input_Stream.Tests is
       First_Field : Lines.Bounded_Wide_String;
       Last_Field  : Lines.Bounded_Wide_String;
       Field_Count : Natural := 0;
+      Alternate_Code_Page : Boolean := False;
    end record;
 
    --
@@ -142,6 +143,12 @@ package Input_Stream.Tests is
    --
    --  Test_Trim_Two tests an input stream containing two fields
    --  with padding at the end.
+   --
+
+   procedure Test_Code_Page (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   --  Test_Code_Page tests an input stream encoded in code page 870.
    --
 
    procedure Register_Tests (T : in out Input_Stream_Test);

@@ -17,7 +17,7 @@ package body Split_Views is
    function Normal_Text return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Normal_Text;
 
-   P : Code_Page_500.Page_500;
+   P : aliased Code_Page_500.Page_500;
 
    procedure To_Physical (
       V : Split_View;
@@ -120,7 +120,7 @@ package body Split_Views is
       V : in out Split_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
-      Input_Stream.Parse (V, Bytes_In);
+      Input_Stream.Parse (V, P'Access, Bytes_In);
    end From_Physical;
 
    procedure Update_AID (

@@ -16,6 +16,7 @@ package body Input_Stream is
 
    procedure Parse (
       V : in out Views.View'Class;
+      P : Code_Pages.Code_Page_Access;
       Bytes_In : Byte_Vectors.Vector) is
       L : Lines.Bounded_Wide_String;
       To_Do : Natural;
