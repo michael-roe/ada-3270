@@ -20,7 +20,11 @@ package body IBM_3270_Event_Handlers is
       IBM_3270.IBM_Write_Erase_Alternate,
       IBM_3270.WCC_Go_Ahead);
 
-   Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
+   Main_Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
+
+   Model_Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
+
+   Identity_Input : aliased Text_Views.Text_View;
 
    Split : aliased Split_Views.Split_View;
 
@@ -119,12 +123,29 @@ package body IBM_3270_Event_Handlers is
             end if;
          end loop;
 
-         if V.State = Menu_Panel and then Menu.Option /= 0 then
-            V.Current := Split'Access;
-            V.Pageable :=  Split'Access;
-            V.JSONable := Split'Access;
-            V.State := Split_Panel;
-         end if;
+         case V.State  is
+            when Main_Menu_Panel =>
+               if Main_Menu.Option /= 0 then
+                  V.Current  := Model_Menu'Access;
+                  V.Pageable := Model_Menu'Access;
+                  V.JSONable := Model_Menu'Access;
+                  V.State    := Model_Menu_Panel;
+               end if;
+            when Model_Menu_Panel =>
+               if Model_Menu.Option /= 0 then
+                  V.Current  := Identity_Input'Access;
+                  V.Pageable := Identity_Input'Access;
+                  --  V.JSONable := Identity_Input'Access;
+                  V.State    := Identity_Panel;
+               end if;
+            when Identity_Panel =>
+               V.Current  := Split'Access;
+               V.Pageable := Split'Access;
+               V.JSONable := Split'Access;
+               V.State    := Split_Panel;
+            when others =>
+               null;
+         end case;
 
       end if;
 
@@ -141,20 +162,34 @@ package body IBM_3270_Event_Handlers is
       L : Lines.Bounded_Wide_String;
    begin
 
-      V.Current := Menu'Access;
-      V.Pageable := Menu'Access;
-      V.JSONable := Menu'Access;
-      V.State := Menu_Panel;
+      V.Current := Main_Menu'Access;
+      V.Pageable := Main_Menu'Access;
+      V.JSONable := Main_Menu'Access;
+      V.State := Main_Menu_Panel;
+
+      Lines.Set_Bounded_Wide_String (L, "Summon");
+      Numbered_Menu_Views.Set_Label (Main_Menu, 1, L);
+      Lines.Set_Bounded_Wide_String (L, "Model");
+      Numbered_Menu_Views.Set_Label (Main_Menu, 2, L);
+      Lines.Set_Bounded_Wide_String (L, "Identity (Prompt)");
+      Numbered_Menu_Views.Set_Label (Main_Menu, 3, L);
+      Lines.Set_Bounded_Wide_String (L, "Identity (Parameters)");
+      Numbered_Menu_Views.Set_Label (Main_Menu, 4, L);
+      Lines.Set_Bounded_Wide_String (L, "Gates");
+      Numbered_Menu_Views.Set_Label (Main_Menu, 5, L);
+      Lines.Set_Bounded_Wide_String (L, "Wards");
+      Numbered_Menu_Views.Set_Label (Main_Menu, 6, L);
 
       Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");
-      Numbered_Menu_Views.Set_Label (Menu, 1, L);
+      Numbered_Menu_Views.Set_Label (Model_Menu, 1, L);
       Lines.Set_Bounded_Wide_String (L, "GLM-5.2");
-      Numbered_Menu_Views.Set_Label (Menu, 2, L);
+      Numbered_Menu_Views.Set_Label (Model_Menu, 2, L);
       Lines.Set_Bounded_Wide_String (L, "Kimi-K2.7-Code");
-      Numbered_Menu_Views.Set_Label (Menu, 3, L);
+      Numbered_Menu_Views.Set_Label (Model_Menu, 3, L);
 
       --  for J in 1 .. 50 loop
-      --     Lines.Set_Bounded_Wide_String (L, "Line" & Natural'Wide_Image (J));
+      --     Lines.Set_Bounded_Wide_String (L,
+      --        "Line" & Natural'Wide_Image (J));
       --     Line_Vectors.Append (Split.History, L);
       --  end loop;
 
