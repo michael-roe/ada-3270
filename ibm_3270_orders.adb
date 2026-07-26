@@ -23,6 +23,7 @@ package body IBM_3270_Orders is
       Y : Integer) is
       Addr : Interfaces.Unsigned_16;
    begin
+
       --
       --  Check that the buffer address falls within the screen size
       --  of the 3278-4. Other models had smaller screens, and we ought
@@ -35,29 +36,44 @@ package body IBM_3270_Orders is
          V.Append (Table (Unsigned_6 (Addr
             and Interfaces.Unsigned_16 (16#3f#))));
       end if;
+
    end Set_Buffer_Address;
 
    procedure Insert_Cursor (V : in out Byte_Vectors.Vector) is
    begin
+
       V.Append (IBM_3270.Insert_Cursor);
+
    end Insert_Cursor;
 
    procedure Start_Field (V : in out Byte_Vectors.Vector;
       Protect : Boolean;
       Intense : Intensity;
-      Modified : Boolean := False) is
+      Modified : Boolean := False;
+      Numeric  : Boolean := False) is
       Attr : Buffer.Byte;
    begin
+
       V.Append (IBM_3270.Start_Field);
+
       Attr := 0;
+
       if Modified then
          Attr := Attr + 16#1#;
       end if;
+
+      Attr := Attr + 4 * Intensity'Pos (Intense);
+
+      if Numeric then
+         Attr := Attr + 16#10#;
+      end if;
+
       if Protect then
          Attr := Attr + 16#20#;
       end if;
-      Attr := Attr + 4 * Intensity'Pos (Intense);
+
       V.Append (Attr);
+
    end Start_Field;
 
    function Unpack (B : Buffer.Byte) return Natural;
@@ -82,17 +98,21 @@ package body IBM_3270_Orders is
       Y : out Natural) is
       A : Natural;
    begin
+
       A := 64 * Unpack (C1) + Unpack (C2);
       X := A mod 80;
       Y := A / 80;
+
    end To_Buffer_Address;
 
    function Is_Short_Read (AID : Buffer.Byte) return Boolean is
    begin
+
       return (AID = IBM_3270.AID_Clear) or
          (AID = IBM_3270.AID_PA1) or
          (AID = IBM_3270.AID_PA2) or
          (AID = IBM_3270.AID_PA3);
+
    end Is_Short_Read;
 
 end IBM_3270_Orders;

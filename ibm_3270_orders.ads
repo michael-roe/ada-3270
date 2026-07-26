@@ -26,9 +26,10 @@ package IBM_3270_Orders is
    --
 
    procedure Start_Field (V : in out Byte_Vectors.Vector;
-      Protect : Boolean;
-      Intense : Intensity;
-      Modified : Boolean := False);
+      Protect  : Boolean;
+      Intense  : Intensity;
+      Modified : Boolean := False;
+      Numeric  : Boolean := False);
 
    --
    --  Start_Field appends a SF order to output stream V.

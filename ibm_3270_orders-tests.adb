@@ -82,6 +82,48 @@ package body IBM_3270_Orders.Tests is
 
    end Test_Start_Field_Highlighted;
 
+   procedure Test_Start_Field_Non_Display (
+      T : in out Test_Cases.Test_Case'Class) is
+      Bytes_Out : Byte_Vectors.Vector;
+   begin
+
+      Start_Field (Bytes_Out, False, Hidden);
+
+      Assert (Bytes_Out.Length = 2, "Start Field order should be 2 bytes");
+
+      Assert ((Bytes_Out.Element (Bytes_Out.First_Index + 1)
+         and 16#C#) = 16#C#, "Field type should be non-display");
+
+   end Test_Start_Field_Non_Display;
+
+   procedure Test_Start_Field_Numeric (
+      T : in out Test_Cases.Test_Case'Class) is
+      Bytes_Out : Byte_Vectors.Vector;
+   begin
+
+      Start_Field (Bytes_Out, False, Normal_Text, Numeric => True);
+
+      Assert (Bytes_Out.Length = 2, "Start Field order should be 2 bytes");
+
+      Assert ((Bytes_Out.Element (Bytes_Out.First_Index + 1) and
+         16#10#) = 16#10#, "Numeric bit should be set");
+
+   end Test_Start_Field_Numeric;
+
+   procedure Test_Start_Field_Protected (
+      T : in out Test_Cases.Test_Case'Class) is
+      Bytes_Out : Byte_Vectors.Vector;
+   begin
+
+      Start_Field (Bytes_Out, True, Normal_Text);
+
+      Assert (Bytes_Out.Length = 2, "Start Field order should be 2 bytes");
+
+      Assert ((Bytes_Out.Element (Bytes_Out.First_Index + 1) and
+         16#20#) = 16#20#, "Protected bit should be set");
+
+   end Test_Start_Field_Protected;
+
    procedure Test_To_Buffer_Address_Invalid (
       T : in out Test_Cases.Test_Case'Class) is
       X : Natural;
@@ -134,6 +176,15 @@ package body IBM_3270_Orders.Tests is
 
       Register_Routine (T, Test_Start_Field_Highlighted'Access,
          "Test_Start_Field_Highlighted");
+
+      Register_Routine (T, Test_Start_Field_Non_Display'Access,
+         "Test_Start_Field_Non_Display");
+
+      Register_Routine (T, Test_Start_Field_Numeric'Access,
+         "Test_Start_Field_Numeric");
+
+      Register_Routine (T, Test_Start_Field_Protected'Access,
+         "Test_Start_Field_Protected");
 
       Register_Routine (T, Test_To_Buffer_Address_Invalid'Access,
          "Test_To_Buffer_Address_Invalid");

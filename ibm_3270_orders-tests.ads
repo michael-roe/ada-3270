@@ -18,6 +18,15 @@ package IBM_3270_Orders.Tests is
    procedure Test_Start_Field_Highlighted (
       T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Start_Field_Non_Display (
+      T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Start_Field_Numeric (
+      T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Start_Field_Protected (
+      T : in out Test_Cases.Test_Case'Class);
+
    procedure Test_To_Buffer_Address_Invalid (
       T : in out Test_Cases.Test_Case'Class);
 
