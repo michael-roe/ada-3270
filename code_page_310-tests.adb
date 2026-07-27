@@ -1,5 +1,7 @@
 with Ada.Wide_Text_IO;
 with Ada.Characters.Handling;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 with AUnit.Assertions; use AUnit.Assertions;
 with Buffer;
 use type Buffer.Byte;
@@ -10,9 +12,7 @@ with Byte_Text_IO;
 package body Code_Page_310.Tests is
 
    procedure Test_Round_Trip (T : in out Test_Cases.Test_Case'Class) is
-
       V : Byte_Vectors.Vector;
-
    begin
 
       Code_Page_310.Append (V, Box_Drawing.Down_Right);
@@ -38,12 +38,25 @@ package body Code_Page_310.Tests is
 
    end Test_Round_Trip;
 
+   procedure Test_Invalid (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+   begin
+
+      Code_Page_310.Append (V, Wide_Character'Val (16#101#)); 
+
+      Assert (V.Length = 0, "Length should be 0");
+
+   end Test_Invalid;
+
    procedure Register_Tests (T : in out Code_Page_Test) is
       use AUnit.Test_Cases.Registration;
    begin
 
       Register_Routine (T, Test_Round_Trip'Access,
          "Test_Round_Trip");
+
+      Register_Routine (T, Test_Invalid'Access,
+         "Test_Invalid");
 
    end Register_Tests;
 

@@ -4,6 +4,8 @@ with Ada.Containers; use type Ada.Containers.Count_Type;
 with AUnit.Assertions; use AUnit.Assertions;
 with Buffer;
 use type Buffer.Byte;
+with Math_Operators;
+with IBM_3270;
 
 package body Code_Page_500.Tests is
 
@@ -43,6 +45,18 @@ package body Code_Page_500.Tests is
 
    end Test_Round_Trip2;
 
+   procedure Test_Graphic_Escape (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+   begin
+
+      P.Append (V, "" & Math_Operators.Logical_And);
+
+      Assert (V.Length = 2, "Length should be 2");
+      Assert (V.Element (V.First_Index) = IBM_3270.Graphic_Escape,
+        "Should start with Graphic_Escape");
+
+   end Test_Graphic_Escape;
+
    procedure Register_Tests (T : in out Code_Page_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -52,6 +66,9 @@ package body Code_Page_500.Tests is
 
       Register_Routine (T, Test_Round_Trip2'Access,
          "Test_Round_Trip2");
+
+      Register_Routine (T, Test_Round_Trip2'Access,
+         "Test_Graphic_Escape");
 
    end Register_Tests;
 
