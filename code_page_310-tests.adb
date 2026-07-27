@@ -42,7 +42,7 @@ package body Code_Page_310.Tests is
       V : Byte_Vectors.Vector;
    begin
 
-      Code_Page_310.Append (V, Wide_Character'Val (16#101#)); 
+      Code_Page_310.Append (V, Wide_Character'Val (16#101#));
 
       Assert (V.Length = 0, "Length should be 0");
 

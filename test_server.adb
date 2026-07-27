@@ -89,7 +89,9 @@ procedure Test_Server is
 
 begin
 
-   Shared_Buffers.Handler.Set_RX_TX (Shared_Buffers.RX2'Access, Shared_Buffers.TX2'Access);
+   Shared_Buffers.Handler.Set_RX_TX (
+      Shared_Buffers.RX2'Access,
+      Shared_Buffers.TX2'Access);
 
    Server_Address.Addr := Inet_Addr ("127.0.0.1");
    Server_Address.Port := 17002;

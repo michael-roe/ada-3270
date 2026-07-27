@@ -207,16 +207,16 @@ package body Numbered_Menu_Views is
       S : String := Natural'Image (V.Option);
    begin
 
-      TX2.Enqueue (Character'Pos ('"')); 
+      TX2.Enqueue (Character'Pos ('"'));
       for J in S'Range loop
          if S (J) /= ' ' then
             TX2.Enqueue (Character'Pos (S (J)));
          end if;
       end loop;
-      TX2.Enqueue (Character'Pos ('"')); 
+      TX2.Enqueue (Character'Pos ('"'));
       TX2.Enqueue (13);
       TX2.Enqueue (10);
- 
+
    end To_JSON;
 
    procedure Set_Label (

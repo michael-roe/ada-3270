@@ -87,7 +87,7 @@ package body Input_Stream.Tests is
 
    end Get_AID;
 
-  procedure Set_Title (
+   procedure Set_Title (
       V : in out Test_View;
       L : Lines.Bounded_Wide_String) is
    begin
@@ -162,7 +162,7 @@ package body Input_Stream.Tests is
    end Test_Cursor_Truncated;
 
    procedure Test_SBA_Truncated (T : in out Test_Cases.Test_Case'Class) is
-      V : Test_View; 
+      V : Test_View;
       Bytes_In : Byte_Vectors.Vector;
    begin
 
@@ -179,7 +179,7 @@ package body Input_Stream.Tests is
    end Test_SBA_Truncated;
 
    procedure Test_GE_Truncated (T : in out Test_Cases.Test_Case'Class) is
-      V : Test_View; 
+      V : Test_View;
       Bytes_In : Byte_Vectors.Vector;
    begin
 

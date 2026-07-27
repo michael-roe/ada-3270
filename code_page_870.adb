@@ -440,7 +440,7 @@ package body Code_Page_870 is
                end if;
             end loop;
             if not Found then
-               Code_Page_310.Append (V, S(J));
+               Code_Page_310.Append (V, S (J));
             end if;
          end if;
       end loop;

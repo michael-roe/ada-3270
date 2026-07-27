@@ -310,7 +310,7 @@ package body Code_Page_500 is
          if C < 256 then
             V.Append (Table (Buffer.Byte (C)));
          else
-            Code_Page_310.Append (V, S(J));
+            Code_Page_310.Append (V, S (J));
          end if;
       end loop;
 
