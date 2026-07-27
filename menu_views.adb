@@ -1,9 +1,14 @@
+with Ada.Text_IO;
+with Ada.Integer_Text_IO;
+with Buffer;
+use type Buffer.Byte;
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
 with Byte_Text_IO;
 with Input_Stream;
+with IBM_3270;
 
 package body Menu_Views is
 
@@ -89,7 +94,16 @@ package body Menu_Views is
       Y : Natural) is
    begin
 
-      null;
+      if V.AID = IBM_3270.AID_CrSel then
+         if (Y mod 2 = 0) and (Y >= 4) and (Y <= 10) then
+            V.Option := (Y - 2) / 2;
+            --  Ada.Text_IO.Put ("Option = ");
+            --  Ada.Integer_Text_IO.Put (V.Option);
+            --  Ada.Text_IO.New_Line;
+         else
+            V.Option := 0;
+         end if;
+      end if;
 
    end Update_Cursor;
 

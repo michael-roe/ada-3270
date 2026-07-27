@@ -8,6 +8,7 @@ package Menu_Views is
    type Menu_View is new Views.View with record
       AID : Buffer.Byte;
       Title : Lines.Bounded_Wide_String;
+      Option : Natural;
    end record;
 
    procedure To_Physical (
