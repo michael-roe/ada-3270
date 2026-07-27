@@ -8,6 +8,7 @@ with Line_Vectors_Tests;
 with IBM_3270_Orders.Tests;
 with Input_Stream.Tests;
 with Split_Views.Tests;
+with Text_Views.Tests;
 
 package body Buffer_Suite is
 
@@ -27,9 +28,11 @@ package body Buffer_Suite is
    Test_8 : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
    Test_9 : aliased Input_Stream.Tests.Input_Stream_Test;
    Test_10 : aliased Split_Views.Tests.Split_View_Test;
+   Test_11 : aliased Text_Views.Tests.Text_View_Test;
 
    function Suite return Access_Test_Suite is
    begin
+
       Add_Test (Result'Access, Test_1'Access);
       Add_Test (Result'Access, Test_2'Access);
       Add_Test (Result'Access, Test_3'Access);
@@ -40,7 +43,10 @@ package body Buffer_Suite is
       Add_Test (Result'Access, Test_8'Access);
       Add_Test (Result'Access, Test_9'Access);
       Add_Test (Result'Access, Test_10'Access);
+      Add_Test (Result'Access, Test_11'Access);
+
       return Result'Access;
+
    end Suite;
 
 end Buffer_Suite;
