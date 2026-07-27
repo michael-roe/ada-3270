@@ -174,8 +174,6 @@ package body Text_Views is
    procedure Prev_Page (V : in out Text_View) is
    begin
 
-      Ada.Text_IO.Put ("Prev_Page");
-      Ada.Text_IO.New_Line;
       if V.Page_Number > 0 then
          V.Page_Number := V.Page_Number - 1;
       end if;
