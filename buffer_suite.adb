@@ -10,6 +10,7 @@ with Input_Stream.Tests;
 with Split_Views.Tests;
 with Text_Views.Tests;
 with Login_Views.Tests;
+with Checkbox_Views.Tests;
 
 package body Buffer_Suite is
 
@@ -19,18 +20,19 @@ package body Buffer_Suite is
    Result : aliased Test_Suite;
 
    --  Statically allocate test cases:
-   Test_1 : aliased Buffer_Tests.Buffer_Test;
-   Test_2 : aliased Buffer_Queues_Tests.Buffer_Queues_Test;
-   Test_3 : aliased Telnet_Options_Tests.Telnet_Options_Test;
-   Test_4 : aliased Code_Page_500.Tests.Code_Page_Test;
-   Test_5 : aliased Code_Page_310.Tests.Code_Page_Test;
-   Test_6 : aliased Code_Page_870.Tests.Code_Page_Test;
-   Test_7 : aliased Line_Vectors_Tests.Line_Vectors_Test;
-   Test_8 : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
-   Test_9 : aliased Input_Stream.Tests.Input_Stream_Test;
+   Test_1  : aliased Buffer_Tests.Buffer_Test;
+   Test_2  : aliased Buffer_Queues_Tests.Buffer_Queues_Test;
+   Test_3  : aliased Telnet_Options_Tests.Telnet_Options_Test;
+   Test_4  : aliased Code_Page_500.Tests.Code_Page_Test;
+   Test_5  : aliased Code_Page_310.Tests.Code_Page_Test;
+   Test_6  : aliased Code_Page_870.Tests.Code_Page_Test;
+   Test_7  : aliased Line_Vectors_Tests.Line_Vectors_Test;
+   Test_8  : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
+   Test_9  : aliased Input_Stream.Tests.Input_Stream_Test;
    Test_10 : aliased Split_Views.Tests.Split_View_Test;
    Test_11 : aliased Text_Views.Tests.Text_View_Test;
    Test_12 : aliased Login_Views.Tests.Login_View_Test;
+   Test_13 : aliased Checkbox_Views.Tests.Checkbox_View_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -47,6 +49,7 @@ package body Buffer_Suite is
       Add_Test (Result'Access, Test_10'Access);
       Add_Test (Result'Access, Test_11'Access);
       Add_Test (Result'Access, Test_12'Access);
+      Add_Test (Result'Access, Test_13'Access);
 
       return Result'Access;
 

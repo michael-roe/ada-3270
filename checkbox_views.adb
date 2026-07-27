@@ -1,5 +1,7 @@
 with Ada.Text_IO;
 with Ada.Wide_Text_IO;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 with Buffer;
 use type Buffer.Byte;
 with Code_Page_310;
@@ -89,17 +91,18 @@ package body Checkbox_Views is
    procedure From_Physical (
       V : in out Checkbox_View;
       Bytes_In : Byte_Vectors.Vector) is
-      AID : Buffer.Byte;
    begin
 
-      --  Ought to check there is a first element
-      AID := Bytes_In.Element (Bytes_In.First_Index);
-      if not IBM_3270_Orders.Is_Short_Read (AID) then
+      if Bytes_In.Length >= 1 and then
+         not IBM_3270_Orders.Is_Short_Read (
+         Bytes_In.Element (Bytes_In.First_Index))
+      then
          for J in 1 .. 4 loop
             V.Checkboxes (J) := False;
          end loop;
-         Input_Stream.Parse (V, P'Access, Bytes_In);
       end if;
+
+      Input_Stream.Parse (V, P'Access, Bytes_In);
 
    end From_Physical;
 
