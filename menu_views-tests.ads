@@ -7,6 +7,8 @@ package Menu_Views.Tests is
 
    procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_CrSel (T : in out Test_Cases.Test_Case'Class);
+
    procedure Register_Tests (T : in out Menu_View_Test);
 
    function Name (T : Menu_View_Test) return Message_String;

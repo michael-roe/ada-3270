@@ -5,8 +5,29 @@ with Byte_Vectors;
 with Line_Vectors;
 with IBM_3270;
 with Buffer; use type Buffer.Byte;
+with IBM_3270_Orders;
+with Output_Stream;
 
 package body Menu_Views.Tests is
+
+   First_Field : Boolean;
+
+   Cursor_X : Natural;
+
+   Cursor_Y : Natural;
+
+   procedure Update_Field (X : Natural; Y : Natural) is
+   begin
+
+      if First_Field then
+         Cursor_X := X;
+         Cursor_Y := Y;
+         First_Field := False;
+      end if;
+
+   end Update_Field;
+
+   procedure Parse is new Output_Stream.Parse (Update_Field => Update_Field);
 
    procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class) is
       V : Menu_View;
@@ -24,12 +45,39 @@ package body Menu_Views.Tests is
 
    end Test_Short_Read;
 
+   procedure Test_CrSel (T : in out Test_Cases.Test_Case'Class) is
+      V : Menu_View;
+      Bytes_Out : Byte_Vectors.Vector;
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      V.To_Physical (Bytes_Out);
+
+      First_Field := True;
+      Parse (Bytes_Out);
+
+      Bytes_In.Append (IBM_3270.AID_CrSel);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In,
+         Cursor_X + 1,
+         Cursor_Y);
+
+      V.Option := 0;
+
+      V.From_Physical (Bytes_In);
+
+      Assert (V.Option = 1, "Option should be 1");
+
+   end Test_CrSel;
+
    procedure Register_Tests (T : in out Menu_View_Test) is
       use AUnit.Test_Cases.Registration;
    begin
 
       Register_Routine (T, Test_Short_Read'Access,
          "Test_Short_Read");
+
+      Register_Routine (T, Test_CrSel'Access,
+         "Test_CrSel");
 
    end Register_Tests;
 
