@@ -1,6 +1,7 @@
 with Buffer;
 use type Buffer.Byte;
 with Byte_Vectors;
+with Code_Page_310;
 
 package body Code_Page_870 is
 
@@ -438,6 +439,9 @@ package body Code_Page_870 is
                   Found := True;
                end if;
             end loop;
+            if not Found then
+               Code_Page_310.Append (V, S(J));
+            end if;
          end if;
       end loop;
 
