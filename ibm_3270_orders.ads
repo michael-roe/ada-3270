@@ -5,6 +5,15 @@ package IBM_3270_Orders is
 
    type Intensity is (Normal_Text, Detectable, Highlighted, Hidden);
 
+   procedure Append_Buffer_Address (V : in out Byte_Vectors.Vector;
+      X : Integer;
+      Y : Integer);
+
+   --
+   --  Append_Buffer_Address appends a buffer address to output
+   --  stream V.
+   --
+
    procedure Set_Buffer_Address (V : in out Byte_Vectors.Vector;
       X : Integer;
       Y : Integer);

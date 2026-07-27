@@ -133,8 +133,7 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#C1#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 1, 0);
 
       V.From_Physical (Bytes_In);
 
@@ -167,8 +166,7 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
       Bytes_In.Append (IBM_3270.Set_Buffer_Address);
       --  The SBA order is truncated here
 
@@ -184,8 +182,7 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       P.Append (Bytes_In, "*");
       Bytes_In.Append (IBM_3270.Graphic_Escape);
@@ -205,8 +202,9 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#C1#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 1, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#C1#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       P.Append (Bytes_In, "*");
       Code_Page_310.Append (Bytes_In, Math_Operators.Logical_And);
@@ -235,8 +233,9 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       P.Append (Bytes_In, "(");
       Bytes_In.Append (IBM_3270.Duplicate);
@@ -257,8 +256,9 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       P.Append (Bytes_In, "(");
       Bytes_In.Append (IBM_3270.Field_Mark);
@@ -279,8 +279,9 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
 
       P.Append (Bytes_In, "Hello   ");
@@ -299,8 +300,9 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
 
       P.Append (Bytes_In, "(");
@@ -325,8 +327,9 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       P.Append (Bytes_In, "*");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 4);
@@ -351,8 +354,9 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       P.Append (Bytes_In, "Hello   ");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 4);
@@ -375,8 +379,9 @@ package body Input_Stream.Tests is
    begin
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
 
       P870.Append (Bytes_In,

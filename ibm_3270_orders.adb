@@ -18,10 +18,24 @@ package body IBM_3270_Orders is
       16#F0#, 16#F1#, 16#F2#, 16#F3#, 16#F4#, 16#F5#, 16#F6#, 16#F7#,
       16#F8#, 16#F9#, 16#7A#, 16#7B#, 16#7C#, 16#7D#, 16#7E#, 16#7F#);
 
-   procedure Set_Buffer_Address (V : in out Byte_Vectors.Vector;
+   procedure Append_Buffer_Address (V : in out Byte_Vectors.Vector;
       X : Integer;
       Y : Integer) is
       Addr : Interfaces.Unsigned_16;
+   begin
+
+      if X >= 0 and X < 80 and Y >= 0 and Y < 44 then
+         Addr := Interfaces.Unsigned_16 (X + 80 * Y);
+         V.Append (Table (Unsigned_6 (Addr / 64)));
+         V.Append (Table (Unsigned_6 (Addr
+            and Interfaces.Unsigned_16 (16#3f#))));
+      end if;
+
+   end Append_Buffer_Address;
+
+   procedure Set_Buffer_Address (V : in out Byte_Vectors.Vector;
+      X : Integer;
+      Y : Integer) is
    begin
 
       --
@@ -30,11 +44,8 @@ package body IBM_3270_Orders is
       --  to check against the screen size of the current terminal.
       --
       if X >= 0 and X < 80 and Y >= 0 and Y < 44 then
-         Addr := Interfaces.Unsigned_16 (X + 80 * Y);
          V.Append (IBM_3270.Set_Buffer_Address);
-         V.Append (Table (Unsigned_6 (Addr / 64)));
-         V.Append (Table (Unsigned_6 (Addr
-            and Interfaces.Unsigned_16 (16#3f#))));
+         Append_Buffer_Address (V, X, Y);
       end if;
 
    end Set_Buffer_Address;
