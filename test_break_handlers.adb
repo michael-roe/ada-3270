@@ -6,11 +6,11 @@ with IBM_3270_Orders;
 
 package body Test_Break_Handlers is
 
-  Screen_Message : Buffer.Byte_Array := (
+   Screen_Message : Buffer.Byte_Array := (
       IBM_3270.IBM_Write_Erase,
       IBM_3270.WCC_Go_Ahead);
 
-  Screen_Message_No_GA : Buffer.Byte_Array := (
+   Screen_Message_No_GA : Buffer.Byte_Array := (
       IBM_3270.IBM_Write_Erase,
       0);
 
@@ -26,18 +26,26 @@ package body Test_Break_Handlers is
          for J in Screen_Message'Range loop
             Bytes_Out.Append (Screen_Message (J));
          end loop;
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Highlighted);
+         IBM_3270_Orders.Start_Field (Bytes_Out,
+            True,
+            IBM_3270_Orders.Highlighted);
          P.Append (Bytes_Out, "Press the ENTER key");
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
+         IBM_3270_Orders.Start_Field (Bytes_Out,
+            True,
+            IBM_3270_Orders.Normal_Text);
          Go_Ahead := True;
       elsif not V.Break_Received then
          for J in Screen_Message_No_GA'Range loop
             Bytes_Out.Append (Screen_Message_No_GA (J));
          end loop;
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 0);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Highlighted);
+         IBM_3270_Orders.Start_Field (Bytes_Out,
+            True,
+            IBM_3270_Orders.Highlighted);
          P.Append (Bytes_Out, "Press the ATTN key");
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
+         IBM_3270_Orders.Start_Field (Bytes_Out,
+            True,
+            IBM_3270_Orders.Normal_Text);
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2);
          P.Append (Bytes_Out, "[");
          P.Append (Bytes_Out, Natural'Wide_Image (V.Counter));
@@ -49,13 +57,19 @@ package body Test_Break_Handlers is
          for J in Screen_Message'Range loop
             Bytes_Out.Append (Screen_Message (J));
          end loop;
-  
+
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 0);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
+         IBM_3270_Orders.Start_Field (Bytes_Out,
+            True,
+            IBM_3270_Orders.Normal_Text);
          P.Append (Bytes_Out, "Break received.");
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Highlighted);
+         IBM_3270_Orders.Start_Field (Bytes_Out,
+            True,
+            IBM_3270_Orders.Highlighted);
          P.Append (Bytes_Out, "Press the ENTER key");
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, IBM_3270_Orders.Normal_Text);
+         IBM_3270_Orders.Start_Field (Bytes_Out,
+            True,
+            IBM_3270_Orders.Normal_Text);
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2);
          P.Append (Bytes_Out, "[");
          P.Append (Bytes_Out, Natural'Wide_Image (V.Counter));
@@ -89,7 +103,7 @@ package body Test_Break_Handlers is
 
       null;
 
-   end;
+   end Initialize;
 
    procedure Set_RX_TX (
       V  : in out Test_Break_Handler;
