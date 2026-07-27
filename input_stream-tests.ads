@@ -8,6 +8,7 @@ package Input_Stream.Tests is
 
    type Test_View is new Views.View with record
       AID         : Buffer.Byte;
+      Title       : Lines.Bounded_Wide_String;
       AID_Set     : Boolean := False;
       Cursor_X    : Natural := 0;
       Cursor_Y    : Natural := 0;
@@ -54,13 +55,15 @@ package Input_Stream.Tests is
 
    function Get_AID (V : Test_View) return Buffer.Byte;
 
+   procedure Set_Title (
+      V : in out Test_View;
+      L : Lines.Bounded_Wide_String);
+
    type Input_Stream_Test is new Test_Cases.Test_Case with null record;
 
    --
    --  Additional tests that could be written
    --
-   --     Truncated field address
-   --     Truncated graphics escape
    --     Field address out of range
    --     Bad characters in field address
    --     Characters before first Set Buffer Address
@@ -92,6 +95,20 @@ package Input_Stream.Tests is
    --
    --  Test_Cursor_Truncated tests an input stream that ends part way
    --  through the cursor address. This is a protocol error.
+   --
+
+   procedure Test_SBA_Truncated (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   --  Test_SBA_Truncated tests an input stream that ends part way
+   --  through a Set Buffer Address order. This is a protocol error.
+   --
+
+   procedure Test_GE_Truncated (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   --  Test_GE_Truncated tests an input stream that ends part way
+   --  through a Graphics Escape order. This is a protocol error.
    --
 
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class);

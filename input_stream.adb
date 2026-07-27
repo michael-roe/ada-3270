@@ -58,9 +58,7 @@ package body Input_Stream is
          while To_Do /= 0 loop
             case Bytes_In.Element (Index) is
                when IBM_3270.Set_Buffer_Address =>
-                  if First_Field then
-                     First_Field := False;
-                  else
+                  if not First_Field then
                      Lines.Trim (L, Ada.Strings.Right);
                      Views.Update_Field (V, X, Y, L);
                      Lines.Set_Bounded_Wide_String (L, "");
@@ -73,7 +71,9 @@ package body Input_Stream is
                         Y);
                      To_Do := To_Do - 3;
                      Index := Index + 3;
+                     First_Field := False;
                   else
+                     Ada.Text_IO.Put ("Truncated SBA");
                      To_Do := 0;
                   end if;
                when IBM_3270.Graphic_Escape =>

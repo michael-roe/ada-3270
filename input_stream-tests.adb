@@ -87,6 +87,15 @@ package body Input_Stream.Tests is
 
    end Get_AID;
 
+  procedure Set_Title (
+      V : in out Test_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Title := L;
+
+   end Set_Title;
+
    procedure Test_Empty_Stream (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;
       Bytes_In : Byte_Vectors.Vector;
@@ -151,6 +160,43 @@ package body Input_Stream.Tests is
       Assert (not V.Cursor_Set, "Update_Cursor should not have been called");
 
    end Test_Cursor_Truncated;
+
+   procedure Test_SBA_Truncated (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View; 
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (IBM_3270.Set_Buffer_Address);
+      --  The SBA order is truncated here
+
+      V.From_Physical (Bytes_In);
+
+      Assert (V.Field_Count = 0, "Update_Field should not have been called");
+
+   end Test_SBA_Truncated;
+
+   procedure Test_GE_Truncated (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View; 
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      Bytes_In.Append (16#40#);
+      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+      P.Append (Bytes_In, "*");
+      Bytes_In.Append (IBM_3270.Graphic_Escape);
+      --  The Graphics Escape order is truncated here
+
+      V.From_Physical (Bytes_In);
+
+      Assert (V.Field_Count = 0, "Update_Field should have been called");
+      Assert (Lines.Length (V.First_Field) = 1, "Field should be length 1");
+
+   end Test_GE_Truncated;
 
    procedure Test_Buffer_Address (T : in out Test_Cases.Test_Case'Class) is
       V : Test_View;
@@ -360,6 +406,12 @@ package body Input_Stream.Tests is
 
       Register_Routine (T, Test_Cursor_Truncated'Access,
          "Test_Cursor_Truncated");
+
+      Register_Routine (T, Test_SBA_Truncated'Access,
+         "Test_SBA_Truncated");
+
+      Register_Routine (T, Test_GE_Truncated'Access,
+         "Test_GE_Truncated");
 
       Register_Routine (T, Test_Buffer_Address'Access,
          "Test_Buffer_Address");
