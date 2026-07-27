@@ -7,6 +7,7 @@ with Code_Page_870.Tests;
 with Line_Vectors_Tests;
 with IBM_3270_Orders.Tests;
 with Input_Stream.Tests;
+with Split_Views.Tests;
 
 package body Buffer_Suite is
 
@@ -21,10 +22,11 @@ package body Buffer_Suite is
    Test_3 : aliased Telnet_Options_Tests.Telnet_Options_Test;
    Test_4 : aliased Code_Page_500.Tests.Code_Page_Test;
    Test_5 : aliased Code_Page_310.Tests.Code_Page_Test;
-   Test_6 : aliased Line_Vectors_Tests.Line_Vectors_Test;
-   Test_7 : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
-   Test_8 : aliased Input_Stream.Tests.Input_Stream_Test;
-   Test_9 : aliased Code_Page_870.Tests.Code_Page_Test;
+   Test_6 : aliased Code_Page_870.Tests.Code_Page_Test;
+   Test_7 : aliased Line_Vectors_Tests.Line_Vectors_Test;
+   Test_8 : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
+   Test_9 : aliased Input_Stream.Tests.Input_Stream_Test;
+   Test_10 : aliased Split_Views.Tests.Split_View_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -37,6 +39,7 @@ package body Buffer_Suite is
       Add_Test (Result'Access, Test_7'Access);
       Add_Test (Result'Access, Test_8'Access);
       Add_Test (Result'Access, Test_9'Access);
+      Add_Test (Result'Access, Test_10'Access);
       return Result'Access;
    end Suite;
 
