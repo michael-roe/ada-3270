@@ -10,9 +10,10 @@ package Numbered_Menu_Views is
    type Label_Array is array (1 .. 10) of Lines.Bounded_Wide_String;
 
    type Numbered_Menu_View is new Paged_Views.Paged_View
-      and JSON_Views.JSON_View with record
+     and JSON_Views.JSON_View with record
       AID : Buffer.Byte := 0;
       Title : Lines.Bounded_Wide_String;
+      Subtitle : Lines.Bounded_Wide_String;
       Option : Natural;
       Option_Labels : Label_Array;
    end record;
@@ -50,7 +51,7 @@ package Numbered_Menu_Views is
 
    procedure Next_Page (V : in out Numbered_Menu_View);
 
-    procedure To_JSON (
+   procedure To_JSON (
       V   : Numbered_Menu_View;
       TX2 : access Buffer_Queues.Queue);
 
