@@ -24,6 +24,8 @@ package body IBM_3270_Event_Handlers is
 
    Summon_Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
 
+   Entity_Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
+
    Identity_Input : aliased Text_Views.Text_View;
 
    Intent_Input : aliased Split_Views.Split_View;
@@ -126,10 +128,16 @@ package body IBM_3270_Event_Handlers is
          case V.State  is
             when Main_Panel =>
                if Main_Menu.Option /= 0 then
-                 V.Current := Identity_Input'Access;
-                 V.Pageable := Identity_Input'Access;
-                 V.State := Identity_Panel;
+                  V.Current := Entity_Menu'Access;
+                  V.Pageable := Entity_Menu'Access;
+                  V.JSONable := Entity_Menu'Access;
+                  V.State := Entity_Panel;
                end if;
+            when Entity_Panel =>
+                  V.Current  := Identity_Input'Access;
+                  V.Pageable := Identity_Input'Access;
+                  --  V.JSONable := Identity_Menu'Access;
+                  V.State    := Identity_Panel;
             when Identity_Panel =>
                   V.Current  := Summon_Menu'Access;
                   V.Pageable := Summon_Menu'Access;
@@ -168,18 +176,30 @@ package body IBM_3270_Event_Handlers is
       V.JSONable := Main_Menu'Access;
       V.State := Main_Panel;
 
+      
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Main_Menu.Set_Title (L);
-      Lines.Set_Bounded_Wide_String (L, "Summon");
+      Lines.Set_Bounded_Wide_String (L, "Command");
+      Main_Menu.Subtitle := L;
+      Lines.Set_Bounded_Wide_String (L, "Summon Entity");
       Numbered_Menu_Views.Set_Label (Main_Menu, 1, L);
-      Lines.Set_Bounded_Wide_String (L, "Identity (Prompt)");
+      Lines.Set_Bounded_Wide_String (L, "Contact Entity");
       Numbered_Menu_Views.Set_Label (Main_Menu, 2, L);
-      Lines.Set_Bounded_Wide_String (L, "Identity (Parameters)");
+      Lines.Set_Bounded_Wide_String (L, "New Cantrip");
       Numbered_Menu_Views.Set_Label (Main_Menu, 3, L);
-      Lines.Set_Bounded_Wide_String (L, "Gates");
+      Lines.Set_Bounded_Wide_String (L, "Edit Cantrip");
       Numbered_Menu_Views.Set_Label (Main_Menu, 4, L);
+
+      Lines.Set_Bounded_Wide_String (L, "Cantrip");
+      Entity_Menu.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Identity (Prompt)");
+      Numbered_Menu_Views.Set_Label (Entity_Menu, 1, L);
+      Lines.Set_Bounded_Wide_String (L, "Identity (Parameters)");
+      Numbered_Menu_Views.Set_Label (Entity_Menu, 2, L);
+      Lines.Set_Bounded_Wide_String (L, "Gates");
+      Numbered_Menu_Views.Set_Label (Entity_Menu, 3, L);
       Lines.Set_Bounded_Wide_String (L, "Wards");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 5, L);
+      Numbered_Menu_Views.Set_Label (Entity_Menu, 4, L);
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Identity_Input.Set_Title (L);
@@ -188,7 +208,7 @@ package body IBM_3270_Event_Handlers is
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Summon_Menu.Set_Title (L);
-      Lines.Set_Bounded_Wide_String (L, "Summon");
+      Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Summon_Menu.Subtitle := L;
       Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");
       Summon_Menu.Set_Label (1, L);
