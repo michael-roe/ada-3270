@@ -124,6 +124,12 @@ package body IBM_3270_Event_Handlers is
          end loop;
 
          case V.State  is
+            when Main_Panel =>
+               if Main_Menu.Option /= 0 then
+                 V.Current := Identity_Input'Access;
+                 V.Pageable := Identity_Input'Access;
+                 V.State := Identity_Panel;
+               end if;
             when Identity_Panel =>
                   V.Current  := Summon_Menu'Access;
                   V.Pageable := Summon_Menu'Access;
@@ -157,25 +163,23 @@ package body IBM_3270_Event_Handlers is
       L : Lines.Bounded_Wide_String;
    begin
 
-      V.Current := Identity_Input'Access;
-      V.Pageable := Identity_Input'Access;
-      V.JSONable := Summon_Menu'Access;
-      V.State := Identity_Panel;
+      V.Current := Main_Menu'Access;
+      V.Pageable := Main_Menu'Access;
+      V.JSONable := Main_Menu'Access;
+      V.State := Main_Panel;
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Main_Menu.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L, "Summon");
       Numbered_Menu_Views.Set_Label (Main_Menu, 1, L);
-      Lines.Set_Bounded_Wide_String (L, "Model");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 2, L);
       Lines.Set_Bounded_Wide_String (L, "Identity (Prompt)");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 3, L);
+      Numbered_Menu_Views.Set_Label (Main_Menu, 2, L);
       Lines.Set_Bounded_Wide_String (L, "Identity (Parameters)");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 4, L);
+      Numbered_Menu_Views.Set_Label (Main_Menu, 3, L);
       Lines.Set_Bounded_Wide_String (L, "Gates");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 5, L);
+      Numbered_Menu_Views.Set_Label (Main_Menu, 4, L);
       Lines.Set_Bounded_Wide_String (L, "Wards");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 6, L);
+      Numbered_Menu_Views.Set_Label (Main_Menu, 5, L);
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Identity_Input.Set_Title (L);
@@ -184,6 +188,8 @@ package body IBM_3270_Event_Handlers is
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Summon_Menu.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Summon");
+      Summon_Menu.Subtitle := L;
       Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");
       Summon_Menu.Set_Label (1, L);
       Lines.Set_Bounded_Wide_String (L, "GLM-5.2");

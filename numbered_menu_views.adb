@@ -83,7 +83,8 @@ package body Numbered_Menu_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 39);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
-      P.Append (Bytes_Out, "Option ==>");
+      P.Append (Bytes_Out, Lines.To_Wide_String (V.Subtitle));
+      P.Append (Bytes_Out, " ==>");
       IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
       IBM_3270_Orders.Insert_Cursor (Bytes_Out);
       if V.Option = 0 then

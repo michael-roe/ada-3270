@@ -55,5 +55,5 @@ begin
    Ada.Wide_Text_IO.Put (F1, Box_Drawing.Horizontal);
    Ada.Wide_Text_IO.Put (F1, Box_Drawing.Up_Left);
    Ada.Wide_Text_IO.New_Line (F1);
- 
+
 end Test_Box;

@@ -9,6 +9,7 @@ with IBM_3270_Orders.Tests;
 with Input_Stream.Tests;
 with Split_Views.Tests;
 with Text_Views.Tests;
+with Login_Views.Tests;
 
 package body Buffer_Suite is
 
@@ -29,6 +30,7 @@ package body Buffer_Suite is
    Test_9 : aliased Input_Stream.Tests.Input_Stream_Test;
    Test_10 : aliased Split_Views.Tests.Split_View_Test;
    Test_11 : aliased Text_Views.Tests.Text_View_Test;
+   Test_12 : aliased Login_Views.Tests.Login_View_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -44,6 +46,7 @@ package body Buffer_Suite is
       Add_Test (Result'Access, Test_9'Access);
       Add_Test (Result'Access, Test_10'Access);
       Add_Test (Result'Access, Test_11'Access);
+      Add_Test (Result'Access, Test_12'Access);
 
       return Result'Access;
 
