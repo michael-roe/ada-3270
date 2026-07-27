@@ -193,7 +193,7 @@ package body Input_Stream.Tests is
 
       V.From_Physical (Bytes_In);
 
-      Assert (V.Field_Count = 0, "Update_Field should have been called");
+      Assert (V.Field_Count = 1, "Update_Field should have been called");
       Assert (Lines.Length (V.First_Field) = 1, "Field should be length 1");
 
    end Test_GE_Truncated;
