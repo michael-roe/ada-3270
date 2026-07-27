@@ -35,8 +35,8 @@ package body Output_Stream is
                   if (Bytes_Out.Element (Index + 1) and 16#20#) = 0 then
                      Update_Field (Cursor_X, Cursor_Y);
                   end if;
-                  To_Do := To_Do - 1;
-                  Index := Index + 1;
+                  To_Do := To_Do - 2;
+                  Index := Index + 2;
                   Cursor_X := Cursor_X + 1;
                else
                   To_Do := 0;
