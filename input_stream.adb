@@ -73,7 +73,6 @@ package body Input_Stream is
                      Index := Index + 3;
                      First_Field := False;
                   else
-                     Ada.Text_IO.Put ("Truncated SBA");
                      To_Do := 0;
                   end if;
                when IBM_3270.Graphic_Escape =>
