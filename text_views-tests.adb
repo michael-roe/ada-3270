@@ -77,8 +77,9 @@ package body Text_Views.Tests is
       Parse (Bytes_Out);
 
       Bytes_In.Append (IBM_3270.AID_Enter);
-      Bytes_In.Append (16#40#);
-      Bytes_In.Append (16#40#);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      --  Bytes_In.Append (16#40#);
+      --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, Cursor_X + 1, Cursor_Y);
       P.Append (Bytes_In, "Hello World!");
 
