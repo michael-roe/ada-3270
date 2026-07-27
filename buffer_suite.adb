@@ -12,6 +12,7 @@ with Text_Views.Tests;
 with Login_Views.Tests;
 with Checkbox_Views.Tests;
 with Menu_Views.Tests;
+with Numbered_Menu_Views.Tests;
 
 package body Buffer_Suite is
 
@@ -35,6 +36,7 @@ package body Buffer_Suite is
    Test_12 : aliased Login_Views.Tests.Login_View_Test;
    Test_13 : aliased Checkbox_Views.Tests.Checkbox_View_Test;
    Test_14 : aliased Menu_Views.Tests.Menu_View_Test;
+   Test_15 : aliased Numbered_Menu_Views.Tests.Numbered_Menu_View_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -53,6 +55,7 @@ package body Buffer_Suite is
       Add_Test (Result'Access, Test_12'Access);
       Add_Test (Result'Access, Test_13'Access);
       Add_Test (Result'Access, Test_14'Access);
+      Add_Test (Result'Access, Test_15'Access);
 
       return Result'Access;
 
