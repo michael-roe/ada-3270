@@ -28,7 +28,8 @@ package body Menu_Views is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      P.Append (Bytes_Out, " Menu Test");
+      P.Append (Bytes_Out, " ");
+      P.Append (Bytes_Out, Lines.To_Wide_String (V.Title));
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
