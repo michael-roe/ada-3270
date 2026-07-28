@@ -121,4 +121,20 @@ package body Panel_Elements is
 
    end Right_Scroll_Up_Down;
 
+   procedure Text_Line (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      L : Lines.Bounded_Wide_String; 
+      Bytes_Out : in out Byte_Vectors.Vector) is
+   begin
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, Y);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      P.Append (Bytes_Out, " ");
+      P.Append (Bytes_Out, Lines.To_Wide_String (L));
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, Y);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+   end Text_Line;
+
 end Panel_Elements;

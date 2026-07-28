@@ -62,4 +62,10 @@ package Panel_Elements is
       Next_Enabled : Boolean;
       Bytes_Out : in out Byte_Vectors.Vector);
 
+   procedure Text_Line (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      L : Lines.Bounded_Wide_String; 
+      Bytes_Out : in out Byte_Vectors.Vector);
+
 end Panel_Elements;

@@ -29,12 +29,7 @@ package body Split_Views is
 
       Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 1);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      P.Append (Bytes_Out, " ");
-      P.Append (Bytes_Out, Lines.To_Wide_String (V.Title));
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Text_Line (1, P'Access, V.Title, Bytes_Out);
 
       Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
@@ -51,15 +46,10 @@ package body Split_Views is
       for J in 4 .. 19 loop
          Line_Number := J - 4 + 16 * V.Page_Number;
          if Line_Number <= V.History.Last_Index then
-            IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, J);
-            Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-            IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-            P.Append (
-               Bytes_Out,
-               Lines.To_Wide_String (V.History (Line_Number)));
-            IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
-            IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-            Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+            Panel_Elements.Text_Line (J,
+               P'Access, 
+               V.History (Line_Number),
+               Bytes_Out);
          else
             Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
          end if;
