@@ -155,7 +155,8 @@ package body IBM_3270_Event_Handlers is
             when others =>
                null;
          end case;
-
+      elsif AID = IBM_3270.AID_SysReq then
+         Ada.Text_IO.Put_Line ("SysReq");
       end if;
 
    end From_Physical;
