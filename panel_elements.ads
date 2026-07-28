@@ -1,5 +1,6 @@
 with Byte_Vectors;
 with Code_Pages;
+with Lines;
 
 package Panel_Elements is
 
@@ -42,5 +43,13 @@ package Panel_Elements is
    --  Box_Sides draws the left and right vertical edges of a box at
    --  line Y on the screen.
    --
+
+   procedure Scroll_Up_Down (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Field_Name : Lines.Bounded_Wide_String;
+      Prev_Enabled : Boolean;
+      Next_Enabled : Boolean;
+      Bytes_Out : in out Byte_Vectors.Vector);
 
 end Panel_Elements;

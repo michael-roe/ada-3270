@@ -5,8 +5,8 @@ with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
---  use type IBM_3270_Orders.Intensity;
 with Input_Stream;
+with Panel_Elements;
 
 package body Text_Views is
 
@@ -25,11 +25,7 @@ package body Text_Views is
       Line_Number : Natural;
    begin
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
+      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " ");
@@ -37,31 +33,14 @@ package body Text_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Start_Field (Bytes_Out, True,  Highlighted);
-      P.Append (Bytes_Out, Lines.To_Wide_String (V.Subtitle));
-      IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
-      P.Append (Bytes_Out, "More: ");
-      if V.Page_Number <= Natural (V.Text.Length) / 36 then
-         P.Append (Bytes_Out, "+");
-      else
-         P.Append (Bytes_Out, " ");
-      end if;
-      P.Append (Bytes_Out, " ");
-      if V.Page_Number = 0 then
-         P.Append (Bytes_Out, " ");
-      else
-         P.Append (Bytes_Out, "-");
-      end if;
-      P.Append (Bytes_Out, " ");
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Scroll_Up_Down (3,
+         P'Access,
+         V.Subtitle,
+         V.Page_Number /= 0,
+         V.Page_Number <= Natural (V.Text.Length) / 36,
+         Bytes_Out);
 
       for J in 4 .. 39 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -80,12 +59,7 @@ package body Text_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 40);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " PF1=Help");
@@ -95,12 +69,7 @@ package body Text_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 42);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
+      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
 
    end To_Physical;
 

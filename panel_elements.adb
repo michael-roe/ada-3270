@@ -4,6 +4,12 @@ with IBM_3270_Orders;
 
 package body Panel_Elements is
 
+   function Normal_Text return IBM_3270_Orders.Intensity renames
+      IBM_3270_Orders.Normal_Text;
+
+   function Highlighted return IBM_3270_Orders.Intensity renames
+      IBM_3270_Orders.Highlighted;
+
    procedure Box_Top (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
@@ -56,11 +62,43 @@ package body Panel_Elements is
       Bytes_Out : in out Byte_Vectors.Vector) is
    begin
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, Y); 
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, Y);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, Y);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
    end Box_Sides;
+
+   procedure Scroll_Up_Down (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Field_Name : Lines.Bounded_Wide_String;
+      Prev_Enabled : Boolean;
+      Next_Enabled : Boolean;
+      Bytes_Out : in out Byte_Vectors.Vector) is
+   begin
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, Y);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      IBM_3270_Orders.Start_Field (Bytes_Out, True,  Highlighted);
+      P.Append (Bytes_Out, Lines.To_Wide_String (Field_Name));
+      IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, Y);
+      P.Append (Bytes_Out, "More: ");
+      if Next_Enabled then
+         P.Append (Bytes_Out, "+");
+      else
+         P.Append (Bytes_Out, " ");
+      end if;
+      P.Append (Bytes_Out, " ");
+      if Prev_Enabled then
+         P.Append (Bytes_Out, "-");
+      else
+         P.Append (Bytes_Out, " ");
+      end if;
+      P.Append (Bytes_Out, " ");
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+   end Scroll_Up_Down;
 
 end Panel_Elements;
