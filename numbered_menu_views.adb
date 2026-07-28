@@ -5,6 +5,7 @@ with Box_Drawing;
 with IBM_3270_Orders;
 with Byte_Text_IO;
 with Input_Stream;
+with Panel_Elements;
 
 package body Numbered_Menu_Views is
 
@@ -22,11 +23,7 @@ package body Numbered_Menu_Views is
       B : Byte_Vectors.Vector;
    begin
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
+      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " ");
@@ -34,11 +31,7 @@ package body Numbered_Menu_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 3);
@@ -100,12 +93,7 @@ package body Numbered_Menu_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 39);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 40);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
 
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -116,12 +104,7 @@ package body Numbered_Menu_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 42);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
+      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
 
    end To_Physical;
 
