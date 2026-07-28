@@ -38,20 +38,15 @@ package body Split_Views is
 
       Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 3);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
-      P.Append (Bytes_Out, "More: ");
-      P.Append (Bytes_Out, "+");
-      P.Append (Bytes_Out, " ");
-      if V.Page_Number = 0 then
-         P.Append (Bytes_Out, " ");
-      else
-         P.Append (Bytes_Out, "-");
-      end if;
-      P.Append (Bytes_Out, " ");
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Left_Box_Side (3,
+         P'Access,
+         Bytes_Out);
+
+      Panel_Elements.Right_Scroll_Up_Down (3,
+         P'Access,
+          V.Page_Number /= 0,
+          True,
+         Bytes_Out);
 
       for J in 4 .. 19 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -67,11 +62,7 @@ package body Split_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (20, P'Access, Bytes_Out);
 
       for J in 21 .. 39 loop
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);

@@ -69,12 +69,21 @@ package body Panel_Elements is
 
    end Box_Sides;
 
-   procedure Scroll_Up_Down (
+   procedure Left_Box_Side (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
+      Bytes_Out : in out Byte_Vectors.Vector) is
+   begin
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, Y);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+   end Left_Box_Side;
+
+   procedure Left_Input_Label (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access; 
       Field_Name : Lines.Bounded_Wide_String;
-      Prev_Enabled : Boolean;
-      Next_Enabled : Boolean;
       Bytes_Out : in out Byte_Vectors.Vector) is
    begin
 
@@ -83,6 +92,17 @@ package body Panel_Elements is
       IBM_3270_Orders.Start_Field (Bytes_Out, True,  Highlighted);
       P.Append (Bytes_Out, Lines.To_Wide_String (Field_Name));
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
+
+   end Left_Input_Label;
+
+   procedure Right_Scroll_Up_Down (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Prev_Enabled : Boolean;
+      Next_Enabled : Boolean;
+      Bytes_Out : in out Byte_Vectors.Vector) is
+   begin
+
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, Y);
       P.Append (Bytes_Out, "More: ");
       if Next_Enabled then
@@ -99,6 +119,6 @@ package body Panel_Elements is
       P.Append (Bytes_Out, " ");
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-   end Scroll_Up_Down;
+   end Right_Scroll_Up_Down;
 
 end Panel_Elements;

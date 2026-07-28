@@ -44,10 +44,20 @@ package Panel_Elements is
    --  line Y on the screen.
    --
 
-   procedure Scroll_Up_Down (
+   procedure Left_Box_Side (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Bytes_Out : in out Byte_Vectors.Vector);
+
+   procedure Left_Input_Label (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
       Field_Name : Lines.Bounded_Wide_String;
+      Bytes_Out : in out Byte_Vectors.Vector);
+      
+   procedure Right_Scroll_Up_Down (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
       Prev_Enabled : Boolean;
       Next_Enabled : Boolean;
       Bytes_Out : in out Byte_Vectors.Vector);

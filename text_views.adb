@@ -35,9 +35,13 @@ package body Text_Views is
 
       Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
-      Panel_Elements.Scroll_Up_Down (3,
+      Panel_Elements.Left_Input_Label (3,
          P'Access,
          V.Subtitle,
+         Bytes_Out);
+
+      Panel_Elements.Right_Scroll_Up_Down (3,
+         P'Access,
          V.Page_Number /= 0,
          V.Page_Number <= Natural (V.Text.Length) / 36,
          Bytes_Out);
