@@ -202,6 +202,11 @@ package body Telnet.Workers is
                         Handler.Break;
                         S := Data;
                         Got_Reply := True;
+                     when Telnet.Protocol.IP =>
+                        Put ("[IP]");
+                        Handler.Break;
+                        S := Data;
+                        Got_Reply := True;
                      when Telnet.Protocol.EOR =>
                         --  Put ("[EOR]");
                         Handler.From_Physical (Bytes_In);
