@@ -57,11 +57,13 @@ package body Split_Views is
 
       Panel_Elements.Horizontal_Rule (20, P'Access, Bytes_Out);
 
-      for J in 21 .. 39 loop
+      Panel_Elements.Input_Label (21, P'Access, V.Subtitle, Bytes_Out);
+
+      for J in 22 .. 39 loop
          Panel_Elements.Input_Line (J,
             P'Access,
-            V.Edit (J - 21),
-            J = 21,
+            V.Edit (J - 22),
+            J = 22,
             Bytes_Out);
 
       end loop;
@@ -114,7 +116,7 @@ package body Split_Views is
       L : Lines.Bounded_Wide_String) is
    begin
 
-      V.Edit (Y - 21) := L;
+      V.Edit (Y - 22) := L;
 
    end Update_Field;
 

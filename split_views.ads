@@ -9,12 +9,13 @@ with Buffer_Queues;
 
 package Split_Views is
 
-   type Edit_Window is array (0 .. 18) of Lines.Bounded_Wide_String;
+   type Edit_Window is array (0 .. 17) of Lines.Bounded_Wide_String;
 
    type Split_View is new Paged_Views.Paged_View and JSON_Views.JSON_View
      with record
       AID : Buffer.Byte := 0;
       Title : Lines.Bounded_Wide_String;
+      Subtitle : Lines.Bounded_Wide_String;
       Page_Number : Natural := 0;
       History : Line_Vectors.Vector;
       Edit    : Edit_Window;

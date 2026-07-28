@@ -44,6 +44,12 @@ package Panel_Elements is
    --  line Y on the screen.
    --
 
+   procedure Input_Label (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Field_Name : Lines.Bounded_Wide_String;
+      Bytes_Out : in out Byte_Vectors.Vector);
+
    procedure Left_Box_Side (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
