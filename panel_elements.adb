@@ -1,5 +1,6 @@
 with Code_Page_310;
 with Box_Drawing;
+with Arrows;
 with IBM_3270_Orders;
 
 package body Panel_Elements is
@@ -137,6 +138,32 @@ package body Panel_Elements is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
    end Right_Scroll_Up_Down;
+
+  procedure Right_Pan_Left_Right (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Left_Enabled : Boolean;
+      Right_Enabled : Boolean;
+      Bytes_Out : in out Byte_Vectors.Vector) is
+   begin
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, Y);
+      P.Append (Bytes_Out, "More: ");
+      if Left_Enabled then
+         Code_Page_310.Append (Bytes_Out, Arrows.Leftwards_Arrow);
+      else
+         P.Append (Bytes_Out, " ");
+      end if;
+      P.Append (Bytes_Out, " ");
+      if Right_Enabled then
+         Code_Page_310.Append (Bytes_Out, Arrows.Rightwards_Arrow);
+      else
+         P.Append (Bytes_Out, " ");
+      end if;
+      P.Append (Bytes_Out, " ");
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+   end Right_Pan_Left_Right;
 
    procedure Text_Line (
       Y : Natural;
