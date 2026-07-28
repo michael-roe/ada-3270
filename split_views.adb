@@ -58,17 +58,12 @@ package body Split_Views is
       Panel_Elements.Horizontal_Rule (20, P'Access, Bytes_Out);
 
       for J in 21 .. 39 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
-         if J = 21 then
-            IBM_3270_Orders.Insert_Cursor (Bytes_Out);
-         end if;
-         P.Append (
-            Bytes_Out,
-            Lines.To_Wide_String (V.Edit (J - 21)));
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+         Panel_Elements.Input_Line (J,
+            P'Access,
+            V.Edit (J - 21),
+            J = 21,
+            Bytes_Out);
+
       end loop;
 
       Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
