@@ -50,4 +50,17 @@ package body Panel_Elements is
 
    end Horizontal_Rule;
 
+   procedure Box_Sides (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Bytes_Out : in out Byte_Vectors.Vector) is
+   begin
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, Y); 
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, Y);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+   end Box_Sides;
+
 end Panel_Elements;

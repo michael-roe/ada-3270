@@ -33,9 +33,7 @@ package body Numbered_Menu_Views is
 
       Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 3);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Box_Sides (3, P'Access, Bytes_Out);
 
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 4);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -43,10 +41,7 @@ package body Numbered_Menu_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 4);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 5);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 5);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Box_Sides (5, P'Access, Bytes_Out);
 
       for J in 1 .. 10 loop
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 4);
@@ -59,18 +54,12 @@ package body Numbered_Menu_Views is
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 4);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 5);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 5);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+         Panel_Elements.Box_Sides (2 * J + 5, P'Access, Bytes_Out);
 
       end loop;
 
       for J in 26 .. 38 loop
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, J);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, J);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+         Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
       end loop;
 
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 39);

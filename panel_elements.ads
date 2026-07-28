@@ -33,4 +33,14 @@ package Panel_Elements is
    --  edges of a box at line Y on the screen.
    --
 
+   procedure Box_Sides (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Bytes_Out : in out Byte_Vectors.Vector);
+
+   --
+   --  Box_Sides draws the left and right vertical edges of a box at
+   --  line Y on the screen.
+   --
+
 end Panel_Elements;
