@@ -219,11 +219,13 @@ package body IBM_3270_Event_Handlers is
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Intent_Input.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Cast ===>");
+      Intent_Input.Subtitle := L;
 
       --  for J in 1 .. 50 loop
       --     Lines.Set_Bounded_Wide_String (L,
       --        "Line" & Natural'Wide_Image (J));
-      --     Line_Vectors.Append (Split.History, L);
+      --     Line_Vectors.Append (Intent_Input.History, L);
       --  end loop;
 
       Checkboxes.Checkboxes (1) := True;
