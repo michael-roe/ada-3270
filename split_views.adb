@@ -87,12 +87,7 @@ package body Split_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 40);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " PF1=Help");
@@ -103,12 +98,7 @@ package body Split_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 42);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Up_Left);
+      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
 
    end To_Physical;
 
