@@ -49,17 +49,20 @@ package body Split_Views is
          Bytes_Out);
 
       for J in 4 .. 19 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Line_Number := J - 4 + 16 * V.Page_Number;
          if Line_Number <= V.History.Last_Index then
+            IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, J);
+            Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+            IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
             P.Append (
                Bytes_Out,
                Lines.To_Wide_String (V.History (Line_Number)));
+            IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
+            IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
+            Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+         else
+            Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
          end if;
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 
       Panel_Elements.Horizontal_Rule (20, P'Access, Bytes_Out);
