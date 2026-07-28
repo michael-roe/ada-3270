@@ -136,9 +136,9 @@ package body Checkbox_Views is
 
       if (X = 4) and (Y >= 4) and (Y <= 10) and (Y mod 2 = 0) then
          F := (Y - 4) / 2 + 1;
-         Ada.Text_IO.Put ("Updating field ");
-         Ada.Text_IO.Put (Natural'Image (F));
-         Ada.Text_IO.New_Line;
+         --  Ada.Text_IO.Put ("Updating field ");
+         --  Ada.Text_IO.Put (Natural'Image (F));
+         --  Ada.Text_IO.New_Line;
          V.Checkboxes (F) := True;
       end if;
 
