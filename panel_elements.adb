@@ -82,7 +82,7 @@ package body Panel_Elements is
 
    procedure Left_Input_Label (
       Y : Natural;
-      P : Code_Pages.Code_Page_Access; 
+      P : Code_Pages.Code_Page_Access;
       Field_Name : Lines.Bounded_Wide_String;
       Bytes_Out : in out Byte_Vectors.Vector) is
    begin
@@ -124,7 +124,7 @@ package body Panel_Elements is
    procedure Text_Line (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
-      L : Lines.Bounded_Wide_String; 
+      L : Lines.Bounded_Wide_String;
       Bytes_Out : in out Byte_Vectors.Vector) is
    begin
 
@@ -136,5 +136,17 @@ package body Panel_Elements is
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
    end Text_Line;
+
+   procedure Input_Line (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      L : Lines.Bounded_Wide_String;
+      Insert_Cursor : Boolean;
+      Bytes_Out : in out Byte_Vectors.Vector) is
+   begin
+
+      null;
+
+   end Input_Line;
 
 end Panel_Elements;

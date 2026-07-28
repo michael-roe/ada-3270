@@ -54,7 +54,7 @@ package Panel_Elements is
       P : Code_Pages.Code_Page_Access;
       Field_Name : Lines.Bounded_Wide_String;
       Bytes_Out : in out Byte_Vectors.Vector);
-      
+
    procedure Right_Scroll_Up_Down (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
@@ -65,7 +65,14 @@ package Panel_Elements is
    procedure Text_Line (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
-      L : Lines.Bounded_Wide_String; 
+      L : Lines.Bounded_Wide_String;
+      Bytes_Out : in out Byte_Vectors.Vector);
+
+   procedure Input_Line (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      L : Lines.Bounded_Wide_String;
+      Insert_Cursor : Boolean;
       Bytes_Out : in out Byte_Vectors.Vector);
 
 end Panel_Elements;
