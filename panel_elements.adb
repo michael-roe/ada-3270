@@ -145,8 +145,38 @@ package body Panel_Elements is
       Bytes_Out : in out Byte_Vectors.Vector) is
    begin
 
-      null;
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, Y);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
+      if Insert_Cursor then
+         IBM_3270_Orders.Insert_Cursor (Bytes_Out);
+      end if;
+      P.Append (
+         Bytes_Out,
+         Lines.To_Wide_String (L));
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, Y);
+      IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
    end Input_Line;
+
+   procedure Empty_Input_Line (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Insert_Cursor : Boolean;
+      Bytes_Out : in out Byte_Vectors.Vector) is
+   begin
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, Y);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
+      if Insert_Cursor then
+         IBM_3270_Orders.Insert_Cursor (Bytes_Out);
+      end if;
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, Y);
+      IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+   end Empty_Input_Line;
 
 end Panel_Elements;

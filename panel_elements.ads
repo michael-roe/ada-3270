@@ -75,4 +75,10 @@ package Panel_Elements is
       Insert_Cursor : Boolean;
       Bytes_Out : in out Byte_Vectors.Vector);
 
+   procedure Empty_Input_Line (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      Insert_Cursor : Boolean;
+      Bytes_Out : in out Byte_Vectors.Vector);
+
 end Panel_Elements;

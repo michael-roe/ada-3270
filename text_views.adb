@@ -43,20 +43,19 @@ package body Text_Views is
          Bytes_Out);
 
       for J in 4 .. 39 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
-         if J = 4 then
-            IBM_3270_Orders.Insert_Cursor (Bytes_Out);
-         end if;
          Line_Number := 36 * V.Page_Number + J - 4;
          if Line_Number <= V.Text.Last_Index then
-            P.Append (
-               Bytes_Out,
-               Lines.To_Wide_String (V.Text (Line_Number)));
+            Panel_Elements.Input_Line (J,
+               P'Access,
+               V.Text (Line_Number),
+               J = 4,
+               Bytes_Out);
+         else
+            Panel_Elements.Empty_Input_Line (J,
+               P'Access,
+               J = 4,
+               Bytes_Out);
          end if;
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, J);
-         IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 
       Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
