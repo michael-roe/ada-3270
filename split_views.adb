@@ -11,6 +11,7 @@ with Input_Stream;
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
 with Ada.Characters.Latin_1;
+with Panel_Elements;
 
 package body Split_Views is
 
@@ -26,24 +27,18 @@ package body Split_Views is
       Line_Number : Natural;
    begin
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
+      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
 
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " ");
       P.Append (Bytes_Out, Lines.To_Wide_String (V.Title));
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 3);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, 3);
