@@ -8,7 +8,9 @@ with Lines;
 
 package Menu_Views is
 
-   type Label_Array is array (1 .. 18) of Lines.Bounded_Wide_String;
+   Max_Items : constant := 6;
+
+   type Label_Array is array (1 .. Max_Items) of Lines.Bounded_Wide_String;
 
    type Menu_View is new Paged_Views.Paged_View
      and JSON_Views.JSON_View with record

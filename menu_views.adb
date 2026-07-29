@@ -50,7 +50,7 @@ package body Menu_Views is
 
       Panel_Elements.Box_Sides (5, P'Access, Bytes_Out);
 
-      for J in 1 .. 4 loop
+      for J in 1 .. Max_Items loop
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 4);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
@@ -73,7 +73,7 @@ package body Menu_Views is
          Panel_Elements.Box_Sides (2 * J + 5, P'Access, Bytes_Out);
       end loop;
 
-      for J in 14 .. 39 loop
+      for J in 2 * Max_Items + 6 .. 39 loop
          Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
       end loop;
 
@@ -117,7 +117,7 @@ package body Menu_Views is
    begin
 
       if V.AID = IBM_3270.AID_CrSel then
-         if (Y mod 2 = 0) and (Y >= 6) and (Y <= 12) then
+         if (Y mod 2 = 0) and (Y >= 6) and (Y <= 2 * Max_Items + 4) then
             V.Option := (Y - 4) / 2;
             --  Ada.Text_IO.Put ("Option = ");
             --  Ada.Integer_Text_IO.Put (V.Option);
@@ -154,9 +154,9 @@ package body Menu_Views is
 
    end Set_Title;
 
-  procedure Prev_Page (V : in out Menu_View) is
+   procedure Prev_Page (V : in out Menu_View) is
    begin
-      
+
       null;
 
    end Prev_Page;
@@ -193,7 +193,7 @@ package body Menu_Views is
    begin
 
       if N >= V.Labels'First and N <= V.Labels'Last then
-         V.Labels (N) := L; 
+         V.Labels (N) := L;
       end if;
 
    end Set_Label;
