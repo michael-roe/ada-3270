@@ -229,6 +229,12 @@ package body IBM_3270_Event_Handlers is
       --     Line_Vectors.Append (Intent_Input.History, L);
       --  end loop;
 
+      Lines.Set_Bounded_Wide_String (L, "Checkbox Test");
+      Checkboxes.Set_Title (L);
+      for J in 1 .. 18 loop
+         Lines.Set_Bounded_Wide_String (L, "Box " & Natural'Wide_Image (J));
+         Checkboxes.Labels (J) := L;
+      end loop;
       Checkboxes.Checkboxes (1) := True;
       Checkboxes.Checkboxes (2) := True;
       Checkboxes.Checkboxes (3) := False;
