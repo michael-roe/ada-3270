@@ -5,9 +5,12 @@ with Lines;
 
 package Menu_Views is
 
+   type Label_Array is array (1 .. 18) of Lines.Bounded_Wide_String;
+
    type Menu_View is new Views.View with record
-      AID : Buffer.Byte;
-      Title : Lines.Bounded_Wide_String;
+      AID    : Buffer.Byte;
+      Title  : Lines.Bounded_Wide_String;
+      Labels : Label_Array;
       Option : Natural;
    end record;
 

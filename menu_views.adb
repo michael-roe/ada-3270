@@ -38,9 +38,16 @@ package body Menu_Views is
 
       Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
-      for J in 1 .. 4 loop
-         Panel_Elements.Box_Sides (2 * J + 1, P'Access, Bytes_Out);
+      Panel_Elements.Left_Box_Side (3, P'Access, Bytes_Out);
 
+      Panel_Elements.Right_Scroll_Up_Down (3,
+         P'Access,
+         False,
+         False,
+         Bytes_Out);
+
+      for J in 1 .. 4 loop
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 2);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
          Code_Page_310.Append (Bytes_Out, '[');
@@ -53,11 +60,17 @@ package body Menu_Views is
          P.Append (Bytes_Out, " ");
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
          Code_Page_310.Append (Bytes_Out, ']');
-         P.Append (Bytes_Out, " Option");
-         P.Append (Bytes_Out, Natural'Wide_Image (J));
+         P.Append (Bytes_Out, " ");
+         P.Append (Bytes_Out, Lines.To_Wide_String (V.Labels (J)));
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 2 * J + 2);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+         Panel_Elements.Box_Sides (2 * J + 3, P'Access, Bytes_Out);
+      end loop;
+
+      for J in 12 .. 39 loop
+         Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
       end loop;
 
       Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
