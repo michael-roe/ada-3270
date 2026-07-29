@@ -5,7 +5,7 @@ with Lines;
 
 package Checkbox_Views is
 
-   type Checkbox_Array is array (1 .. 4) of Boolean;
+   type Checkbox_Array is array (1 .. 18) of Boolean;
 
    type Checkbox_View is new Views.View with record
       AID : Buffer.Byte := 0;

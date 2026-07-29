@@ -11,6 +11,7 @@ with IBM_3270;
 with IBM_3270_Orders;
 with Input_Stream;
 with Byte_Text_IO;
+with Panel_Elements;
 
 package body Checkbox_Views is
 
@@ -28,11 +29,7 @@ package body Checkbox_Views is
       B : Byte_Vectors.Vector;
    begin
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
+      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " ");
@@ -40,17 +37,11 @@ package body Checkbox_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
-      for J in 1 .. 4 loop
+      for J in 1 .. 18 loop
 
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 1);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+         Panel_Elements.Box_Sides (2 * J + 1, P'Access, Bytes_Out);
 
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
@@ -86,6 +77,20 @@ package body Checkbox_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
       end loop;
+
+      Panel_Elements.Box_Sides (39, P'Access, Bytes_Out);
+
+      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
+
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      P.Append (Bytes_Out, " PF1=Help");
+      P.Append (Bytes_Out, " PF3=Exit");
+      P.Append (Bytes_Out, " PF7=Prev");
+      P.Append (Bytes_Out, " PF8=Next");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
 
    end To_Physical;
 
@@ -134,7 +139,7 @@ package body Checkbox_Views is
       F : Natural;
    begin
 
-      if (X = 4) and (Y >= 4) and (Y <= 10) and (Y mod 2 = 0) then
+      if (X = 4) and (Y >= 4) and (Y <= 38) and (Y mod 2 = 0) then
          F := (Y - 4) / 2 + 1;
          --  Ada.Text_IO.Put ("Updating field ");
          --  Ada.Text_IO.Put (Natural'Image (F));
