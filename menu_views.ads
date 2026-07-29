@@ -18,6 +18,7 @@ package Menu_Views is
       Title  : Lines.Bounded_Wide_String;
       Intro  : Lines.Bounded_Wide_String;
       Labels : Label_Array;
+      Last_Item : Natural := 1;
       Option : Natural;
    end record;
 

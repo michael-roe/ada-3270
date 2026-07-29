@@ -50,7 +50,7 @@ package body Menu_Views is
 
       Panel_Elements.Box_Sides (5, P'Access, Bytes_Out);
 
-      for J in 1 .. Max_Items loop
+      for J in 1 .. V.Last_Item loop
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 4);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
@@ -73,7 +73,7 @@ package body Menu_Views is
          Panel_Elements.Box_Sides (2 * J + 5, P'Access, Bytes_Out);
       end loop;
 
-      for J in 2 * Max_Items + 6 .. 39 loop
+      for J in 2 * V.Last_Item + 6 .. 39 loop
          Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
       end loop;
 
@@ -194,6 +194,9 @@ package body Menu_Views is
 
       if N >= V.Labels'First and N <= V.Labels'Last then
          V.Labels (N) := L;
+         if N > V.Last_Item then
+            V.Last_Item := N;
+         end if;
       end if;
 
    end Set_Label;
