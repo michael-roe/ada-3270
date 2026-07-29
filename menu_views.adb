@@ -60,6 +60,19 @@ package body Menu_Views is
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       end loop;
 
+      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 41);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      P.Append (Bytes_Out, " PF1=Help");
+      P.Append (Bytes_Out, " PF3=Exit");
+      P.Append (Bytes_Out, " PF7=Prev");
+      P.Append (Bytes_Out, " PF8=Next");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
+      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
+
    end To_Physical;
 
    procedure From_Physical (
