@@ -33,7 +33,17 @@ package body Menu_Views.Tests is
       V : Menu_View;
       Bytes_Out : Byte_Vectors.Vector;
       Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
    begin
+
+      Lines.Set_Bounded_Wide_String (L, "Test Menu");
+      V.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Apples");
+      V.Set_Label (1, L);
+      Lines.Set_Bounded_Wide_String (L, "Oranges");
+      V.Set_Label (2, L);
+      Lines.Set_Bounded_Wide_String (L, "Pears");
+      V.Set_Label (3, L);
 
       V.To_Physical (Bytes_Out);
 
@@ -49,7 +59,17 @@ package body Menu_Views.Tests is
       V : Menu_View;
       Bytes_Out : Byte_Vectors.Vector;
       Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
    begin
+
+      Lines.Set_Bounded_Wide_String (L, "Test Menu");
+      V.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Apples");
+      V.Set_Label (1, L);
+      Lines.Set_Bounded_Wide_String (L, "Oranges");
+      V.Set_Label (2, L);
+      Lines.Set_Bounded_Wide_String (L, "Pears");
+      V.Set_Label (3, L);
 
       V.To_Physical (Bytes_Out);
 
