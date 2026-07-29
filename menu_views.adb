@@ -154,4 +154,48 @@ package body Menu_Views is
 
    end Set_Title;
 
+  procedure Prev_Page (V : in out Menu_View) is
+   begin
+      
+      null;
+
+   end Prev_Page;
+
+   procedure Next_Page (V : in out Menu_View) is
+   begin
+
+      null;
+
+   end Next_Page;
+
+   procedure To_JSON (
+      V : Menu_View;
+      TX2 : access Buffer_Queues.Queue) is
+      S : String := Natural'Image (V.Option);
+   begin
+
+      TX2.Enqueue (Character'Pos ('"'));
+      for J in S'Range loop
+         if S (J) /= ' ' then
+            TX2.Enqueue (Character'Pos (S (J)));
+         end if;
+      end loop;
+      TX2.Enqueue (Character'Pos ('"'));
+      TX2.Enqueue (13);
+      TX2.Enqueue (10);
+
+   end To_JSON;
+
+   procedure Set_Label (
+      V : in out Menu_View;
+      N : Natural;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      if N >= V.Labels'First and N <= V.Labels'Last then
+         V.Labels (N) := L; 
+      end if;
+
+   end Set_Label;
+
 end Menu_Views;

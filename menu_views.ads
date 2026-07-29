@@ -1,13 +1,17 @@
 with Buffer;
+with Buffer_Queues;
 with Byte_Vectors;
 with Views;
+with Paged_Views;
+with JSON_Views;
 with Lines;
 
 package Menu_Views is
 
    type Label_Array is array (1 .. 18) of Lines.Bounded_Wide_String;
 
-   type Menu_View is new Views.View with record
+   type Menu_View is new Paged_Views.Paged_View
+     and JSON_Views.JSON_View with record
       AID    : Buffer.Byte;
       Title  : Lines.Bounded_Wide_String;
       Intro  : Lines.Bounded_Wide_String;
@@ -42,6 +46,19 @@ package Menu_Views is
 
    procedure Set_Title (
       V : in out Menu_View;
+      L : Lines.Bounded_Wide_String);
+
+   procedure Prev_Page (V : in out Menu_View);
+
+   procedure Next_Page (V : in out Menu_View);
+
+   procedure To_JSON (
+      V   : Menu_View;
+      TX2 : access Buffer_Queues.Queue);
+
+   procedure Set_Label (
+      V : in out Menu_View;
+      N : Natural;
       L : Lines.Bounded_Wide_String);
 
 end Menu_Views;
