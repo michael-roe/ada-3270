@@ -21,7 +21,7 @@ package body IBM_3270_Event_Handlers is
       IBM_3270.IBM_Write_Erase_Alternate,
       IBM_3270.WCC_Go_Ahead);
 
-   Main_Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
+   Main_Menu : aliased Menu_Views.Menu_View;
 
    Summon_Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
 
@@ -32,8 +32,6 @@ package body IBM_3270_Event_Handlers is
    Intent_Input : aliased Split_Views.Split_View;
 
    Checkboxes : aliased Checkbox_Views.Checkbox_View;
-
-   Test_Menu : aliased Menu_Views.Menu_View;
 
    procedure To_Physical (
       V         : in out IBM_3270_Handler;
@@ -130,7 +128,7 @@ package body IBM_3270_Event_Handlers is
 
          case V.State  is
             when Main_Panel =>
-               if Main_Menu.Option /= 0 or Test_Menu.Option /= 0 then
+               if Main_Menu.Option /= 0 then
                   V.Current := Entity_Menu'Access;
                   V.Pageable := Entity_Menu'Access;
                   V.JSONable := Entity_Menu'Access;
@@ -159,9 +157,7 @@ package body IBM_3270_Event_Handlers is
                null;
          end case;
       elsif AID = IBM_3270.AID_CrSel then
-         Ada.Text_IO.Put ("CrSel, option = ");
-         Ada.Integer_Text_IO.Put (Test_Menu.Option);
-         Ada.Text_IO.New_Line;
+         Ada.Text_IO.Put_Line ("CrSel");
       elsif AID = IBM_3270.AID_SysReq then
          Ada.Text_IO.Put_Line ("SysReq");
       end if;
@@ -186,16 +182,17 @@ package body IBM_3270_Event_Handlers is
       
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Main_Menu.Set_Title (L);
-      Lines.Set_Bounded_Wide_String (L, "Command");
-      Main_Menu.Subtitle := L;
+      Lines.Set_Bounded_Wide_String (L,
+         "Move the cursor to an option and press Enter");
+      Main_Menu.Intro := L;
       Lines.Set_Bounded_Wide_String (L, "Summon Entity");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 1, L);
+      Main_Menu.Set_Label (1, L);
       Lines.Set_Bounded_Wide_String (L, "Contact Entity");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 2, L);
+      Main_Menu.Set_Label (2, L);
       Lines.Set_Bounded_Wide_String (L, "New Cantrip");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 3, L);
+      Main_Menu.Set_Label (3, L);
       Lines.Set_Bounded_Wide_String (L, "Edit Cantrip");
-      Numbered_Menu_Views.Set_Label (Main_Menu, 4, L);
+      Main_Menu.Set_Label (4, L);
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Entity_Menu.Set_Title (L);
@@ -245,19 +242,6 @@ package body IBM_3270_Event_Handlers is
       Checkboxes.Checkboxes (2) := True;
       Checkboxes.Checkboxes (3) := False;
       Checkboxes.Checkboxes (4) := False;
-
-      Lines.Set_Bounded_Wide_String (L, "Cantrip");
-      Test_Menu.Set_Title (L);
-      Lines.Set_Bounded_Wide_String (L, "Main Menu");
-      Test_Menu.Intro := L;
-      Lines.Set_Bounded_Wide_String (L, "Summon Entity");
-      Test_Menu.Labels (1) := L;
-      Lines.Set_Bounded_Wide_String (L, "Contact Entity");
-      Test_Menu.Labels (2) := L;
-      Lines.Set_Bounded_Wide_String (L, "New Cantrip");
-      Test_Menu.Labels (3) := L;
-      Lines.Set_Bounded_Wide_String (L, "Edit Cantrip");
-      Test_Menu.Labels (4) := L;
 
    end Initialize;
 
