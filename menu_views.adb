@@ -46,8 +46,12 @@ package body Menu_Views is
          False,
          Bytes_Out);
 
+      Panel_Elements.Text_Line (4, P'Access, V.Intro, Bytes_Out);
+
+      Panel_Elements.Box_Sides (5, P'Access, Bytes_Out);
+
       for J in 1 .. 4 loop
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 2);
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 4);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
          Code_Page_310.Append (Bytes_Out, '[');
@@ -62,14 +66,14 @@ package body Menu_Views is
          Code_Page_310.Append (Bytes_Out, ']');
          P.Append (Bytes_Out, " ");
          P.Append (Bytes_Out, Lines.To_Wide_String (V.Labels (J)));
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 2 * J + 2);
+         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 78, 2 * J + 4);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-         Panel_Elements.Box_Sides (2 * J + 3, P'Access, Bytes_Out);
+         Panel_Elements.Box_Sides (2 * J + 5, P'Access, Bytes_Out);
       end loop;
 
-      for J in 12 .. 39 loop
+      for J in 14 .. 39 loop
          Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
       end loop;
 
@@ -113,8 +117,8 @@ package body Menu_Views is
    begin
 
       if V.AID = IBM_3270.AID_CrSel then
-         if (Y mod 2 = 0) and (Y >= 4) and (Y <= 10) then
-            V.Option := (Y - 2) / 2;
+         if (Y mod 2 = 0) and (Y >= 6) and (Y <= 12) then
+            V.Option := (Y - 4) / 2;
             --  Ada.Text_IO.Put ("Option = ");
             --  Ada.Integer_Text_IO.Put (V.Option);
             --  Ada.Text_IO.New_Line;

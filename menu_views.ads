@@ -10,6 +10,7 @@ package Menu_Views is
    type Menu_View is new Views.View with record
       AID    : Buffer.Byte;
       Title  : Lines.Bounded_Wide_String;
+      Intro  : Lines.Bounded_Wide_String;
       Labels : Label_Array;
       Option : Natural;
    end record;
