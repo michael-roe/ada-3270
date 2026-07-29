@@ -116,7 +116,8 @@ package body Menu_Views is
       Y : Natural) is
    begin
 
-      if V.AID = IBM_3270.AID_CrSel then
+      if (V.AID = IBM_3270.AID_CrSel) or (V.AID = IBM_3270.AID_Enter)
+      then
          if (Y mod 2 = 0) and (Y >= 6) and (Y <= 2 * Max_Items + 4) then
             V.Option := (Y - 4) / 2;
             --  Ada.Text_IO.Put ("Option = ");
