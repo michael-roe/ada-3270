@@ -9,6 +9,8 @@ with IBM_3270_Orders;
 with Byte_Text_IO;
 with Input_Stream;
 with IBM_3270;
+with Panel_Elements;
+with Lines;
 
 package body Menu_Views is
 
@@ -24,30 +26,20 @@ package body Menu_Views is
       V : Menu_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
       B : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
    begin
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
+      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      P.Append (Bytes_Out, " ");
-      P.Append (Bytes_Out, Lines.To_Wide_String (V.Title));
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Text_Line (1,
+         P'Access,
+         V.Title,
+         Bytes_Out);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
       for J in 1 .. 4 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 1);
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+         Panel_Elements.Box_Sides (2 * J + 1, P'Access, Bytes_Out);
 
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
