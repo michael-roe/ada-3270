@@ -1,4 +1,5 @@
 with Ada.Text_IO;
+with Ada.Integer_Text_IO;
 with Buffer;
 use type Buffer.Byte;
 with Views;
@@ -31,6 +32,8 @@ package body IBM_3270_Event_Handlers is
    Intent_Input : aliased Split_Views.Split_View;
 
    Checkboxes : aliased Checkbox_Views.Checkbox_View;
+
+   Test_Menu : aliased Menu_Views.Menu_View;
 
    procedure To_Physical (
       V         : in out IBM_3270_Handler;
@@ -127,7 +130,7 @@ package body IBM_3270_Event_Handlers is
 
          case V.State  is
             when Main_Panel =>
-               if Main_Menu.Option /= 0 then
+               if Main_Menu.Option /= 0 or Test_Menu.Option /= 0 then
                   V.Current := Entity_Menu'Access;
                   V.Pageable := Entity_Menu'Access;
                   V.JSONable := Entity_Menu'Access;
@@ -155,6 +158,10 @@ package body IBM_3270_Event_Handlers is
             when others =>
                null;
          end case;
+      elsif AID = IBM_3270.AID_CrSel then
+         Ada.Text_IO.Put ("CrSel, option = ");
+         Ada.Integer_Text_IO.Put (Test_Menu.Option);
+         Ada.Text_IO.New_Line;
       elsif AID = IBM_3270.AID_SysReq then
          Ada.Text_IO.Put_Line ("SysReq");
       end if;
@@ -176,7 +183,6 @@ package body IBM_3270_Event_Handlers is
       V.Pageable := Main_Menu'Access;
       V.JSONable := Main_Menu'Access;
       V.State := Main_Panel;
-
       
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Main_Menu.Set_Title (L);
@@ -239,6 +245,19 @@ package body IBM_3270_Event_Handlers is
       Checkboxes.Checkboxes (2) := True;
       Checkboxes.Checkboxes (3) := False;
       Checkboxes.Checkboxes (4) := False;
+
+      Lines.Set_Bounded_Wide_String (L, "Cantrip");
+      Test_Menu.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Main Menu");
+      Test_Menu.Intro := L;
+      Lines.Set_Bounded_Wide_String (L, "Summon Entity");
+      Test_Menu.Labels (1) := L;
+      Lines.Set_Bounded_Wide_String (L, "Contact Entity");
+      Test_Menu.Labels (2) := L;
+      Lines.Set_Bounded_Wide_String (L, "New Cantrip");
+      Test_Menu.Labels (3) := L;
+      Lines.Set_Bounded_Wide_String (L, "Edit Cantrip");
+      Test_Menu.Labels (4) := L;
 
    end Initialize;
 
