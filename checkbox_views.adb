@@ -31,11 +31,7 @@ package body Checkbox_Views is
 
       Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      P.Append (Bytes_Out, " ");
-      P.Append (Bytes_Out, Lines.To_Wide_String (V.Title));
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Text_Line (1, P'Access, V.Title, Bytes_Out);
 
       Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
@@ -70,8 +66,8 @@ package body Checkbox_Views is
 
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
          Code_Page_310.Append (Bytes_Out, ']');
-         P.Append (Bytes_Out, " Box ");
-         P.Append (Bytes_Out, Natural'Wide_Image (J));
+         P.Append (Bytes_Out, " ");
+         P.Append (Bytes_Out, Lines.To_Wide_String (V.Labels (J)));
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 2);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);

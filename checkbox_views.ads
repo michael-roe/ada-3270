@@ -7,9 +7,12 @@ package Checkbox_Views is
 
    type Checkbox_Array is array (1 .. 18) of Boolean;
 
+   type Label_Array is array (1 .. 18) of Lines.Bounded_Wide_String;
+
    type Checkbox_View is new Views.View with record
       AID : Buffer.Byte := 0;
       Title : Lines.Bounded_Wide_String;
+      Labels : Label_Array;
       Checkboxes : Checkbox_Array;
    end record;
 
