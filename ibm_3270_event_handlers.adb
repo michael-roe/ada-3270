@@ -252,12 +252,11 @@ package body IBM_3270_Event_Handlers is
       for J in 1 .. 4 loop
          Lines.Set_Bounded_Wide_String (L, "Box " & Natural'Wide_Image (J));
          Checkboxes.Set_Label (J, L);
-         Checkboxes.Labels (J) := L;
       end loop;
-      Checkboxes.Checkboxes (1) := True;
-      Checkboxes.Checkboxes (2) := True;
-      Checkboxes.Checkboxes (3) := False;
-      Checkboxes.Checkboxes (4) := False;
+      Checkboxes.Set_Checkbox (1, True);
+      Checkboxes.Set_Checkbox (2, True);
+      Checkboxes.Set_Checkbox (3, False);
+      Checkboxes.Set_Checkbox (4, False);
 
    end Initialize;
 
