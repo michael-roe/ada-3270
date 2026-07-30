@@ -1,7 +1,7 @@
 with AUnit.Test_Suites;
 
-package Buffer_Suite is
+package My_Test_Suite is
 
    function Suite return AUnit.Test_Suites.Access_Test_Suite;
 
-end Buffer_Suite;
+end My_Test_Suite;

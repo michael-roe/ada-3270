@@ -14,7 +14,7 @@ with Checkbox_Views.Tests;
 with Menu_Views.Tests;
 with Numbered_Menu_Views.Tests;
 
-package body Buffer_Suite is
+package body My_Test_Suite is
 
    use AUnit.Test_Suites;
 
@@ -61,4 +61,4 @@ package body Buffer_Suite is
 
    end Suite;
 
-end Buffer_Suite;
+end My_Test_Suite;
