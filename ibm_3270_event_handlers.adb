@@ -249,8 +249,9 @@ package body IBM_3270_Event_Handlers is
 
       Lines.Set_Bounded_Wide_String (L, "Checkbox Test");
       Checkboxes.Set_Title (L);
-      for J in 1 .. 18 loop
+      for J in 1 .. 4 loop
          Lines.Set_Bounded_Wide_String (L, "Box " & Natural'Wide_Image (J));
+         Checkboxes.Set_Label (J, L);
          Checkboxes.Labels (J) := L;
       end loop;
       Checkboxes.Checkboxes (1) := True;

@@ -36,9 +36,25 @@ package body Checkbox_Views.Tests is
       V : Checkbox_View;
       Bytes_Out : Byte_Vectors.Vector;
       Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
    begin
 
+      Lines.Set_Bounded_Wide_String (L, "Test Checkbox");
+      V.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Apples");
+      V.Set_Label (1, L);
+      Lines.Set_Bounded_Wide_String (L, "Oranges");
+      V.Set_Label (2, L);
+      Lines.Set_Bounded_Wide_String (L, "Pears");
+      V.Set_Label (3, L);
+      Lines.Set_Bounded_Wide_String (L, "Bananas");
+      V.Set_Label (4, L);
       V.To_Physical (Bytes_Out);
+
+      V.Set_Checkbox (1, False);
+      V.Set_Checkbox (2, False);
+      V.Set_Checkbox (3, True);
+      V.Set_Checkbox (4, True);
 
       Bytes_In.Append (IBM_3270.AID_PA1);
 
@@ -52,12 +68,24 @@ package body Checkbox_Views.Tests is
       V : Checkbox_View;
       Bytes_Out : Byte_Vectors.Vector;
       Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
    begin
 
-      V.Checkboxes (1) := False;
-      V.Checkboxes (2) := False;
-      V.Checkboxes (3) := True;
-      V.Checkboxes (4) := True;
+      Lines.Set_Bounded_Wide_String (L, "Test Checkbox");
+      V.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Apples");
+      V.Set_Label (1, L);
+      Lines.Set_Bounded_Wide_String (L, "Oranges");
+      V.Set_Label (2, L);
+      Lines.Set_Bounded_Wide_String (L, "Pears");
+      V.Set_Label (3, L);
+      Lines.Set_Bounded_Wide_String (L, "Bananas");
+      V.Set_Label (4, L);
+
+      V.Set_Checkbox (1, False);
+      V.Set_Checkbox (2, False);
+      V.Set_Checkbox (3, True);
+      V.Set_Checkbox (4, True);
 
       V.To_Physical (Bytes_Out);
 

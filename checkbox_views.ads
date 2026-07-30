@@ -14,6 +14,7 @@ package Checkbox_Views is
       Title : Lines.Bounded_Wide_String;
       Labels : Label_Array;
       Checkboxes : Checkbox_Array;
+      Last_Item : Natural := 1;
    end record;
 
    procedure To_Physical (
@@ -44,5 +45,15 @@ package Checkbox_Views is
    procedure Set_Title (
       V : in out Checkbox_View;
       L : Lines.Bounded_Wide_String);
+
+   procedure Set_Label (
+      V : in out Checkbox_View;
+      N : Natural;
+      L : Lines.Bounded_Wide_String);
+
+   procedure Set_Checkbox (
+      V : in out Checkbox_View;
+      N : Natural;
+      Ticked : Boolean);
 
 end Checkbox_Views;

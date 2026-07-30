@@ -161,4 +161,34 @@ package body Checkbox_Views is
 
    end Set_Title;
 
+   procedure Set_Label (
+      V : in out Checkbox_View;
+      N : Natural;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      if N >= V.Labels'First and N <= V.Labels'Last then
+         V.Labels (N) := L;
+         if N > V.Last_Item then
+            V.Last_Item := N;
+         end if;
+      end if;
+   
+   end Set_Label;
+
+   procedure Set_Checkbox (
+      V : in out Checkbox_View;
+      N : Natural;
+      Ticked : Boolean) is
+   begin
+
+      if N >= V.Labels'First and N <= V.Labels'Last then
+         V.Checkboxes (N) := Ticked;
+         if N > V.Last_Item then
+            V.Last_Item := N;
+         end if;
+      end if;
+   
+   end Set_Checkbox;
+
 end Checkbox_Views;
