@@ -132,7 +132,16 @@ package body Telnet.Workers is
                            Ada.Text_IO.Put_Line ("Received data unexpectedly");
                         else
                            RX.Dequeue (C);
-                           if C /= Telnet.Protocol.BRK then
+                           if C = Telnet.Protocol.BRK then
+                              Ada.Text_IO.Put ("[BREAK]");
+                              Handler.Break;
+                           elsif C = Telnet.Protocol.IP then
+                              Ada.Text_IO.Put ("[IP]");
+                              Handler.Break;
+                           elsif C = Telnet.Protocol.AO then
+                              Ada.Text_IO.Put ("[AO]");
+                              Handler.Break;
+                           else
                               --
                               --  It's probably valid protocol for the
                               --  terminal to send WILL/WONT etc. here, but
@@ -140,9 +149,6 @@ package body Telnet.Workers is
                               --
                               Ada.Text_IO.Put_Line (
                                  "Was expecting Telnet break");
-                           else
-                              Ada.Text_IO.Put ("[BREAK]");
-                              Handler.Break;
                            end if;
                         end if;
                      end if;
