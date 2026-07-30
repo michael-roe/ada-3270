@@ -3,7 +3,7 @@ with AUnit.Assertions; use AUnit.Assertions;
 with Buffer; use Buffer;
 use type Buffer.Byte;
 
-package body Buffer_Tests is
+package body Buffer.Tests is
 
    procedure Test_Clear (T : in out Test_Cases.Test_Case'Class) is
       Buff : Buffer.T;
@@ -188,4 +188,4 @@ package body Buffer_Tests is
       return Format ("Buffer_Tests");
    end Name;
 
-end Buffer_Tests;
+end Buffer.Tests;

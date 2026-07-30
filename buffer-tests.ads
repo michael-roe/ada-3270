@@ -1,7 +1,7 @@
 with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
-package Buffer_Tests is
+package Buffer.Tests is
 
    type Buffer_Test is new Test_Cases.Test_Case with null record;
 
@@ -17,4 +17,4 @@ package Buffer_Tests is
 
    procedure Test_Wrap (T : in out Test_Cases.Test_Case'Class);
 
-end Buffer_Tests;
+end Buffer.Tests;
