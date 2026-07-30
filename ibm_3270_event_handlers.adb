@@ -23,9 +23,9 @@ package body IBM_3270_Event_Handlers is
 
    Main_Menu : aliased Menu_Views.Menu_View;
 
-   Summon_Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
+   Summon_Menu : aliased Menu_Views.Menu_View;
 
-   Entity_Menu : aliased Numbered_Menu_Views.Numbered_Menu_View;
+   Entity_Menu : aliased Menu_Views.Menu_View;
 
    Identity_Input : aliased Text_Views.Text_View;
 
@@ -196,14 +196,17 @@ package body IBM_3270_Event_Handlers is
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Entity_Menu.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L,
+        "Select which property of the Cantrip to modify");
+      Entity_Menu.Intro := L;
       Lines.Set_Bounded_Wide_String (L, "Identity (Prompt)");
-      Numbered_Menu_Views.Set_Label (Entity_Menu, 1, L);
+      Entity_Menu.Set_Label (1, L);
       Lines.Set_Bounded_Wide_String (L, "Identity (Parameters)");
-      Numbered_Menu_Views.Set_Label (Entity_Menu, 2, L);
+      Entity_Menu.Set_Label (2, L);
       Lines.Set_Bounded_Wide_String (L, "Gates");
-      Numbered_Menu_Views.Set_Label (Entity_Menu, 3, L);
+      Entity_Menu.Set_Label (3, L);
       Lines.Set_Bounded_Wide_String (L, "Wards");
-      Numbered_Menu_Views.Set_Label (Entity_Menu, 4, L);
+      Entity_Menu.Set_Label (4, L);
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Identity_Input.Set_Title (L);
@@ -212,14 +215,26 @@ package body IBM_3270_Event_Handlers is
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Summon_Menu.Set_Title (L);
-      Lines.Set_Bounded_Wide_String (L, "Cantrip");
-      Summon_Menu.Subtitle := L;
-      Lines.Set_Bounded_Wide_String (L, "Qwen3.6-27B");
+      Lines.Set_Bounded_Wide_String (L,
+         "Select a Cantrip to Summon an Entity");
+      Summon_Menu.Intro := L;
+      --  Lines.Set_Bounded_Wide_String (L, "Cantrip");
+      --  Summon_Menu.Subtitle := L;
+      Lines.Set_Bounded_Wide_String (L, "Default Identity");
       Summon_Menu.Set_Label (1, L);
-      Lines.Set_Bounded_Wide_String (L, "GLM-5.2");
+      Lines.Set_Bounded_Wide_String (L, "Custom Cantrip");
       Summon_Menu.Set_Label (2, L);
-      Lines.Set_Bounded_Wide_String (L, "Kimi-K2.7-Code");
+      Lines.Set_Bounded_Wide_String (L, "Roleplay");
       Summon_Menu.Set_Label (3, L);
+      Lines.Set_Bounded_Wide_String (L, "Back Translation");
+      Summon_Menu.Set_Label (4, L);
+      Lines.Set_Bounded_Wide_String (L, "Sentiment Analysis");
+      Summon_Menu.Set_Label (5, L);
+      Lines.Set_Bounded_Wide_String (L, "Descarte's Demon");
+      Summon_Menu.Set_Label (6, L);
+      --  Qwen3.6-27B
+      --  GLM-5.2
+      --  Kimi-K2.7-Code
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Intent_Input.Set_Title (L);
