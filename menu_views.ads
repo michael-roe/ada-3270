@@ -13,14 +13,7 @@ package Menu_Views is
    type Label_Array is array (1 .. Max_Items) of Lines.Bounded_Wide_String;
 
    type Menu_View is new Paged_Views.Paged_View
-     and JSON_Views.JSON_View with record
-      AID    : Buffer.Byte;
-      Title  : Lines.Bounded_Wide_String;
-      Intro  : Lines.Bounded_Wide_String;
-      Labels : Label_Array;
-      Last_Item : Natural := 1;
-      Option : Natural;
-   end record;
+     and JSON_Views.JSON_View with private;
 
    procedure To_Physical (
       V : Menu_View;
@@ -69,5 +62,17 @@ package Menu_Views is
       L : Lines.Bounded_Wide_String);
 
    function Get_Option (V : Menu_View) return Natural;
+
+private
+
+   type Menu_View is new Paged_Views.Paged_View
+     and JSON_Views.JSON_View with record
+      AID    : Buffer.Byte;
+      Title  : Lines.Bounded_Wide_String;
+      Intro  : Lines.Bounded_Wide_String;
+      Labels : Label_Array;
+      Last_Item : Natural := 1;
+      Option : Natural;
+   end record;
 
 end Menu_Views;
