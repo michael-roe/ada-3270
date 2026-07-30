@@ -202,4 +202,11 @@ package body Menu_Views is
 
    end Set_Label;
 
+   function Get_Option (V : Menu_View) return Natural is
+   begin
+
+      return V.Option;
+
+   end Get_Option;
+
 end Menu_Views;

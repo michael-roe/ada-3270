@@ -128,7 +128,7 @@ package body IBM_3270_Event_Handlers is
 
          case V.State  is
             when Main_Panel =>
-               if Main_Menu.Option /= 0 then
+               if Main_Menu.Get_Option /= 0 then
                   V.Current := Entity_Menu'Access;
                   V.Pageable := Entity_Menu'Access;
                   V.JSONable := Entity_Menu'Access;
@@ -145,7 +145,7 @@ package body IBM_3270_Event_Handlers is
                   V.JSONable := Summon_Menu'Access;
                   V.State    := Summon_Panel;
             when Summon_Panel =>
-               if Summon_Menu.Option /= 0 then
+               if Summon_Menu.Get_Option /= 0 then
                   V.Current  := Intent_Input'Access;
                   V.Pageable := Intent_Input'Access;
                   V.JSONable := Intent_Input'Access;

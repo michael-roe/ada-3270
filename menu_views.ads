@@ -64,4 +64,6 @@ package Menu_Views is
       N : Natural;
       L : Lines.Bounded_Wide_String);
 
+   function Get_Option (V : Menu_View) return Natural;
+
 end Menu_Views;
