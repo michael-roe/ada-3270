@@ -6,13 +6,7 @@ with Line_Vectors;
 
 package Text_Views is
 
-   type Text_View is new Paged_Views.Paged_View with record
-      AID : Buffer.Byte := 0;
-      Title : Lines.Bounded_Wide_String;
-      Subtitle : Lines.Bounded_Wide_String;
-      Page_Number : Natural := 0;
-      Text : Line_Vectors.Vector;
-   end record;
+   type Text_View is new Paged_Views.Paged_View with private;
 
    procedure To_Physical (
       V : Text_View;
@@ -50,5 +44,15 @@ package Text_Views is
    procedure Set_Subtitle (
       V : in out Text_View;
       L : Lines.Bounded_Wide_String);
+
+private
+
+   type Text_View is new Paged_Views.Paged_View with record
+      AID : Buffer.Byte := 0;
+      Title : Lines.Bounded_Wide_String;
+      Subtitle : Lines.Bounded_Wide_String;
+      Page_Number : Natural := 0;
+      Text : Line_Vectors.Vector;
+   end record;
 
 end Text_Views;
