@@ -184,7 +184,7 @@ package body IBM_3270_Event_Handlers is
       Main_Menu.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L,
          "Move the cursor to an option and press Enter");
-      Main_Menu.Intro := L;
+      Main_Menu.Set_Intro (L);
       Lines.Set_Bounded_Wide_String (L, "Summon Entity");
       Main_Menu.Set_Label (1, L);
       Lines.Set_Bounded_Wide_String (L, "Contact Entity");
@@ -198,7 +198,7 @@ package body IBM_3270_Event_Handlers is
       Entity_Menu.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L,
         "Select which property of the Cantrip to modify");
-      Entity_Menu.Intro := L;
+      Entity_Menu.Set_Intro (L);
       Lines.Set_Bounded_Wide_String (L, "Identity (Prompt)");
       Entity_Menu.Set_Label (1, L);
       Lines.Set_Bounded_Wide_String (L, "Identity (Parameters)");
@@ -217,7 +217,7 @@ package body IBM_3270_Event_Handlers is
       Summon_Menu.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L,
          "Select a Cantrip to Summon an Entity");
-      Summon_Menu.Intro := L;
+      Summon_Menu.Set_Intro (L);
       --  Lines.Set_Bounded_Wide_String (L, "Cantrip");
       --  Summon_Menu.Subtitle := L;
       Lines.Set_Bounded_Wide_String (L, "Default Identity");

@@ -202,6 +202,15 @@ package body Menu_Views is
 
    end Set_Label;
 
+   procedure Set_Intro (
+      V : in out Menu_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Intro := L;
+
+   end Set_Intro;
+
    function Get_Option (V : Menu_View) return Natural is
    begin
 
