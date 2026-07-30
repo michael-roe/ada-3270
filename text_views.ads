@@ -47,4 +47,8 @@ package Text_Views is
 
    procedure Next_Page (V : in out Text_View);
 
+   procedure Set_Subtitle (
+      V : in out Text_View;
+      L : Lines.Bounded_Wide_String);
+
 end Text_Views;

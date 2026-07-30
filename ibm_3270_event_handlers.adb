@@ -211,7 +211,7 @@ package body IBM_3270_Event_Handlers is
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Identity_Input.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L, "Identity");
-      Identity_Input.Subtitle := L;
+      Identity_Input.Set_Subtitle (L);
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Summon_Menu.Set_Title (L);
@@ -219,7 +219,7 @@ package body IBM_3270_Event_Handlers is
          "Select a Cantrip to Summon an Entity");
       Summon_Menu.Set_Intro (L);
       --  Lines.Set_Bounded_Wide_String (L, "Cantrip");
-      --  Summon_Menu.Subtitle := L;
+      --  Summon_Menu.Set_Subtitle (L);
       Lines.Set_Bounded_Wide_String (L, "Default Identity");
       Summon_Menu.Set_Label (1, L);
       Lines.Set_Bounded_Wide_String (L, "Custom Cantrip");

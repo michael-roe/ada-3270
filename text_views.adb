@@ -172,4 +172,13 @@ package body Text_Views is
 
    end Set_Title;
 
+   procedure Set_Subtitle (
+      V : in out Text_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Subtitle := L;
+
+   end Set_Subtitle;
+
 end Text_Views;
