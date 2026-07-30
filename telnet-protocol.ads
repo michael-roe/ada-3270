@@ -10,6 +10,7 @@ package Telnet.Protocol is
    NOP  : constant Buffer.Byte := 241;
    BRK  : constant Buffer.Byte := 243;
    IP   : constant Buffer.Byte := 244;
+   AO   : constant Buffer.Byte := 245;
    GA   : constant Buffer.Byte := 249;
    SB   : constant Buffer.Byte := 250;
    WILL : constant Buffer.Byte := 251;
