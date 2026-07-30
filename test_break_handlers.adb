@@ -1,5 +1,8 @@
 with Ada.Text_IO;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 with Buffer;
+use type Buffer.Byte;
 with Code_Page_500;
 with IBM_3270;
 with IBM_3270_Orders;
@@ -87,6 +90,11 @@ package body Test_Break_Handlers is
    begin
 
       Ada.Text_IO.Put_Line ("From_Physical called");
+      if Bytes_In.Length > 0 then
+         if Bytes_In (Bytes_In.First_Index) = IBM_3270.AID_SysReq then
+            Ada.Text_IO.Put_Line ("SysReq");
+         end if;
+      end if;
 
    end From_Physical;
 
