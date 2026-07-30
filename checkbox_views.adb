@@ -173,7 +173,7 @@ package body Checkbox_Views is
             V.Last_Item := N;
          end if;
       end if;
-   
+
    end Set_Label;
 
    procedure Set_Checkbox (
@@ -188,7 +188,7 @@ package body Checkbox_Views is
             V.Last_Item := N;
          end if;
       end if;
-   
+
    end Set_Checkbox;
 
 end Checkbox_Views;

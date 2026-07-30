@@ -47,7 +47,7 @@ package body Split_Views is
          Line_Number := J - 4 + 16 * V.Page_Number;
          if Line_Number <= V.History.Last_Index then
             Panel_Elements.Text_Line (J,
-               P'Access, 
+               P'Access,
                V.History (Line_Number),
                Bytes_Out);
          else

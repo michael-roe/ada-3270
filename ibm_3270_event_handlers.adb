@@ -179,7 +179,7 @@ package body IBM_3270_Event_Handlers is
       V.Pageable := Main_Menu'Access;
       V.JSONable := Main_Menu'Access;
       V.State := Main_Panel;
-      
+
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Main_Menu.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L,

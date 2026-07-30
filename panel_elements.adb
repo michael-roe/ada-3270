@@ -70,7 +70,7 @@ package body Panel_Elements is
 
    end Box_Sides;
 
-  procedure Input_Label (
+   procedure Input_Label (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
       Field_Name : Lines.Bounded_Wide_String;
@@ -139,7 +139,7 @@ package body Panel_Elements is
 
    end Right_Scroll_Up_Down;
 
-  procedure Right_Pan_Left_Right (
+   procedure Right_Pan_Left_Right (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;
       Left_Enabled : Boolean;
