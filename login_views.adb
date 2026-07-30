@@ -10,6 +10,7 @@ with Byte_Text_IO;
 with Buffer;
 use type Buffer.Byte;
 with Lines;
+with Panel_Elements;
 
 package body Login_Views is
 
@@ -30,27 +31,15 @@ package body Login_Views is
       B : Byte_Vectors.Vector;
    begin
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Down_Left);
+      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      P.Append (Bytes_Out, " Login");
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 1);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Text_Line (1, P'Access, V.Title, Bytes_Out);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Right);
-      for J in 1 .. 78 loop
-         Code_Page_310.Append (Bytes_Out, Box_Drawing.Horizontal);
-      end loop;
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical_Left);
+      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 3);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Box_Sides (3, P'Access, Bytes_Out);
 
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 4);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
       P.Append (Bytes_Out, "User Name");
