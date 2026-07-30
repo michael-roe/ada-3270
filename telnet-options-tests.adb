@@ -6,7 +6,7 @@ use type Telnet.Negotiation.Do_Dont;
 use type Telnet.Negotiation.Will_Wont;
 use type Telnet.Negotiation.Request_Offer;
 
-package body Telnet_Options_Tests is
+package body Telnet.Options.Tests is
 
    procedure Test_Unimplemented (T : in out Test_Cases.Test_Case'Class) is
       Reply : Telnet.Negotiation.Do_Dont;
@@ -232,4 +232,4 @@ package body Telnet_Options_Tests is
       return Format ("Telnet_Options_Tests");
    end Name;
 
-end Telnet_Options_Tests;
+end Telnet.Options.Tests;

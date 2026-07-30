@@ -1,7 +1,7 @@
 with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
-package Telnet_Options_Tests is
+package Telnet.Options.Tests is
 
    type Telnet_Options_Test is new Test_Cases.Test_Case with null record;
 
@@ -29,4 +29,4 @@ package Telnet_Options_Tests is
 
    procedure Test_Next_Option (T : in out Test_Cases.Test_Case'Class);
 
-end Telnet_Options_Tests;
+end Telnet.Options.Tests;

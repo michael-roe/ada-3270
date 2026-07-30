@@ -1,6 +1,6 @@
 with Buffer_Tests;
 with Buffer_Queues_Tests;
-with Telnet_Options_Tests;
+with Telnet.Options.Tests;
 with Code_Page_500.Tests;
 with Code_Page_310.Tests;
 with Code_Page_870.Tests;
@@ -24,7 +24,7 @@ package body My_Test_Suite is
    --  Statically allocate test cases:
    Test_1  : aliased Buffer_Tests.Buffer_Test;
    Test_2  : aliased Buffer_Queues_Tests.Buffer_Queues_Test;
-   Test_3  : aliased Telnet_Options_Tests.Telnet_Options_Test;
+   Test_3  : aliased Telnet.Options.Tests.Telnet_Options_Test;
    Test_4  : aliased Code_Page_500.Tests.Code_Page_Test;
    Test_5  : aliased Code_Page_310.Tests.Code_Page_Test;
    Test_6  : aliased Code_Page_870.Tests.Code_Page_Test;
