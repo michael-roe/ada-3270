@@ -9,13 +9,7 @@ package Checkbox_Views is
 
    type Label_Array is array (1 .. 18) of Lines.Bounded_Wide_String;
 
-   type Checkbox_View is new Views.View with record
-      AID : Buffer.Byte := 0;
-      Title : Lines.Bounded_Wide_String;
-      Labels : Label_Array;
-      Checkboxes : Checkbox_Array;
-      Last_Item : Natural := 1;
-   end record;
+   type Checkbox_View is new Views.View with private;
 
    procedure To_Physical (
       V : Checkbox_View;
@@ -55,5 +49,15 @@ package Checkbox_Views is
       V : in out Checkbox_View;
       N : Natural;
       Ticked : Boolean);
+
+private
+
+   type Checkbox_View is new Views.View with record
+      AID : Buffer.Byte := 0;
+      Title : Lines.Bounded_Wide_String;
+      Labels : Label_Array;
+      Checkboxes : Checkbox_Array;
+      Last_Item : Natural := 1;
+   end record;
 
 end Checkbox_Views;
