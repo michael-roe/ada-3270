@@ -50,9 +50,7 @@ package body Login_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 4);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 5);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Box_Sides (5, P'Access, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
@@ -62,6 +60,10 @@ package body Login_Views is
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 6);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+
+      for J in 7 .. 39 loop
+         Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
+      end loop;
 
    end To_Physical;
 
