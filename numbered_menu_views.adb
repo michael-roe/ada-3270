@@ -182,8 +182,6 @@ package body Numbered_Menu_Views is
          end if;
       end loop;
       TX2.Enqueue (Character'Pos ('"'));
-      TX2.Enqueue (13);
-      TX2.Enqueue (10);
 
    end To_JSON;
 

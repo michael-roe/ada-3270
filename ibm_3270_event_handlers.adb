@@ -71,6 +71,8 @@ package body IBM_3270_Event_Handlers is
          V.Pageable.Next_Page;
       elsif AID = IBM_3270.AID_Enter then
          V.JSONable.To_JSON (V.TX2);
+         V.TX2.Enqueue (13);
+         V.TX2.Enqueue (10);
          Intent_Input.Edit_To_History;
          Lines.Set_Bounded_Wide_String (L, "");
          Line_Vectors.Append (Intent_Input.History, L);

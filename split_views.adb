@@ -209,8 +209,6 @@ package body Split_Views is
          TX2.Enqueue (Character'Pos ('n'));
       end if;
       TX2.Enqueue (Character'Pos ('"'));
-      TX2.Enqueue (13);
-      TX2.Enqueue (10);
 
    end To_JSON;
 
