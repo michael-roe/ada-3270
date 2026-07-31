@@ -12,14 +12,7 @@ package Split_Views is
    type Edit_Window is array (0 .. 17) of Lines.Bounded_Wide_String;
 
    type Split_View is new Paged_Views.Paged_View and JSON_Views.JSON_View
-     with record
-      AID : Buffer.Byte := 0;
-      Title : Lines.Bounded_Wide_String;
-      Subtitle : Lines.Bounded_Wide_String;
-      Page_Number : Natural := 0;
-      History : Line_Vectors.Vector;
-      Edit    : Edit_Window;
-   end record;
+     with private;
 
    procedure To_Physical (
       V : Split_View;
@@ -69,5 +62,17 @@ package Split_Views is
       C : Wide_Character);
 
    procedure New_Line (V : in out Split_View);
+
+private
+
+   type Split_View is new Paged_Views.Paged_View and JSON_Views.JSON_View
+     with record
+      AID : Buffer.Byte := 0;
+      Title : Lines.Bounded_Wide_String;
+      Subtitle : Lines.Bounded_Wide_String;
+      Page_Number : Natural := 0;
+      History : Line_Vectors.Vector;
+      Edit    : Edit_Window;
+   end record;
 
 end Split_Views;
