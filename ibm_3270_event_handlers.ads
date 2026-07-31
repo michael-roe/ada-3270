@@ -9,6 +9,7 @@ package IBM_3270_Event_Handlers is
 
    type Panel_Type is (
       Null_Panel,
+      Login_Panel,
       Main_Panel,
       Entity_Panel,
       Identity_Panel,
