@@ -13,6 +13,7 @@ package Numbered_Menu_Views is
      and JSON_Views.JSON_View with record
       AID : Buffer.Byte := 0;
       Title : Lines.Bounded_Wide_String;
+      Intro : Lines.Bounded_Wide_String;
       Subtitle : Lines.Bounded_Wide_String;
       Option : Natural;
       Option_Labels : Label_Array;
@@ -59,5 +60,11 @@ package Numbered_Menu_Views is
       V : in out Numbered_Menu_View;
       N : Natural;
       L : Lines.Bounded_Wide_String);
+
+   procedure Set_Intro (
+      V : in out Numbered_Menu_View;
+      L : Lines.Bounded_Wide_String);
+
+   function Get_Option (V : Numbered_Menu_View) return Natural;
 
 end Numbered_Menu_Views;

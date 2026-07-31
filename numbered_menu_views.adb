@@ -31,11 +31,7 @@ package body Numbered_Menu_Views is
 
       Panel_Elements.Box_Sides (3, P'Access, Bytes_Out);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 4);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
-      P.Append (Bytes_Out, " Select an option and press Enter");
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 4);
-      Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
+      Panel_Elements.Text_Line (4, P'Access, V.Intro, Bytes_Out);
 
       Panel_Elements.Box_Sides (5, P'Access, Bytes_Out);
 
@@ -196,5 +192,21 @@ package body Numbered_Menu_Views is
       end if;
 
    end Set_Label;
+
+   procedure Set_Intro (
+      V : in out Numbered_Menu_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Intro := L;
+
+   end Set_Intro;
+
+   function Get_Option (V : Numbered_Menu_View) return Natural is
+   begin
+
+      return V.Option;
+
+   end Get_Option;
 
 end Numbered_Menu_Views;
