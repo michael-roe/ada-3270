@@ -39,8 +39,10 @@ package Login_Views is
 private
 
    type Login_View is new Views.View with record
-      AID : Buffer.Byte;
-      Title : Lines.Bounded_Wide_String;
+      AID      : Buffer.Byte;
+      Title    : Lines.Bounded_Wide_String;
+      User_Id  : Lines.Bounded_Wide_String;
+      Password : Lines.Bounded_Wide_String;
    end record;
 
 end Login_Views;

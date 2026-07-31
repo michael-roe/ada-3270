@@ -1,3 +1,5 @@
+with Ada.Text_IO;
+with Ada.Integer_Text_IO;
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
@@ -120,7 +122,16 @@ package body Login_Views is
       L : Lines.Bounded_Wide_String) is
    begin
 
-      null;
+      --  Ada.Integer_Text_IO.Put (X);
+      --  Ada.Text_IO.Put (",");
+      --  Ada.Integer_Text_IO.Put (Y);
+      --  Ada.Text_IO.New_Line;
+
+      if (X = 12) and (Y = 7) then
+         V.User_Id := L;
+      elsif (X = 12) and (Y = 9) then
+         V.Password := L;
+      end if;
 
    end Update_Field;
 
