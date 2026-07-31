@@ -5,10 +5,7 @@ with Lines;
 
 package Login_Views is
 
-   type Login_View is new Views.View with record
-      AID : Buffer.Byte;
-      Title : Lines.Bounded_Wide_String;
-   end record;
+   type Login_View is new Views.View with private;
 
    procedure To_Physical (
       V : Login_View;
@@ -38,5 +35,12 @@ package Login_Views is
    procedure Set_Title (
       V : in out Login_View;
       L : Lines.Bounded_Wide_String);
+
+private
+
+   type Login_View is new Views.View with record
+      AID : Buffer.Byte;
+      Title : Lines.Bounded_Wide_String;
+   end record;
 
 end Login_Views;
