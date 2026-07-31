@@ -21,6 +21,8 @@ package body IBM_3270_Event_Handlers is
       IBM_3270.IBM_Write_Erase_Alternate,
       IBM_3270.WCC_Go_Ahead);
 
+   Login_Screen : aliased Login_Views.Login_View;
+
    Main_Menu : aliased Menu_Views.Menu_View;
 
    Summon_Menu : aliased Menu_Views.Menu_View;
@@ -127,6 +129,11 @@ package body IBM_3270_Event_Handlers is
          end loop;
 
          case V.State  is
+            when Login_Panel =>
+                 V.Current := Main_Menu'Access;
+                  V.Pageable := Main_Menu'Access;
+                  V.JSONable := Main_Menu'Access;
+                  V.State := Main_Panel;
             when Main_Panel =>
                if Main_Menu.Get_Option /= 0 then
                   V.Current := Entity_Menu'Access;
@@ -175,10 +182,13 @@ package body IBM_3270_Event_Handlers is
       L : Lines.Bounded_Wide_String;
    begin
 
-      V.Current := Main_Menu'Access;
+      V.Current := Login_Screen'Access;
       V.Pageable := Main_Menu'Access;
       V.JSONable := Main_Menu'Access;
-      V.State := Main_Panel;
+      V.State := Login_Panel;
+
+      Lines.Set_Bounded_Wide_String (L, "Login");
+      Login_Screen.Set_Title (L);
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Main_Menu.Set_Title (L);
