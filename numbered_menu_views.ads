@@ -10,14 +10,7 @@ package Numbered_Menu_Views is
    type Label_Array is array (1 .. 10) of Lines.Bounded_Wide_String;
 
    type Numbered_Menu_View is new Paged_Views.Paged_View
-     and JSON_Views.JSON_View with record
-      AID : Buffer.Byte := 0;
-      Title : Lines.Bounded_Wide_String;
-      Intro : Lines.Bounded_Wide_String;
-      Subtitle : Lines.Bounded_Wide_String;
-      Option : Natural;
-      Option_Labels : Label_Array;
-   end record;
+     and JSON_Views.JSON_View with private;
 
    procedure To_Physical (
       V : Numbered_Menu_View;
@@ -66,5 +59,17 @@ package Numbered_Menu_Views is
       L : Lines.Bounded_Wide_String);
 
    function Get_Option (V : Numbered_Menu_View) return Natural;
+
+private
+
+   type Numbered_Menu_View is new Paged_Views.Paged_View
+     and JSON_Views.JSON_View with record
+      AID : Buffer.Byte := 0;
+      Title : Lines.Bounded_Wide_String;
+      Intro : Lines.Bounded_Wide_String;
+      Subtitle : Lines.Bounded_Wide_String;
+      Option : Natural;
+      Option_Labels : Label_Array;
+   end record;
 
 end Numbered_Menu_Views;
