@@ -32,11 +32,12 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("127.0.0.1", port))
 f = s.makefile("rw", encoding="utf-8", newline="\r\n")
 
-line = f.readline().strip()
-opt = json.loads(line)
-print ("Option:", opt)
-f.write("\"OK\"\n")
-f.flush()
+for j in range (0, 5):
+  line = f.readline().strip()
+  opt = json.loads(line)
+  print ("Option:", opt)
+  f.write("\"OK\"\n")
+  f.flush()
 
 history = []
 
@@ -54,15 +55,23 @@ while True:
 
   reply = response.json()
 
-  role = reply["choices"][0]["message"]["role"]
-  message = reply["choices"][0]["message"]["content"]
+  print(reply)
+  print()
 
-  print("Role:", role)
-  print("Received:", message)
+  if "error" in reply:
+    f.write(json.dumps(reply["error"]))
+    f.write("\n")
+    f.flush()
+  else:
+    role = reply["choices"][0]["message"]["role"]
+    message = reply["choices"][0]["message"]["content"]
 
-  history.append({"role": role, "content": message})
+    print("Role:", role)
+    print("Received:", message)
 
-  print(json.dumps(message))
-  f.write(json.dumps(message))
-  f.write("\n")
-  f.flush()
+    history.append({"role": role, "content": message})
+
+    print(json.dumps(message))
+    f.write(json.dumps(message))
+    f.write("\n")
+    f.flush()
