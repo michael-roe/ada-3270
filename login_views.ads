@@ -36,6 +36,10 @@ package Login_Views is
       V : in out Login_View;
       L : Lines.Bounded_Wide_String);
 
+   function Get_User_Id (V : Login_View) return Lines.Bounded_Wide_String;
+
+   function Get_Password (V : Login_View) return Lines.Bounded_Wide_String;
+
 private
 
    type Login_View is new Views.View with record
