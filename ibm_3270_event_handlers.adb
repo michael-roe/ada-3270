@@ -217,6 +217,8 @@ package body IBM_3270_Event_Handlers is
       Entity_Menu.Set_Label (3, L);
       Lines.Set_Bounded_Wide_String (L, "Wards");
       Entity_Menu.Set_Label (4, L);
+      Lines.Set_Bounded_Wide_String (L, "Circle");
+      Entity_Menu.Set_Label (5, L);
 
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Identity_Input.Set_Title (L);
