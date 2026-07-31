@@ -29,6 +29,7 @@ package body Login_Views is
       V : Login_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
       B : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
    begin
 
       Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
@@ -39,31 +40,48 @@ package body Login_Views is
 
       Panel_Elements.Box_Sides (3, P'Access, Bytes_Out);
 
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 4);
+      Lines.Set_Bounded_Wide_String (L,
+         "Fill in your UserId and Password and press Enter");
+      Panel_Elements.Text_Line (4, P'Access, L, Bytes_Out);
+
+      Lines.Set_Bounded_Wide_String (L,
+         "(Your password will not appear when you type it)");
+      Panel_Elements.Text_Line (5, P'Access, L, Bytes_Out);
+
+      Panel_Elements.Box_Sides (6, P'Access, Bytes_Out);
+
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 7);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
-      P.Append (Bytes_Out, "User Name");
+      P.Append (Bytes_Out, "UserId   ");
       IBM_3270_Orders.Start_Field (Bytes_Out, False, Normal_Text);
       IBM_3270_Orders.Insert_Cursor (Bytes_Out);
       P.Append (Bytes_Out, "            ");
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 4);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 7);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Panel_Elements.Box_Sides (5, P'Access, Bytes_Out);
+      Panel_Elements.Box_Sides (8, P'Access, Bytes_Out);
 
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 9);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
       P.Append (Bytes_Out, "Password ");
       IBM_3270_Orders.Start_Field (Bytes_Out, False, Hidden);
       P.Append (Bytes_Out, "            ");
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
-      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 6);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 9);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      for J in 7 .. 39 loop
+      for J in 10 .. 41 loop
          Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
       end loop;
+
+      --
+      --  The login screen does not have a function key area
+      --
+
+      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
 
    end To_Physical;
 
