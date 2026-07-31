@@ -151,4 +151,18 @@ package body Login_Views is
 
    end Set_Title;
 
+   function Get_User_Id (V : Login_View) return Lines.Bounded_Wide_String is
+   begin
+
+      return V.User_Id;
+
+   end Get_User_Id;
+
+   function Get_Password (V : Login_View) return Lines.Bounded_Wide_String is
+   begin
+
+      return V.Password;
+
+   end Get_Password;
+
 end Login_Views;
