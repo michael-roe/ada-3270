@@ -73,9 +73,10 @@ package body IBM_3270_Event_Handlers is
          V.JSONable.To_JSON (V.TX2);
          V.TX2.Enqueue (13);
          V.TX2.Enqueue (10);
+         Intent_Input.New_Line;
          Intent_Input.Edit_To_History;
-         Lines.Set_Bounded_Wide_String (L, "");
-         Line_Vectors.Append (Intent_Input.History, L);
+         Intent_Input.New_Line;
+         Intent_Input.New_Line;
          After_Backslash := False;
          Backend_Byte := 0;
          while Backend_Byte /= 10 loop
@@ -253,7 +254,7 @@ package body IBM_3270_Event_Handlers is
       Lines.Set_Bounded_Wide_String (L, "Cantrip");
       Intent_Input.Set_Title (L);
       Lines.Set_Bounded_Wide_String (L, "Cast ===>");
-      Intent_Input.Subtitle := L;
+      Intent_Input.Set_Subtitle (L);
 
       --  for J in 1 .. 50 loop
       --     Lines.Set_Bounded_Wide_String (L,
