@@ -23,6 +23,8 @@ package body Login_Views.Tests is
 
    Cursor_Y_2 : Natural;
 
+   procedure Update_Field (X : Natural; Y : Natural);
+
    procedure Update_Field (X : Natural; Y : Natural) is
    begin
 
