@@ -212,6 +212,15 @@ package body Split_Views is
 
    end To_JSON;
 
+   procedure Set_Subtitle (
+      V : in out Split_View;
+      L : Lines.Bounded_Wide_String) is
+   begin
+
+      V.Subtitle := L;
+
+   end Set_Subtitle;
+
    procedure Edit_To_History (V : in out Split_View) is
       Last_Line : Natural;
       L : Lines.Bounded_Wide_String;

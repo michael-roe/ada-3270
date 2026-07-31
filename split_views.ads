@@ -58,6 +58,10 @@ package Split_Views is
       V   : Split_View;
       TX2 : access Buffer_Queues.Queue);
 
+   procedure Set_Subtitle (
+      V : in out Split_View;
+      L : Lines.Bounded_Wide_String);
+
    procedure Edit_To_History (V : in out Split_View);
 
    procedure Put_Character (
