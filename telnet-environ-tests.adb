@@ -138,6 +138,22 @@ package body Telnet.Environ.Tests is
 
    end Test_Name_Overflow;
 
+   procedure Test_Value_Overflow (T : in out Test_Cases.Test_Case'Class) is
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Append_Header (Bytes_In);
+      Bytes_In.Append (User_Var_Tag);
+      Bytes_In.Append (Character'Pos ('N'));
+      Bytes_In.Append (Telnet.Environ.Value_Tag);
+      for J in 1 .. 256 loop
+         Bytes_In.Append (Character'Pos ('!'));
+      end loop;
+
+      Parse (Bytes_In);
+
+   end Test_Value_Overflow;
+
    procedure Register_Tests (T : in out Environ_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -162,6 +178,9 @@ package body Telnet.Environ.Tests is
 
       Register_Routine (T, Test_Name_Overflow'Access,
          "Test_Name_Overflow");
+
+      Register_Routine (T, Test_Value_Overflow'Access,
+         "Test_Value_Overflow");
 
    end Register_Tests;
 

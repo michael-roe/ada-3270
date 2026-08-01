@@ -15,6 +15,12 @@ package Telnet.Environ.Tests is
 
    procedure Test_Null_First (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Null_Name (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Name_Overflow (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Value_Overflow (T : in out Test_Cases.Test_Case'Class);
+
    procedure Register_Tests (T : in out Environ_Test);
 
    function Name (T : Environ_Test) return Message_String;
