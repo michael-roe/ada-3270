@@ -55,26 +55,25 @@ package body Telnet.Environ is
 
       State_Escape := False;
 
+      State_User_Var := False;
+
       for J in V.First_Index + 2 .. V.Last_Index loop
          B := V.Element (J);
          if B = Var_Tag and not State_Escape then
             if State_NV = State_Value then
-               Debug (Name_String, Value_String);
+               Callback (Name_String, Value_String, State_User_Var);
             end if;
-            Ada.Text_IO.Put_Line ("[VAR]");
             State_NV := State_Name;
             State_User_Var := False;
             Telnet_Strings.Set_Bounded_String (Name_String, "");
          elsif B = User_Var_Tag and not State_Escape then
             if State_NV = State_Value then
-               Debug (Name_String, Value_String);
+               Callback (Name_String, Value_String, State_User_Var);
             end if;
-            Ada.Text_IO.Put_Line ("[USERVAR]");
             State_NV := State_Name;
             State_User_Var := True;
             Telnet_Strings.Set_Bounded_String (Name_String, "");
          elsif B = Value_Tag and not State_Escape then
-            Ada.Text_IO.Put_Line ("[VALUE]");
             State_NV := State_Value;
             Telnet_Strings.Set_Bounded_String (Value_String, "");
          elsif B = Esc_Tag and not State_Escape then
@@ -93,7 +92,7 @@ package body Telnet.Environ is
          end if;
       end loop;
 
-      Debug (Name_String, Value_String);
+      Callback (Name_String, Value_String, State_User_Var);
 
    end Parse;
 

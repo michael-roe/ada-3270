@@ -1,5 +1,6 @@
 with Buffer; use type Buffer.Byte;
 with Byte_Vectors;
+with Telnet_Strings;
 
 package Telnet.Environ is
 
@@ -24,6 +25,13 @@ package Telnet.Environ is
    Keyboard_Type_Str : String := "KBDTYPE";
    Code_Page_Str     : String := "CODEPAGE";
    Charset_Str       : String := "CHARSET";
+
+   generic
+
+      with procedure Callback (
+        N : Telnet_Strings.Bounded_String;
+        V : Telnet_Strings.Bounded_String;
+        User_Variable : Boolean);
 
    procedure Parse (V : Byte_Vectors.Vector);
 

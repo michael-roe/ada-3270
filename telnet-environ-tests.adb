@@ -1,5 +1,9 @@
+with AUnit.Assertions; use AUnit.Assertions;
+with Ada.Text_IO;
 with Byte_Vectors;
 with Telnet.Options;
+with Telnet_Strings;
+use type Telnet_Strings.Bounded_String;
 
 package body Telnet.Environ.Tests is
 
@@ -8,6 +12,24 @@ package body Telnet.Environ.Tests is
       16#4F#, 16#44#, 16#45#, 16#50#,
       16#41#, 16#47#, 16#45#, 16#1#,
       16#35#, 16#30#, 16#30#);
+
+   Name_1 : Telnet_Strings.Bounded_String;
+
+   Value_1 : Telnet_Strings.Bounded_String;
+
+   procedure Debug (
+        N : Telnet_Strings.Bounded_String;
+        V : Telnet_Strings.Bounded_String;
+        User_Variable : Boolean) is
+   begin
+
+      Name_1 := N;
+
+      Value_1 := V;
+ 
+   end Debug;
+
+   procedure Parse_Debug is new Parse (Callback => Debug);
 
    procedure Append_Header (Bytes_In : in out Byte_Vectors.Vector) is
    begin
@@ -61,7 +83,10 @@ package body Telnet.Environ.Tests is
          Bytes_In.Append (Example_Option (J));
       end loop;
 
-      Parse (Bytes_In);
+      Parse_Debug (Bytes_In);
+
+      Assert (Name_1 = "CODEPAGE", "Name should be CODEPAGE");
+      Assert (Value_1 = "500", "Value should be 500");
 
    end Test_User_Variable;
 
@@ -72,7 +97,10 @@ package body Telnet.Environ.Tests is
       Append_Header (Bytes_In);
       Append_System_Variable (Bytes_In, "USER", "guest");
 
-      Parse (Bytes_In);
+      Parse_Debug (Bytes_In);
+
+      Assert (Name_1 = "USER", "Name should be USER");
+      Assert (Value_1 = "guest", "Value should be guest");
 
    end Test_System_Variable;
 
@@ -84,7 +112,7 @@ package body Telnet.Environ.Tests is
       Append_User_Variable (Bytes_In, "CODEPAGE", "500");
       Append_User_Variable (Bytes_In, "KBDTYPE", "USI");
 
-      Parse (Bytes_In);
+      Parse_Debug (Bytes_In);
 
    end Test_Two_Variables;
 
@@ -95,7 +123,10 @@ package body Telnet.Environ.Tests is
       Append_Header (Bytes_In);
       Append_User_Variable (Bytes_In, "EMPTY", "");
 
-      Parse (Bytes_In);
+      Parse_Debug (Bytes_In);
+
+      Assert (Name_1 = "EMPTY", "Name should be EMPTY");
+      Assert (Value_1 = "", "Value should be null string");
 
    end Test_Null_Value;
 
@@ -107,7 +138,7 @@ package body Telnet.Environ.Tests is
       Append_User_Variable (Bytes_In, "EMPTY", "");
       Append_User_Variable (Bytes_In, "CODEPAGE", "500");
 
-      Parse (Bytes_In);
+      Parse_Debug (Bytes_In);
 
    end Test_Null_First;
 
@@ -118,7 +149,10 @@ package body Telnet.Environ.Tests is
       Append_Header (Bytes_In);
       Append_User_Variable (Bytes_In, "", "EMPTY");
 
-      Parse (Bytes_In);
+      Parse_Debug (Bytes_In);
+
+      Assert (Name_1 = "", "Name should be null string");
+      Assert (Value_1 = "EMPTY", "Value should be EMPTY");
 
    end Test_Null_Name;
 
@@ -134,7 +168,7 @@ package body Telnet.Environ.Tests is
       Bytes_In.Append (Telnet.Environ.Value_Tag);
       Bytes_In.Append (Character'Pos ('V'));
 
-      Parse (Bytes_In);
+      Parse_Debug (Bytes_In);
 
    end Test_Name_Overflow;
 
@@ -150,7 +184,7 @@ package body Telnet.Environ.Tests is
          Bytes_In.Append (Character'Pos ('!'));
       end loop;
 
-      Parse (Bytes_In);
+      Parse_Debug (Bytes_In);
 
    end Test_Value_Overflow;
 
