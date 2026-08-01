@@ -5,7 +5,15 @@ package Telnet.Environ.Tests is
 
    type Environ_Test is new Test_Cases.Test_Case with null record;
 
-   procedure Test_Parse (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_User_Variable (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_System_Variable (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Two_Variables (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Null_Value (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Null_First (T : in out Test_Cases.Test_Case'Class);
 
    procedure Register_Tests (T : in out Environ_Test);
 
