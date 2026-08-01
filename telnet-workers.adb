@@ -12,6 +12,7 @@ with Byte_Text_IO;
 with Telnet.Protocol;
 with Telnet.Options;
 with Telnet.Terminal;
+with Telnet_Strings;
 with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
 with IBM_3270;
@@ -44,6 +45,22 @@ package body Telnet.Workers is
       Character'Pos ('E'),
       Telnet.Protocol.IAC,
       Telnet.Protocol.SE);
+
+   procedure Handle_Environment (
+        N : Telnet_Strings.Bounded_String;
+        V : Telnet_Strings.Bounded_String;
+        User_Variable : Boolean) is
+   begin
+
+      Ada.Text_IO.Put (Telnet_Strings.To_String (N));
+      Ada.Text_IO.Put (" = ");
+      Ada.Text_IO.Put (Telnet_Strings.To_String (V));
+      Ada.Text_IO.New_Line;
+
+   end Handle_Environment;
+
+   procedure Parse_Environ is new
+      Telnet.Environ.Parse (Callback => Handle_Environment);
 
    task body Worker is
       S : State := Data;
@@ -286,7 +303,14 @@ package body Telnet.Workers is
                      --  Put ("[Length = ");
                      --  Put (Option_In.Length'Image);
                      --  Put ("]");
-                     --  Option_In.Clear;
+                     if Option_In.Length >= 2 then
+                        if Option_In.Element (Option_In.First_Index) =
+                           Telnet.Options.New_Environ
+                        then
+                           Parse_Environ (Option_In);
+                        end if;
+                     end if;
+                     Option_In.Clear;
                      S := Data;
                      Got_Reply := True;
                   else
