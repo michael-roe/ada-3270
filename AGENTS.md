@@ -5,6 +5,7 @@ To build unit tests:
 
 ``
 source setup_aunit.sh
+
 gnatmake test_runner
 ``
 
@@ -54,3 +55,24 @@ See style.md for a summary.
   - Telnet_Strings
   - Telnet.Terminal
   - Telnet.Workers
+
+- IBM 3270 Protocol
+  - IBM_3270
+  - IBM_3270_Orders
+  - Input_Stream
+  - Output_Stream
+
+- IBM Common User Access
+  - Checkbox_Views
+  - Json_Views
+  - Lines
+  - Line_Vectors
+  - Login_Views
+  - Markable_Views
+  - Menu_Views
+  - Numbered_Menu_Views
+  - Pageable_Views
+  - Paged_Views
+  - Panel_Elements
+  - Text_Views
+  - Views
