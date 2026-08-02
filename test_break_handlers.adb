@@ -3,7 +3,6 @@ with Ada.Containers;
 use type Ada.Containers.Count_Type;
 with Buffer;
 use type Buffer.Byte;
-with Code_Page_500;
 with IBM_3270;
 with IBM_3270_Orders;
 
@@ -16,8 +15,6 @@ package body Test_Break_Handlers is
    Screen_Message_No_GA : Buffer.Byte_Array := (
       IBM_3270.IBM_Write_Erase,
       0);
-
-   P : Code_Page_500.Page_500;
 
    procedure To_Physical (
       V         : in out Test_Break_Handler;
