@@ -62,6 +62,8 @@ package body Telnet.Environ is
          if B = Var_Tag and not State_Escape then
             if State_NV = State_Value then
                Callback (Name_String, Value_String, State_User_Var);
+            elsif State_NV = State_Name then
+               Callback_Undef (Name_String, State_User_Var);
             end if;
             State_NV := State_Name;
             State_User_Var := False;
@@ -69,6 +71,8 @@ package body Telnet.Environ is
          elsif B = User_Var_Tag and not State_Escape then
             if State_NV = State_Value then
                Callback (Name_String, Value_String, State_User_Var);
+            elsif State_NV = State_Name then
+               Callback_Undef (Name_String, State_User_Var);
             end if;
             State_NV := State_Name;
             State_User_Var := True;
@@ -94,6 +98,8 @@ package body Telnet.Environ is
 
       if State_NV = State_Value then
          Callback (Name_String, Value_String, State_User_Var);
+      elsif State_NV = State_Name then
+         Callback_Undef (Name_String, State_User_Var);
       end if;
 
    end Parse;

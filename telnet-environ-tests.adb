@@ -23,6 +23,8 @@ package body Telnet.Environ.Tests is
 
    First_Callback : Boolean := True;
 
+   Undef_Called : Boolean := False;
+
    procedure Debug (
         N : Telnet_Strings.Bounded_String;
         V : Telnet_Strings.Bounded_String;
@@ -40,7 +42,18 @@ package body Telnet.Environ.Tests is
 
    end Debug;
 
-   procedure Parse_Debug is new Parse (Callback => Debug);
+   procedure Callback_Undef (
+      N : Telnet_Strings.Bounded_String;
+      User_Variable : Boolean) is
+   begin
+
+      Undef_Called := True;
+
+   end Callback_Undef;
+
+   procedure Parse_Debug is new Parse (
+      Callback => Debug,
+      Callback_Undef => Callback_Undef);
 
    procedure Append_Header (Bytes_In : in out Byte_Vectors.Vector) is
    begin
@@ -275,6 +288,7 @@ package body Telnet.Environ.Tests is
       Append_User_Variable (Bytes_In, "CODEPAGE", "500");
 
       First_Callback := True;
+      Undef_Called := False;
 
       Parse_Debug (Bytes_In);
 
@@ -284,6 +298,7 @@ package body Telnet.Environ.Tests is
 
       Assert (First_Name = "CODEPAGE", "First name should be CODEPAGE");
       Assert (First_Value = "500", "First value should be 500");
+      Assert (Undef_Called, "Callback_Undef should have been called");
 
    end Test_Undef_At_Start;
 
@@ -297,6 +312,7 @@ package body Telnet.Environ.Tests is
       Bytes_In.Append (Character'Pos ('N'));
 
       First_Callback := True;
+      Undef_Called := False;
 
       Parse_Debug (Bytes_In);
 
@@ -306,6 +322,7 @@ package body Telnet.Environ.Tests is
 
       Assert (Name_1 = "CODEPAGE", "Last name should be CODEPAGE");
       Assert (Value_1 = "500", "Last value should be 500");
+      Assert (Undef_Called, "Callback_Undef should have been called");
 
    end Test_Undef_At_End;
 

@@ -33,6 +33,10 @@ package Telnet.Environ is
         V : Telnet_Strings.Bounded_String;
         User_Variable : Boolean);
 
+      with procedure Callback_Undef (
+         N : Telnet_Strings.Bounded_String;
+         User_Variable : Boolean);
+
    procedure Parse (V : Byte_Vectors.Vector);
 
 end Telnet.Environ;

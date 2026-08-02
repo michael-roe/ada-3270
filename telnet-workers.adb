@@ -59,8 +59,19 @@ package body Telnet.Workers is
 
    end Handle_Environment;
 
+   procedure Environment_Undefined (
+      N : Telnet_Strings.Bounded_String;
+      User_Variable : Boolean) is
+   begin
+
+      Ada.Text_IO.Put_Line ("Telnet environment variable undefined");
+
+   end Environment_Undefined;
+
    procedure Parse_Environ is new
-      Telnet.Environ.Parse (Callback => Handle_Environment);
+      Telnet.Environ.Parse (
+         Callback => Handle_Environment,
+         Callback_Undef => Environment_Undefined);
 
    task body Worker is
       S : State := Data;
