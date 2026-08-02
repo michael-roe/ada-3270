@@ -75,6 +75,17 @@ package Panel_Elements is
       Right_Enabled : Boolean;
       Bytes_Out : in out Byte_Vectors.Vector);
 
+   procedure Right_Selection (
+      Y : Natural;
+      P : Code_Pages.Code_Page_Access;
+      C : Wide_Character;
+      Bytes_Out : in out Byte_Vectors.Vector);
+
+   --
+   --  Right_Selection draws a single choice selection input
+   --  on the right hand of the screen.
+   --
+
    procedure Text_Line (
       Y : Natural;
       P : Code_Pages.Code_Page_Access;

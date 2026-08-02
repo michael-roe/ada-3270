@@ -73,6 +73,7 @@ private
       Page_Number : Natural := 0;
       History : Line_Vectors.Vector;
       Edit    : Edit_Window;
+      Option  : Natural := 1;
    end record;
 
 end Split_Views;

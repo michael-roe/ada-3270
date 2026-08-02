@@ -20,6 +20,8 @@ package body Split_Views is
 
    P : aliased Code_Page_500.Page_500;
 
+   LMH : array (1 .. 3) of Wide_Character := ('L', 'M', 'H');
+
    procedure To_Physical (
       V : Split_View;
       Bytes_Out : in out Byte_Vectors.Vector) is
@@ -57,7 +59,11 @@ package body Split_Views is
 
       Panel_Elements.Horizontal_Rule (20, P'Access, Bytes_Out);
 
-      Panel_Elements.Input_Label (21, P'Access, V.Subtitle, Bytes_Out);
+      Panel_Elements.Left_Input_Label (21, P'Access, V.Subtitle, Bytes_Out);
+
+      Panel_Elements.Right_Selection (21, P'Access,
+         LMH (V.Option),
+         Bytes_Out);
 
       for J in 22 .. 39 loop
          Panel_Elements.Input_Line (J,
@@ -116,7 +122,24 @@ package body Split_Views is
       L : Lines.Bounded_Wide_String) is
    begin
 
-      V.Edit (Y - 22) := L;
+      if Y = 21 then
+         if X = 77 and Lines.Length (L) >= 1 then
+            Ada.Text_IO.Put ("Updating tickbox");
+            Ada.Text_IO.Put (Natural'Image (X));
+            case Lines.Element (L, 1) is
+               when 'L' =>
+                  V.Option := 1;
+               when 'M' =>
+                  V.Option := 2;
+               when 'H' =>
+                  V.Option := 3;
+               when others =>
+                  null;
+            end case;
+         end if;
+      elsif Y > 21 then
+         V.Edit (Y - 22) := L;
+      end if;
 
    end Update_Field;
 
@@ -173,6 +196,8 @@ package body Split_Views is
             end if;
          else
             if State = Blank_Line then
+               TX2.Enqueue (Character'Pos ('\'));
+               TX2.Enqueue (Character'Pos ('n'));
                TX2.Enqueue (Character'Pos ('\'));
                TX2.Enqueue (Character'Pos ('n'));
             elsif State = Nonblank_Line then
