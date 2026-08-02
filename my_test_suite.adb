@@ -5,6 +5,7 @@ with Telnet.Environ.Tests;
 with Code_Page_500.Tests;
 with Code_Page_310.Tests;
 with Code_Page_870.Tests;
+with Code_Page_UTF8.Tests;
 with Line_Vectors_Tests;
 with IBM_3270_Orders.Tests;
 with Input_Stream.Tests;
@@ -39,6 +40,7 @@ package body My_Test_Suite is
    Test_14 : aliased Menu_Views.Tests.Menu_View_Test;
    Test_15 : aliased Numbered_Menu_Views.Tests.Numbered_Menu_View_Test;
    Test_16 : aliased Telnet.Environ.Tests.Environ_Test;
+   Test_17 : aliased Code_Page_UTF8.Tests.UTF8_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -59,6 +61,7 @@ package body My_Test_Suite is
       Add_Test (Result'Access, Test_14'Access);
       Add_Test (Result'Access, Test_15'Access);
       Add_Test (Result'Access, Test_16'Access);
+      Add_Test (Result'Access, Test_17'Access);
 
       return Result'Access;
 
