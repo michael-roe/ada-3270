@@ -1,6 +1,7 @@
 with Byte_Vectors;
 with Buffer_Queues;
 with Telnet.Event_Handlers;
+with Code_Pages;
 with Views;
 with Pageable_Views;
 with JSON_Views;
@@ -28,11 +29,13 @@ package IBM_3270_Event_Handlers is
    procedure To_Physical (
       V         : in out IBM_3270_Handler;
       Bytes_Out : in out Byte_Vectors.Vector;
+      P         : Code_Pages.Code_Page_Access;
       Go_Ahead  : in out Boolean);
 
    procedure From_Physical (
       V        : in out IBM_3270_Handler;
-      Bytes_In : Byte_Vectors.Vector);
+      Bytes_In : Byte_Vectors.Vector;
+      P         : Code_Pages.Code_Page_Access);
 
    procedure Break (V : in out IBM_3270_Handler);
 

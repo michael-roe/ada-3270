@@ -22,6 +22,7 @@ package body Test_Break_Handlers is
    procedure To_Physical (
       V         : in out Test_Break_Handler;
       Bytes_Out : in out Byte_Vectors.Vector;
+      P         : Code_Pages.Code_Page_Access;
       Go_Ahead  : in out Boolean) is
    begin
 
@@ -86,7 +87,8 @@ package body Test_Break_Handlers is
 
    procedure From_Physical (
       V        : in out Test_Break_Handler;
-      Bytes_In : Byte_Vectors.Vector) is
+      Bytes_In : Byte_Vectors.Vector;
+      P        : Code_Pages.Code_Page_Access) is
    begin
 
       Ada.Text_IO.Put_Line ("From_Physical called");

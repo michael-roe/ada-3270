@@ -16,6 +16,8 @@ with Telnet_Strings;
 with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
 with IBM_3270;
+with Code_Pages;
+with Code_Page_500;
 
 package body Telnet.Workers is
 
@@ -45,6 +47,8 @@ package body Telnet.Workers is
       Character'Pos ('E'),
       Telnet.Protocol.IAC,
       Telnet.Protocol.SE);
+
+   P500 : aliased Code_Page_500.Page_500;
 
    procedure Handle_Environment (
         N : Telnet_Strings.Bounded_String;
@@ -183,7 +187,7 @@ package body Telnet.Workers is
 
                      Bytes_Out.Clear;
 
-                     Handler.To_Physical (Bytes_Out, Go_Ahead);
+                     Handler.To_Physical (Bytes_Out, P500'Access, Go_Ahead);
 
                      if Bytes_Out.Length > 0 then
                         for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
@@ -248,7 +252,7 @@ package body Telnet.Workers is
                         Got_Reply := True;
                      when Telnet.Protocol.EOR =>
                         --  Put ("[EOR]");
-                        Handler.From_Physical (Bytes_In);
+                        Handler.From_Physical (Bytes_In, P500'Access);
                         Bytes_In.Clear;
                         S := Data;
                         Got_Reply := True;

@@ -38,6 +38,7 @@ package body IBM_3270_Event_Handlers is
    procedure To_Physical (
       V         : in out IBM_3270_Handler;
       Bytes_Out : in out Byte_Vectors.Vector;
+      P         : Code_Pages.Code_Page_Access;
       Go_Ahead  : in out Boolean) is
    begin
 
@@ -52,8 +53,9 @@ package body IBM_3270_Event_Handlers is
    end To_Physical;
 
    procedure From_Physical (
-      V : in out IBM_3270_Handler;
-      Bytes_In : Byte_Vectors.Vector) is
+      V        : in out IBM_3270_Handler;
+      Bytes_In : Byte_Vectors.Vector;
+      P        : Code_Pages.Code_Page_Access) is
       AID : Buffer.Byte;
       L : Lines.Bounded_Wide_String;
       After_Backslash : Boolean;
