@@ -173,7 +173,7 @@ package body Split_Views is
             end if;
          else
             if State = Blank_Line then
-               TX2.Enqueue (Character'Pos ('/'));
+               TX2.Enqueue (Character'Pos ('\'));
                TX2.Enqueue (Character'Pos ('n'));
             elsif State = Nonblank_Line then
                TX2.Enqueue (Character'Pos (' '));
@@ -196,7 +196,7 @@ package body Split_Views is
                   TX2.Enqueue (Character'Pos ('\'));
                elsif Encoded (J) = '"' then
                   TX2.Enqueue (Character'Pos ('\'));
-                  TX2.Enqueue (Character'Pos ('q'));
+                  TX2.Enqueue (Character'Pos ('"'));
                else
                   TX2.Enqueue (Character'Pos (Encoded (J)));
                end if;
