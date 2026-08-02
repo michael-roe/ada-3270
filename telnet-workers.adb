@@ -15,9 +15,12 @@ with Telnet.Terminal;
 with Telnet_Strings;
 with Telnet.Environ;
 with Telnet.Negotiation; use Telnet.Negotiation;
+with Telnet_Strings;
+use type Telnet_Strings.Bounded_String;
 with IBM_3270;
 with Code_Pages;
 with Code_Page_500;
+with Code_Page_870;
 
 package body Telnet.Workers is
 
@@ -50,18 +53,7 @@ package body Telnet.Workers is
 
    P500 : aliased Code_Page_500.Page_500;
 
-   procedure Handle_Environment (
-        N : Telnet_Strings.Bounded_String;
-        V : Telnet_Strings.Bounded_String;
-        User_Variable : Boolean) is
-   begin
-
-      Ada.Text_IO.Put (Telnet_Strings.To_String (N));
-      Ada.Text_IO.Put (" = ");
-      Ada.Text_IO.Put (Telnet_Strings.To_String (V));
-      Ada.Text_IO.New_Line;
-
-   end Handle_Environment;
+   P870 : aliased Code_Page_870.Page_870;
 
    procedure Environment_Undefined (
       N : Telnet_Strings.Bounded_String;
@@ -71,11 +63,6 @@ package body Telnet.Workers is
       Ada.Text_IO.Put_Line ("Telnet environment variable undefined");
 
    end Environment_Undefined;
-
-   procedure Parse_Environ is new
-      Telnet.Environ.Parse (
-         Callback => Handle_Environment,
-         Callback_Undef => Environment_Undefined);
 
    task body Worker is
       S : State := Data;
@@ -92,11 +79,41 @@ package body Telnet.Workers is
       Terminal_Sent : Boolean := False;
       Go_Ahead : Boolean := False;
       RX_Empty : Boolean;
+      Session_Code_Page : Code_Pages.Code_Page_Access;
+
+      procedure Handle_Environment (
+           N : Telnet_Strings.Bounded_String;
+           V : Telnet_Strings.Bounded_String;
+           User_Variable : Boolean) is
+      begin
+   
+         Ada.Text_IO.Put (Telnet_Strings.To_String (N));
+         Ada.Text_IO.Put (" = ");
+         Ada.Text_IO.Put (Telnet_Strings.To_String (V));
+         Ada.Text_IO.New_Line;
+   
+         if N = "CODEPAGE" then
+           if V = "500" then
+              Session_Code_Page := P500'Access;
+           elsif V = "870" then
+              Session_Code_Page := P870'Access;
+           end if;
+         end if;
+
+      end Handle_Environment;
+
+      procedure Parse_Environ is new
+         Telnet.Environ.Parse (
+            Callback => Handle_Environment,
+            Callback_Undef => Environment_Undefined);
+
    begin
 
       accept Connect;
 
       Handler.Initialize;
+
+      Session_Code_Page := P500'Access;
 
       for J in 1 .. 30 loop -- only 8 options to send
 
@@ -187,7 +204,9 @@ package body Telnet.Workers is
 
                      Bytes_Out.Clear;
 
-                     Handler.To_Physical (Bytes_Out, P500'Access, Go_Ahead);
+                     Handler.To_Physical (Bytes_Out,
+                        Session_Code_Page,
+                        Go_Ahead);
 
                      if Bytes_Out.Length > 0 then
                         for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
@@ -252,7 +271,7 @@ package body Telnet.Workers is
                         Got_Reply := True;
                      when Telnet.Protocol.EOR =>
                         --  Put ("[EOR]");
-                        Handler.From_Physical (Bytes_In, P500'Access);
+                        Handler.From_Physical (Bytes_In, Session_Code_Page);
                         Bytes_In.Clear;
                         S := Data;
                         Got_Reply := True;
