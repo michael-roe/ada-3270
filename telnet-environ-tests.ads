@@ -21,6 +21,10 @@ package Telnet.Environ.Tests is
 
    procedure Test_Value_Overflow (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Value_Escape (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Value_Var_Tag (T : in out Test_Cases.Test_Case'Class);
+
    procedure Register_Tests (T : in out Environ_Test);
 
    function Name (T : Environ_Test) return Message_String;

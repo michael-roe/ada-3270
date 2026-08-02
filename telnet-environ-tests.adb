@@ -210,7 +210,35 @@ package body Telnet.Environ.Tests is
       Assert (Telnet_Strings.Length (Value_1) = 1,
          "Value length should be 1");
 
+      Assert (Telnet_Strings.Element (Value_1, 1) =
+         Character'Val (Telnet.Environ.Esc_Tag),
+         "Value should contain an escape tag");
+
    end Test_Value_Escape;
+
+  procedure Test_Value_Var_Tag (T : in out Test_Cases.Test_Case'Class) is
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Append_Header (Bytes_In);
+      Bytes_In.Append (User_Var_Tag);
+      Bytes_In.Append (Character'Pos ('E'));
+      Bytes_In.Append (Telnet.Environ.Value_Tag);
+      Bytes_In.Append (Telnet.Environ.Esc_Tag);
+      Bytes_In.Append (Telnet.Environ.Var_Tag);
+
+      Parse_Debug (Bytes_In);
+
+      Assert (Name_1 = "E", "Name should be E");
+
+      Assert (Telnet_Strings.Length (Value_1) = 1,
+         "Value length should be 1");
+
+      Assert (Telnet_Strings.Element (Value_1, 1) =
+         Character'Val (Telnet.Environ.Var_Tag),
+         "Value should contain a Var tag");
+
+   end Test_Value_Var_Tag;
 
    procedure Register_Tests (T : in out Environ_Test) is
       use AUnit.Test_Cases.Registration;
@@ -242,6 +270,9 @@ package body Telnet.Environ.Tests is
 
       Register_Routine (T, Test_Value_Escape'Access,
          "Test_Value_Escape");
+
+      Register_Routine (T, Test_Value_Var_Tag'Access,
+         "Test_Value_Var_Tag");
 
    end Register_Tests;
 
