@@ -170,6 +170,8 @@ package body Telnet.Environ.Tests is
 
       Parse_Debug (Bytes_In);
 
+      Assert (Value_1 = "V", "Value should be V");
+
    end Test_Name_Overflow;
 
    procedure Test_Value_Overflow (T : in out Test_Cases.Test_Case'Class) is
@@ -186,7 +188,29 @@ package body Telnet.Environ.Tests is
 
       Parse_Debug (Bytes_In);
 
+      Assert (Name_1 = "N", "Name should be N");
+
    end Test_Value_Overflow;
+
+  procedure Test_Value_Escape (T : in out Test_Cases.Test_Case'Class) is
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Append_Header (Bytes_In);
+      Bytes_In.Append (User_Var_Tag);
+      Bytes_In.Append (Character'Pos ('E'));
+      Bytes_In.Append (Telnet.Environ.Value_Tag);
+      Bytes_In.Append (Telnet.Environ.Esc_Tag);
+      Bytes_In.Append (Telnet.Environ.Esc_Tag);
+
+      Parse_Debug (Bytes_In);
+
+      Assert (Name_1 = "E", "Name should be E");
+
+      Assert (Telnet_Strings.Length (Value_1) = 1,
+         "Value length should be 1");
+
+   end Test_Value_Escape;
 
    procedure Register_Tests (T : in out Environ_Test) is
       use AUnit.Test_Cases.Registration;
@@ -215,6 +239,9 @@ package body Telnet.Environ.Tests is
 
       Register_Routine (T, Test_Value_Overflow'Access,
          "Test_Value_Overflow");
+
+      Register_Routine (T, Test_Value_Escape'Access,
+         "Test_Value_Escape");
 
    end Register_Tests;
 
