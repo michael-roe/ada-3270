@@ -92,7 +92,9 @@ package body Telnet.Environ is
          end if;
       end loop;
 
-      Callback (Name_String, Value_String, State_User_Var);
+      if State_NV = State_Value then
+         Callback (Name_String, Value_String, State_User_Var);
+      end if;
 
    end Parse;
 

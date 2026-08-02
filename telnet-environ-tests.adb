@@ -17,6 +17,12 @@ package body Telnet.Environ.Tests is
 
    Value_1 : Telnet_Strings.Bounded_String;
 
+   First_Name : Telnet_Strings.Bounded_String;
+
+   First_Value : Telnet_Strings.Bounded_String;
+
+   First_Callback : Boolean := True;
+
    procedure Debug (
         N : Telnet_Strings.Bounded_String;
         V : Telnet_Strings.Bounded_String;
@@ -24,9 +30,14 @@ package body Telnet.Environ.Tests is
    begin
 
       Name_1 := N;
-
       Value_1 := V;
- 
+
+      if First_Callback then
+         First_Name := N;
+         First_Value := V;
+         First_Callback := False;
+      end if;
+
    end Debug;
 
    procedure Parse_Debug is new Parse (Callback => Debug);
@@ -36,7 +47,7 @@ package body Telnet.Environ.Tests is
 
       Bytes_In.Append (Telnet.Options.New_Environ);
       Bytes_In.Append (Telnet.Environ.Is_Cmd);
- 
+
    end Append_Header;
 
    procedure Append_User_Variable (
@@ -112,7 +123,14 @@ package body Telnet.Environ.Tests is
       Append_User_Variable (Bytes_In, "CODEPAGE", "500");
       Append_User_Variable (Bytes_In, "KBDTYPE", "USI");
 
+      First_Callback := True;
+
       Parse_Debug (Bytes_In);
+
+      Assert (First_Name = "CODEPAGE", "First name should be CODEPAGE");
+      Assert (First_Value = "500", "First value should be 500");
+      Assert (Name_1 = "KBDTYPE", "Last name should be KBDTYPE");
+      Assert (Value_1 = "USI", "Last value should be USI");
 
    end Test_Two_Variables;
 
@@ -138,7 +156,14 @@ package body Telnet.Environ.Tests is
       Append_User_Variable (Bytes_In, "EMPTY", "");
       Append_User_Variable (Bytes_In, "CODEPAGE", "500");
 
+      First_Callback := True;
+
       Parse_Debug (Bytes_In);
+
+      Assert (First_Name = "EMPTY", "First name should be EMPTY");
+      Assert (First_Value = "", "First value should be null");
+      Assert (Name_1 = "CODEPAGE", "Last name should be CODEPAGE");
+      Assert (Value_1 = "500", "Last value should be 500");
 
    end Test_Null_First;
 
@@ -192,7 +217,7 @@ package body Telnet.Environ.Tests is
 
    end Test_Value_Overflow;
 
-  procedure Test_Value_Escape (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_Value_Escape (T : in out Test_Cases.Test_Case'Class) is
       Bytes_In : Byte_Vectors.Vector;
    begin
 
@@ -216,7 +241,7 @@ package body Telnet.Environ.Tests is
 
    end Test_Value_Escape;
 
-  procedure Test_Value_Var_Tag (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_Value_Var_Tag (T : in out Test_Cases.Test_Case'Class) is
       Bytes_In : Byte_Vectors.Vector;
    begin
 
@@ -239,6 +264,82 @@ package body Telnet.Environ.Tests is
          "Value should contain a Var tag");
 
    end Test_Value_Var_Tag;
+
+   procedure Test_Undef_At_Start (T : in out Test_Cases.Test_Case'Class) is
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Append_Header (Bytes_In);
+      Bytes_In.Append (User_Var_Tag);
+      Bytes_In.Append (Character'Pos ('N'));
+      Append_User_Variable (Bytes_In, "CODEPAGE", "500");
+
+      First_Callback := True;
+
+      Parse_Debug (Bytes_In);
+
+      --
+      --  Callback should not have been called for the undefined variable
+      --
+
+      Assert (First_Name = "CODEPAGE", "First name should be CODEPAGE");
+      Assert (First_Value = "500", "First value should be 500");
+
+   end Test_Undef_At_Start;
+
+   procedure Test_Undef_At_End (T : in out Test_Cases.Test_Case'Class) is
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Append_Header (Bytes_In);
+      Append_User_Variable (Bytes_In, "CODEPAGE", "500");
+      Bytes_In.Append (User_Var_Tag);
+      Bytes_In.Append (Character'Pos ('N'));
+
+      First_Callback := True;
+
+      Parse_Debug (Bytes_In);
+
+      --
+      --  Callback should not have been called for the undefined variable
+      --
+
+      Assert (Name_1 = "CODEPAGE", "Last name should be CODEPAGE");
+      Assert (Value_1 = "500", "Last value should be 500");
+
+   end Test_Undef_At_End;
+
+   procedure Test_Junk_At_Start (T : in out Test_Cases.Test_Case'Class) is
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Append_Header (Bytes_In);
+      Bytes_In.Append (Character'Pos ('J'));
+      Append_User_Variable (Bytes_In, "CODEPAGE", "500");
+
+      First_Callback := True;
+
+      Parse_Debug (Bytes_In);
+
+      Assert (First_Name = "CODEPAGE", "First name should be CODEPAGE");
+      Assert (First_Value = "500", "First value should be 500");
+
+   end Test_Junk_At_Start;
+
+   procedure Test_Just_Junk (T : in out Test_Cases.Test_Case'Class) is
+      Bytes_In : Byte_Vectors.Vector;
+   begin
+
+      Append_Header (Bytes_In);
+      Bytes_In.Append (Character'Pos ('J'));
+
+      First_Callback := True;
+
+      Parse_Debug (Bytes_In);
+
+      Assert (First_Callback, "Callback should not have been called");
+
+   end Test_Just_Junk;
 
    procedure Register_Tests (T : in out Environ_Test) is
       use AUnit.Test_Cases.Registration;
@@ -273,6 +374,18 @@ package body Telnet.Environ.Tests is
 
       Register_Routine (T, Test_Value_Var_Tag'Access,
          "Test_Value_Var_Tag");
+
+      Register_Routine (T, Test_Undef_At_Start'Access,
+         "Test_Undef_At_Start");
+
+      Register_Routine (T, Test_Undef_At_End'Access,
+         "Test_Undef_At_End");
+
+      Register_Routine (T, Test_Junk_At_Start'Access,
+         "Test_Junk_At_Start");
+
+      Register_Routine (T, Test_Just_Junk'Access,
+         "Test_Just_Junk");
 
    end Register_Tests;
 

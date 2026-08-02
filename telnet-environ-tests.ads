@@ -25,6 +25,14 @@ package Telnet.Environ.Tests is
 
    procedure Test_Value_Var_Tag (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Undef_At_Start (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Undef_At_End (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Junk_At_Start (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Just_Junk (T : in out Test_Cases.Test_Case'Class);
+
    procedure Register_Tests (T : in out Environ_Test);
 
    function Name (T : Environ_Test) return Message_String;
