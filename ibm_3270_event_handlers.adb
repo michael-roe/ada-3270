@@ -50,6 +50,23 @@ package body IBM_3270_Event_Handlers is
 
       Go_Ahead := True;
 
+   exception
+
+      when My_Error : others =>
+         Ada.Text_IO.Put_Line ("To_Physical: Exception raised");
+
+         Bytes_Out.Clear;
+
+         for J in Screen_Message'Range loop
+            Bytes_Out.Append (Screen_Message (J));
+         end loop;
+
+         V.Current := Login_Screen'Access;
+
+         V.Current.To_Physical (Bytes_Out);
+
+         Go_Ahead := True;
+
    end To_Physical;
 
    procedure From_Physical (
