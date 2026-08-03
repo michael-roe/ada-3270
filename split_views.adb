@@ -18,63 +18,62 @@ package body Split_Views is
    function Normal_Text return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Normal_Text;
 
-   P : aliased Code_Page_500.Page_500;
-
    LMH : array (1 .. 3) of Wide_Character := ('L', 'M', 'H');
 
    procedure To_Physical (
       V : Split_View;
-      Bytes_Out : in out Byte_Vectors.Vector) is
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
       B : Byte_Vectors.Vector;
       Line_Number : Natural;
    begin
 
-      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
+      Panel_Elements.Box_Top (0, P, Bytes_Out);
 
-      Panel_Elements.Text_Line (1, P'Access, V.Title, Bytes_Out);
+      Panel_Elements.Text_Line (1, P, V.Title, Bytes_Out);
 
-      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (2, P, Bytes_Out);
 
       Panel_Elements.Left_Box_Side (3,
-         P'Access,
+         P,
          Bytes_Out);
 
       Panel_Elements.Right_Scroll_Up_Down (3,
-         P'Access,
-          V.Page_Number /= 0,
-          True,
+         P,
+         V.Page_Number /= 0,
+         True,
          Bytes_Out);
 
       for J in 4 .. 19 loop
          Line_Number := J - 4 + 16 * V.Page_Number;
          if Line_Number <= V.History.Last_Index then
             Panel_Elements.Text_Line (J,
-               P'Access,
+               P,
                V.History (Line_Number),
                Bytes_Out);
          else
-            Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
+            Panel_Elements.Box_Sides (J, P, Bytes_Out);
          end if;
       end loop;
 
-      Panel_Elements.Horizontal_Rule (20, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (20, P, Bytes_Out);
 
-      Panel_Elements.Left_Input_Label (21, P'Access, V.Subtitle, Bytes_Out);
+      Panel_Elements.Left_Input_Label (21, P, V.Subtitle, Bytes_Out);
 
-      Panel_Elements.Right_Selection (21, P'Access,
+      Panel_Elements.Right_Selection (21, P,
          LMH (V.Option),
          Bytes_Out);
 
       for J in 22 .. 39 loop
          Panel_Elements.Input_Line (J,
-            P'Access,
+            P,
             V.Edit (J - 22),
             J = 22,
             Bytes_Out);
 
       end loop;
 
-      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (40, P, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " PF1=Help");
@@ -85,15 +84,16 @@ package body Split_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
+      Panel_Elements.Box_Bottom (42, P, Bytes_Out);
 
    end To_Physical;
 
    procedure From_Physical (
       V : in out Split_View;
-      Bytes_In : Byte_Vectors.Vector) is
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
    begin
-      IBM_3270.Input_Stream.Parse (V, P'Access, Bytes_In);
+      IBM_3270.Input_Stream.Parse (V, P, Bytes_In);
    end From_Physical;
 
    procedure Update_AID (

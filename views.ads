@@ -1,5 +1,6 @@
 with Buffer;
 with Byte_Vectors;
+with Code_Pages;
 with Lines;
 
 package Views is
@@ -8,11 +9,13 @@ package Views is
 
    procedure To_Physical (
       V : View;
-      Bytes_Out : in out Byte_Vectors.Vector) is abstract;
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is abstract;
 
    procedure From_Physical (
       V : in out View;
-      Bytes_In : Byte_Vectors.Vector) is abstract;
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is abstract;
 
    procedure Update_AID (
       V : in out View;

@@ -1,11 +1,12 @@
 with Ada.Streams;
 with Buffer;
+with Buffer_Queues;
 with Byte_Vectors;
+with Code_Pages;
 with Paged_Views;
 with JSON_Views;
 with Lines;
 with Line_Vectors;
-with Buffer_Queues;
 
 package Split_Views is
 
@@ -16,11 +17,13 @@ package Split_Views is
 
    procedure To_Physical (
       V : Split_View;
-      Bytes_Out : in out Byte_Vectors.Vector);
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure From_Physical (
       V : in out Split_View;
-      Bytes_In : Byte_Vectors.Vector);
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure Update_AID (
       V : in out Split_View;

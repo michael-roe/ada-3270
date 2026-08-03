@@ -21,23 +21,22 @@ package body Checkbox_Views is
    function Highlighted return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Highlighted;
 
-   P : aliased Code_Page_500.Page_500;
-
    procedure To_Physical (
       V : Checkbox_View;
-      Bytes_Out : in out Byte_Vectors.Vector) is
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
       B : Byte_Vectors.Vector;
    begin
 
-      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
+      Panel_Elements.Box_Top (0, P, Bytes_Out);
 
-      Panel_Elements.Text_Line (1, P'Access, V.Title, Bytes_Out);
+      Panel_Elements.Text_Line (1, P, V.Title, Bytes_Out);
 
-      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (2, P, Bytes_Out);
 
       for J in 1 .. 18 loop
 
-         Panel_Elements.Box_Sides (2 * J + 1, P'Access, Bytes_Out);
+         Panel_Elements.Box_Sides (2 * J + 1, P, Bytes_Out);
 
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
          IBM_3270_Orders.Start_Field (Bytes_Out, True, Highlighted);
@@ -74,9 +73,9 @@ package body Checkbox_Views is
 
       end loop;
 
-      Panel_Elements.Box_Sides (39, P'Access, Bytes_Out);
+      Panel_Elements.Box_Sides (39, P, Bytes_Out);
 
-      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (40, P, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " PF1=Help");
@@ -86,13 +85,14 @@ package body Checkbox_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
+      Panel_Elements.Box_Bottom (42, P, Bytes_Out);
 
    end To_Physical;
 
    procedure From_Physical (
       V : in out Checkbox_View;
-      Bytes_In : Byte_Vectors.Vector) is
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
    begin
 
       if Bytes_In.Length >= 1 and then
@@ -104,7 +104,7 @@ package body Checkbox_Views is
          end loop;
       end if;
 
-      IBM_3270.Input_Stream.Parse (V, P'Access, Bytes_In);
+      IBM_3270.Input_Stream.Parse (V, P, Bytes_In);
 
    end From_Physical;
 

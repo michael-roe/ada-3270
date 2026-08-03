@@ -14,7 +14,7 @@ package body Split_Views.Tests is
 
    procedure Update_Field (X : Natural; Y : Natural);
 
-   P : aliased Code_Page_500.Page_500;
+   P500 : aliased Code_Page_500.Page_500;
 
    Field_Count : Natural;
 
@@ -50,11 +50,11 @@ package body Split_Views.Tests is
       Bytes_In : Byte_Vectors.Vector;
    begin
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       Bytes_In.Append (IBM_3270.AID_PA1);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Get_AID = IBM_3270.AID_PA1, "AID should be PA1");
 
@@ -67,7 +67,7 @@ package body Split_Views.Tests is
       L : Lines.Bounded_Wide_String;
    begin
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       Field_Count := 0;
       Parse (Bytes_Out);
@@ -77,13 +77,13 @@ package body Split_Views.Tests is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In,
          Cursor_X + 1,
          Cursor_Y);
-      P.Append (Bytes_In, "H");
+      P500.Append (Bytes_In, "H");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In,
          Cursor_X_2 + 1,
          Cursor_Y_2);
-      P.Append (Bytes_In, "Hello World!");
+      P500.Append (Bytes_In, "Hello World!");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Get_Option = 3, "Get_Option should return 3");
       Lines.Set_Bounded_Wide_String (L, "Hello World!");

@@ -15,25 +15,24 @@ package body Numbered_Menu_Views is
    function Highlighted return IBM_3270_Orders.Intensity renames
       IBM_3270_Orders.Highlighted;
 
-   P : aliased Code_Page_500.Page_500;
-
    procedure To_Physical (
       V : Numbered_Menu_View;
-      Bytes_Out : in out Byte_Vectors.Vector) is
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
       B : Byte_Vectors.Vector;
    begin
 
-      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
+      Panel_Elements.Box_Top (0, P, Bytes_Out);
 
-      Panel_Elements.Text_Line (1, P'Access, V.Title, Bytes_Out);
+      Panel_Elements.Text_Line (1, P, V.Title, Bytes_Out);
 
-      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (2, P, Bytes_Out);
 
-      Panel_Elements.Box_Sides (3, P'Access, Bytes_Out);
+      Panel_Elements.Box_Sides (3, P, Bytes_Out);
 
-      Panel_Elements.Text_Line (4, P'Access, V.Intro, Bytes_Out);
+      Panel_Elements.Text_Line (4, P, V.Intro, Bytes_Out);
 
-      Panel_Elements.Box_Sides (5, P'Access, Bytes_Out);
+      Panel_Elements.Box_Sides (5, P, Bytes_Out);
 
       for J in 1 .. 10 loop
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2 * J + 4);
@@ -46,12 +45,12 @@ package body Numbered_Menu_Views is
          IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 2 * J + 4);
          Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-         Panel_Elements.Box_Sides (2 * J + 5, P'Access, Bytes_Out);
+         Panel_Elements.Box_Sides (2 * J + 5, P, Bytes_Out);
 
       end loop;
 
       for J in 26 .. 38 loop
-         Panel_Elements.Box_Sides (J, P'Access, Bytes_Out);
+         Panel_Elements.Box_Sides (J, P, Bytes_Out);
       end loop;
 
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 39);
@@ -74,7 +73,7 @@ package body Numbered_Menu_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 39);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (40, P, Bytes_Out);
 
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
@@ -85,16 +84,17 @@ package body Numbered_Menu_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
+      Panel_Elements.Box_Bottom (42, P, Bytes_Out);
 
    end To_Physical;
 
    procedure From_Physical (
       V : in out Numbered_Menu_View;
-      Bytes_In : Byte_Vectors.Vector) is
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
    begin
 
-      IBM_3270.Input_Stream.Parse (V, P'Access, Bytes_In);
+      IBM_3270.Input_Stream.Parse (V, P, Bytes_In);
 
    end From_Physical;
 

@@ -1,6 +1,7 @@
 with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 with Buffer;
+with Code_Pages;
 with Views;
 with Lines;
 
@@ -32,11 +33,13 @@ package IBM_3270.Input_Stream.Tests is
 
    procedure To_Physical (
       V : Test_View;
-      Bytes_Out : in out Byte_Vectors.Vector);
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure From_Physical (
       V : in out Test_View;
-      Bytes_In : Byte_Vectors.Vector);
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure Update_AID (
       V : in out Test_View;

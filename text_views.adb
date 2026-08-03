@@ -20,24 +20,25 @@ package body Text_Views is
 
    procedure To_Physical (
       V : Text_View;
-      Bytes_Out : in out Byte_Vectors.Vector) is
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
       B : Byte_Vectors.Vector;
       Line_Number : Natural;
    begin
 
-      Panel_Elements.Box_Top (0, P'Access, Bytes_Out);
+      Panel_Elements.Box_Top (0, P, Bytes_Out);
 
-      Panel_Elements.Text_Line (1, P'Access, V.Title, Bytes_Out);
+      Panel_Elements.Text_Line (1, P, V.Title, Bytes_Out);
 
-      Panel_Elements.Horizontal_Rule (2, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (2, P, Bytes_Out);
 
       Panel_Elements.Left_Input_Label (3,
-         P'Access,
+         P,
          V.Subtitle,
          Bytes_Out);
 
       Panel_Elements.Right_Scroll_Up_Down (3,
-         P'Access,
+         P,
          V.Page_Number /= 0,
          V.Page_Number <= Natural (V.Text.Length) / 36,
          Bytes_Out);
@@ -46,19 +47,19 @@ package body Text_Views is
          Line_Number := 36 * V.Page_Number + J - 4;
          if Line_Number <= V.Text.Last_Index then
             Panel_Elements.Input_Line (J,
-               P'Access,
+               P,
                V.Text (Line_Number),
                J = 4,
                Bytes_Out);
          else
             Panel_Elements.Empty_Input_Line (J,
-               P'Access,
+               P,
                J = 4,
                Bytes_Out);
          end if;
       end loop;
 
-      Panel_Elements.Horizontal_Rule (40, P'Access, Bytes_Out);
+      Panel_Elements.Horizontal_Rule (40, P, Bytes_Out);
 
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
       P.Append (Bytes_Out, " PF1=Help");
@@ -68,16 +69,17 @@ package body Text_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 79, 41);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
 
-      Panel_Elements.Box_Bottom (42, P'Access, Bytes_Out);
+      Panel_Elements.Box_Bottom (42, P, Bytes_Out);
 
    end To_Physical;
 
    procedure From_Physical (
       V : in out Text_View;
-      Bytes_In : Byte_Vectors.Vector) is
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
    begin
 
-      IBM_3270.Input_Stream.Parse (V, P'Access, Bytes_In);
+      IBM_3270.Input_Stream.Parse (V, P, Bytes_In);
 
    end From_Physical;
 

@@ -15,13 +15,14 @@ with Math_Operators;
 
 package body IBM_3270.Input_Stream.Tests is
 
-   P : aliased Code_Page_500.Page_500;
+   P500 : aliased Code_Page_500.Page_500;
 
    P870 : aliased Code_Page_870.Page_870;
 
    procedure To_Physical (
       V : Test_View;
-      Bytes_Out : in out Byte_Vectors.Vector) is
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
    begin
 
       null;
@@ -30,14 +31,11 @@ package body IBM_3270.Input_Stream.Tests is
 
    procedure From_Physical (
       V : in out Test_View;
-      Bytes_In : Byte_Vectors.Vector) is
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access) is
    begin
 
-      if V.Alternate_Code_Page then
-         Input_Stream.Parse (V, P870'Access, Bytes_In);
-      else
-         Input_Stream.Parse (V, P'Access, Bytes_In);
-      end if;
+      Input_Stream.Parse (V, P, Bytes_In);
 
    end From_Physical;
 
@@ -102,7 +100,7 @@ package body IBM_3270.Input_Stream.Tests is
    begin
 
       V.AID := IBM_3270.AID_Enter;
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
       Assert (V.AID_Set, "Update AID should have been called");
       Assert (V.AID = 0, "AID should be 0");
       Assert (not V.Cursor_Set, "Update_Cursor should not have been called");
@@ -117,7 +115,7 @@ package body IBM_3270.Input_Stream.Tests is
 
       Bytes_In.Append (IBM_3270.AID_PA1);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.AID_Set, "Update_AID should have been called");
       Assert (V.AID = IBM_3270.AID_PA1,
@@ -135,7 +133,7 @@ package body IBM_3270.Input_Stream.Tests is
       Bytes_In.Append (IBM_3270.AID_Enter);
       IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 1, 0);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.AID_Set, "Update_AID should have been called");
       Assert (V.AID = IBM_3270.AID_Enter, "AID should be Enter");
@@ -154,7 +152,7 @@ package body IBM_3270.Input_Stream.Tests is
       Bytes_In.Append (IBM_3270.AID_Enter);
       Bytes_In.Append (16#40#);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (not V.Cursor_Set, "Update_Cursor should not have been called");
 
@@ -170,7 +168,7 @@ package body IBM_3270.Input_Stream.Tests is
       Bytes_In.Append (IBM_3270.Set_Buffer_Address);
       --  The SBA order is truncated here
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Field_Count = 0, "Update_Field should not have been called");
 
@@ -184,11 +182,11 @@ package body IBM_3270.Input_Stream.Tests is
       Bytes_In.Append (IBM_3270.AID_Enter);
       IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      P.Append (Bytes_In, "*");
+      P500.Append (Bytes_In, "*");
       Bytes_In.Append (IBM_3270.Graphic_Escape);
       --  The Graphics Escape order is truncated here
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Field_Count = 1, "Update_Field should have been called");
       Assert (Lines.Length (V.First_Field) = 1, "Field should be length 1");
@@ -206,10 +204,10 @@ package body IBM_3270.Input_Stream.Tests is
       --  Bytes_In.Append (16#40#);
       --  Bytes_In.Append (16#C1#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      P.Append (Bytes_In, "*");
+      P500.Append (Bytes_In, "*");
       Code_Page_310.Append (Bytes_In, Math_Operators.Logical_And);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.AID_Set, "Update_AID should have been called");
       Assert (V.AID = IBM_3270.AID_Enter, "AID should be Enter");
@@ -237,11 +235,11 @@ package body IBM_3270.Input_Stream.Tests is
       --  Bytes_In.Append (16#40#);
       --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      P.Append (Bytes_In, "(");
+      P500.Append (Bytes_In, "(");
       Bytes_In.Append (IBM_3270.Duplicate);
-      P.Append (Bytes_In, ")");
+      P500.Append (Bytes_In, ")");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Field_Count = 1, "Update_Field should be called once");
       Lines.Set_Bounded_Wide_String (L, "()");
@@ -260,11 +258,11 @@ package body IBM_3270.Input_Stream.Tests is
       --  Bytes_In.Append (16#40#);
       --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      P.Append (Bytes_In, "(");
+      P500.Append (Bytes_In, "(");
       Bytes_In.Append (IBM_3270.Field_Mark);
-      P.Append (Bytes_In, ")");
+      P500.Append (Bytes_In, ")");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Field_Count = 1, "Update_Field should be called once");
       Lines.Set_Bounded_Wide_String (L, "()");
@@ -284,9 +282,9 @@ package body IBM_3270.Input_Stream.Tests is
       --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
 
-      P.Append (Bytes_In, "Hello   ");
+      P500.Append (Bytes_In, "Hello   ");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Lines.Set_Bounded_Wide_String (L, "Hello");
       Assert (V.Last_Field = L,
@@ -305,15 +303,15 @@ package body IBM_3270.Input_Stream.Tests is
       --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
 
-      P.Append (Bytes_In, "(");
+      P500.Append (Bytes_In, "(");
 
       for J in 1 .. 256 loop
-         P.Append (Bytes_In, "*");
+         P500.Append (Bytes_In, "*");
       end loop;
 
-      P.Append (Bytes_In, ")");
+      P500.Append (Bytes_In, ")");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (Lines.Length (V.Last_Field) = Lines.Max_Length,
          "A too long field should be truncated to fit");
@@ -331,11 +329,11 @@ package body IBM_3270.Input_Stream.Tests is
       --  Bytes_In.Append (16#40#);
       --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      P.Append (Bytes_In, "*");
+      P500.Append (Bytes_In, "*");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 4);
-      P.Append (Bytes_In, "Hello");
+      P500.Append (Bytes_In, "Hello");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Field_Count = 2, "There should be two fields");
       Assert (V.Last_X = 1, "Last_X should be 1");
@@ -358,11 +356,11 @@ package body IBM_3270.Input_Stream.Tests is
       --  Bytes_In.Append (16#40#);
       --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
-      P.Append (Bytes_In, "Hello   ");
+      P500.Append (Bytes_In, "Hello   ");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 4);
-      P.Append (Bytes_In, "World   ");
+      P500.Append (Bytes_In, "World   ");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Field_Count = 2, "There should be two fields");
       Lines.Set_Bounded_Wide_String (L, "Hello");
@@ -388,7 +386,7 @@ package body IBM_3270.Input_Stream.Tests is
         "Dzie" & Wide_Character'Val (16#144#) & " dobry");
 
       V.Alternate_Code_Page := True;
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P870'Access);
 
       Lines.Set_Bounded_Wide_String (L,
          "Dzie" & Wide_Character'Val (16#144#) & " dobry");

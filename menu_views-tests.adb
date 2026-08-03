@@ -1,14 +1,17 @@
 with AUnit.Assertions; use AUnit.Assertions;
 with Ada.Containers; use type Ada.Containers.Count_Type;
-with Lines;
-with Byte_Vectors;
-with Line_Vectors;
-with IBM_3270;
 with Buffer; use type Buffer.Byte;
+with Byte_Vectors;
+with Code_Page_500;
+with IBM_3270;
 with IBM_3270_Orders;
 with IBM_3270.Output_Stream;
+with Lines;
+with Line_Vectors;
 
 package body Menu_Views.Tests is
+
+   P500 : aliased Code_Page_500.Page_500;
 
    procedure Update_Field (X : Natural; Y : Natural);
 
@@ -48,11 +51,11 @@ package body Menu_Views.Tests is
       Lines.Set_Bounded_Wide_String (L, "Pears");
       V.Set_Label (3, L);
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       Bytes_In.Append (IBM_3270.AID_PA1);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Get_AID = IBM_3270.AID_PA1, "AID should be PA1");
 
@@ -74,7 +77,7 @@ package body Menu_Views.Tests is
       Lines.Set_Bounded_Wide_String (L, "Pears");
       V.Set_Label (3, L);
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       First_Field := True;
       Parse (Bytes_Out);
@@ -86,7 +89,7 @@ package body Menu_Views.Tests is
 
       V.Option := 0;
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Option = 1, "Option should be 1");
 

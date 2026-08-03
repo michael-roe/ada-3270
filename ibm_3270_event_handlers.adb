@@ -46,7 +46,7 @@ package body IBM_3270_Event_Handlers is
          Bytes_Out.Append (Screen_Message (J));
       end loop;
 
-      V.Current.To_Physical (Bytes_Out);
+      V.Current.To_Physical (Bytes_Out, P);
 
       Go_Ahead := True;
 
@@ -63,7 +63,7 @@ package body IBM_3270_Event_Handlers is
 
          V.Current := Login_Screen'Access;
 
-         V.Current.To_Physical (Bytes_Out);
+         V.Current.To_Physical (Bytes_Out, P);
 
          Go_Ahead := True;
 
@@ -82,7 +82,7 @@ package body IBM_3270_Event_Handlers is
 
       begin
 
-         V.Current.From_Physical (Bytes_In);
+         V.Current.From_Physical (Bytes_In, P);
 
       exception
 

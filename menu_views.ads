@@ -1,6 +1,7 @@
 with Buffer;
 with Buffer_Queues;
 with Byte_Vectors;
+with Code_Pages;
 with Views;
 with Paged_Views;
 with JSON_Views;
@@ -17,11 +18,13 @@ package Menu_Views is
 
    procedure To_Physical (
       V : Menu_View;
-      Bytes_Out : in out Byte_Vectors.Vector);
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure From_Physical (
       V : in out Menu_View;
-      Bytes_In : Byte_Vectors.Vector);
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure Update_AID (
       V : in out Menu_View;

@@ -1,5 +1,6 @@
 with Buffer;
 with Byte_Vectors;
+with Code_Pages;
 with Views;
 with Lines;
 
@@ -9,11 +10,13 @@ package Login_Views is
 
    procedure To_Physical (
       V : Login_View;
-      Bytes_Out : in out Byte_Vectors.Vector);
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure From_Physical (
       V : in out Login_View;
-      Bytes_In : Byte_Vectors.Vector);
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure Update_AID (
       V : in out Login_View;

@@ -11,7 +11,7 @@ with Buffer; use type Buffer.Byte;
 
 package body Login_Views.Tests is
 
-   P : aliased Code_Page_500.Page_500;
+   P500 : aliased Code_Page_500.Page_500;
 
    Field_Count : Natural;
 
@@ -53,11 +53,11 @@ package body Login_Views.Tests is
       Lines.Set_Bounded_Wide_String (L, "Login");
       V.Set_Title (L);
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       Bytes_In.Append (IBM_3270.AID_PA1);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Get_AID = IBM_3270.AID_PA1, "AID should be PA1");
 
@@ -73,7 +73,7 @@ package body Login_Views.Tests is
       Lines.Set_Bounded_Wide_String (L, "Login ");
       V.Set_Title (L);
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       Field_Count := 0;
       Parse (Bytes_Out);
@@ -90,13 +90,13 @@ package body Login_Views.Tests is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In,
          Cursor_X_1 + 1,
          Cursor_Y_1);
-      P.Append (Bytes_In, "guest");
+      P500.Append (Bytes_In, "guest");
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In,
          Cursor_X_2 + 1,
          Cursor_Y_2);
-      P.Append (Bytes_In, "123456");
+      P500.Append (Bytes_In, "123456");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
    end Test_Enter;
 

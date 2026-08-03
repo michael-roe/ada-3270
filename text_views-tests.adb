@@ -17,7 +17,7 @@ package body Text_Views.Tests is
 
    procedure Update_Field (X : Natural; Y : Natural);
 
-   P : aliased Code_Page_500.Page_500;
+   P500 : aliased Code_Page_500.Page_500;
 
    First_Field : Boolean;
 
@@ -51,14 +51,14 @@ package body Text_Views.Tests is
       Bytes_In : Byte_Vectors.Vector;
    begin
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       First_Field := True;
       Parse (Bytes_Out);
 
       Bytes_In.Append (IBM_3270.AID_PA1);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Get_AID = IBM_3270.AID_PA1, "AID should be PA1");
 
@@ -74,7 +74,7 @@ package body Text_Views.Tests is
       Lines.Set_Bounded_Wide_String (L, "Blank line");
       Line_Vectors.Append (V.Text, L);
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       First_Field := True;
       Parse (Bytes_Out);
@@ -84,9 +84,9 @@ package body Text_Views.Tests is
       --  Bytes_In.Append (16#40#);
       --  Bytes_In.Append (16#40#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, Cursor_X + 1, Cursor_Y);
-      P.Append (Bytes_In, "Hello World!");
+      P500.Append (Bytes_In, "Hello World!");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Lines.Set_Bounded_Wide_String (L, "Hello World!");
       Assert (V.Text.Element (V.Text.First_Index) = L,

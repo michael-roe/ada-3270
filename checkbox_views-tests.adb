@@ -13,7 +13,7 @@ package body Checkbox_Views.Tests is
 
    procedure Update_Field (X : Natural; Y : Natural);
 
-   P : aliased Code_Page_500.Page_500;
+   P500 : aliased Code_Page_500.Page_500;
 
    First_Field : Boolean;
 
@@ -52,7 +52,7 @@ package body Checkbox_Views.Tests is
       V.Set_Label (3, L);
       Lines.Set_Bounded_Wide_String (L, "Bananas");
       V.Set_Label (4, L);
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       V.Set_Checkbox (1, False);
       V.Set_Checkbox (2, False);
@@ -61,7 +61,7 @@ package body Checkbox_Views.Tests is
 
       Bytes_In.Append (IBM_3270.AID_PA1);
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Get_AID = IBM_3270.AID_PA1, "AID should be PA1");
 
@@ -90,7 +90,7 @@ package body Checkbox_Views.Tests is
       V.Set_Checkbox (3, True);
       V.Set_Checkbox (4, True);
 
-      V.To_Physical (Bytes_Out);
+      V.To_Physical (Bytes_Out, P500'Access);
 
       First_Field := True;
       Parse (Bytes_Out);
@@ -100,9 +100,9 @@ package body Checkbox_Views.Tests is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In,
          Cursor_X + 1,
          Cursor_Y);
-      P.Append (Bytes_In, ">");
+      P500.Append (Bytes_In, ">");
 
-      V.From_Physical (Bytes_In);
+      V.From_Physical (Bytes_In, P500'Access);
 
       Assert (V.Checkboxes (1), "Checkbox 1 should be set");
       Assert (not V.Checkboxes (2), "Checkbox 2 should not be set");

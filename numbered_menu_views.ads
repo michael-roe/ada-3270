@@ -2,6 +2,7 @@ with Buffer;
 with Buffer_Queues;
 with Byte_Vectors;
 with Paged_Views;
+with Code_Pages;
 with JSON_Views;
 with Lines;
 
@@ -14,11 +15,13 @@ package Numbered_Menu_Views is
 
    procedure To_Physical (
       V : Numbered_Menu_View;
-      Bytes_Out : in out Byte_Vectors.Vector);
+      Bytes_Out : in out Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure From_Physical (
       V : in out Numbered_Menu_View;
-      Bytes_In : Byte_Vectors.Vector);
+      Bytes_In : Byte_Vectors.Vector;
+      P : Code_Pages.Code_Page_Access);
 
    procedure Update_AID (
       V : in out Numbered_Menu_View;
