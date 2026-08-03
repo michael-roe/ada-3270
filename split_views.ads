@@ -47,6 +47,8 @@ package Split_Views is
 
    procedure Next_Page (V : in out Split_View);
 
+   function Get_Option (V : Split_View) return Natural;
+
    procedure To_JSON (
       V   : Split_View;
       TX2 : access Buffer_Queues.Queue);

@@ -177,6 +177,13 @@ package body Split_Views is
 
    end Next_Page;
 
+   function Get_Option (V : Split_View) return Natural is
+   begin
+
+      return V.Option;
+
+   end Get_Option;
+
    type Paragraph_State is (At_Start, Nonblank_Line, Blank_Line);
 
    procedure To_JSON (
