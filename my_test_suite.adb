@@ -8,7 +8,7 @@ with Code_Page_870.Tests;
 with Code_Page_UTF8.Tests;
 with Line_Vectors_Tests;
 with IBM_3270_Orders.Tests;
-with Input_Stream.Tests;
+with IBM_3270.Input_Stream.Tests;
 with Split_Views.Tests;
 with Text_Views.Tests;
 with Login_Views.Tests;
@@ -32,7 +32,7 @@ package body My_Test_Suite is
    Test_6  : aliased Code_Page_870.Tests.Code_Page_Test;
    Test_7  : aliased Line_Vectors_Tests.Line_Vectors_Test;
    Test_8  : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
-   Test_9  : aliased Input_Stream.Tests.Input_Stream_Test;
+   Test_9  : aliased IBM_3270.Input_Stream.Tests.Input_Stream_Test;
    Test_10 : aliased Split_Views.Tests.Split_View_Test;
    Test_11 : aliased Text_Views.Tests.Text_View_Test;
    Test_12 : aliased Login_Views.Tests.Login_View_Test;

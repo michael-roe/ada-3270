@@ -58,8 +58,8 @@ See style.md for a summary.
 - IBM 3270 Protocol
   - IBM_3270
   - IBM_3270_Orders
+  - IBM_3270.Input_Stream
   - IBM_3270.Output_Stream
-  - Input_Stream
 
 - IBM Common User Access
   - Checkbox_Views

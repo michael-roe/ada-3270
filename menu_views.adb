@@ -2,13 +2,13 @@ with Ada.Text_IO;
 with Ada.Integer_Text_IO;
 with Buffer;
 use type Buffer.Byte;
+with Byte_Text_IO;
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
-with IBM_3270_Orders;
-with Byte_Text_IO;
-with Input_Stream;
 with IBM_3270;
+with IBM_3270_Orders;
+with IBM_3270.Input_Stream;
 with Panel_Elements;
 with Lines;
 
@@ -97,7 +97,7 @@ package body Menu_Views is
       Bytes_In : Byte_Vectors.Vector) is
    begin
 
-      Input_Stream.Parse (V, P'Access, Bytes_In);
+      IBM_3270.Input_Stream.Parse (V, P'Access, Bytes_In);
 
    end From_Physical;
 

@@ -10,7 +10,7 @@ use type Buffer.Byte;
 with Lines;
 with Views;
 
-package body Input_Stream is
+package body IBM_3270.Input_Stream is
 
    P : Code_Page_500.Page_500;
 
@@ -110,4 +110,4 @@ package body Input_Stream is
       end if;
    end Parse;
 
-end Input_Stream;
+end IBM_3270.Input_Stream;

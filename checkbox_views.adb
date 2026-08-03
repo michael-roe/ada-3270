@@ -9,7 +9,7 @@ with Code_Page_500;
 with Box_Drawing;
 with IBM_3270;
 with IBM_3270_Orders;
-with Input_Stream;
+with IBM_3270.Input_Stream;
 with Byte_Text_IO;
 with Panel_Elements;
 
@@ -104,7 +104,7 @@ package body Checkbox_Views is
          end loop;
       end if;
 
-      Input_Stream.Parse (V, P'Access, Bytes_In);
+      IBM_3270.Input_Stream.Parse (V, P'Access, Bytes_In);
 
    end From_Physical;
 

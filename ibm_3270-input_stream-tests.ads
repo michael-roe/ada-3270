@@ -4,7 +4,7 @@ with Buffer;
 with Views;
 with Lines;
 
-package Input_Stream.Tests is
+package IBM_3270.Input_Stream.Tests is
 
    type Test_View is new Views.View with record
       AID         : Buffer.Byte;
@@ -172,4 +172,4 @@ package Input_Stream.Tests is
 
    function Name (T : Input_Stream_Test) return Message_String;
 
-end Input_Stream.Tests;
+end IBM_3270.Input_Stream.Tests;

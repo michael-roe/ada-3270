@@ -13,7 +13,7 @@ with Code_Page_870;
 with Lines; use type Lines.Bounded_Wide_String;
 with Math_Operators;
 
-package body Input_Stream.Tests is
+package body IBM_3270.Input_Stream.Tests is
 
    P : aliased Code_Page_500.Page_500;
 
@@ -451,4 +451,4 @@ package body Input_Stream.Tests is
 
    end Name;
 
-end Input_Stream.Tests;
+end IBM_3270.Input_Stream.Tests;

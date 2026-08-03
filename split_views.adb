@@ -2,15 +2,15 @@ with Ada.Text_IO;
 with Ada.Wide_Text_IO;
 with Ada.Strings.UTF_Encoding;
 with Ada.Strings.UTF_Encoding.Wide_Strings;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
+with Ada.Characters.Latin_1;
+with Byte_Text_IO;
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
 with IBM_3270_Orders;
-with Byte_Text_IO;
-with Input_Stream;
-with Ada.Containers;
-use type Ada.Containers.Count_Type;
-with Ada.Characters.Latin_1;
+with IBM_3270.Input_Stream;
 with Panel_Elements;
 
 package body Split_Views is
@@ -93,7 +93,7 @@ package body Split_Views is
       V : in out Split_View;
       Bytes_In : Byte_Vectors.Vector) is
    begin
-      Input_Stream.Parse (V, P'Access, Bytes_In);
+      IBM_3270.Input_Stream.Parse (V, P'Access, Bytes_In);
    end From_Physical;
 
    procedure Update_AID (
