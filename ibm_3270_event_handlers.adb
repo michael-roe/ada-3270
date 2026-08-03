@@ -63,7 +63,18 @@ package body IBM_3270_Event_Handlers is
       Hex_Digits : String := "16#0000#";
    begin
 
-      V.Current.From_Physical (Bytes_In);
+      begin
+
+         V.Current.From_Physical (Bytes_In);
+
+      exception
+
+         when My_Error : others =>
+            Ada.Text_IO.Put_Line ("From_Physical: Exception raised");
+            V.Current := Login_Screen'Access;
+            return;
+
+      end;
 
       AID := V.Current.Get_AID;
 
