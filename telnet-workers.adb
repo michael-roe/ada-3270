@@ -4,6 +4,7 @@ with Ada.Text_IO.Text_Streams;
 with Ada.Wide_Text_IO.Text_Streams;
 with Ada.Containers;
 with Ada.Streams;
+with Ada.Exceptions;
 use type Ada.Containers.Count_Type;
 with Buffer; use type Buffer.Byte;
 with Buffer_Queues; use Buffer_Queues;
@@ -86,18 +87,18 @@ package body Telnet.Workers is
            V : Telnet_Strings.Bounded_String;
            User_Variable : Boolean) is
       begin
-   
+
          Ada.Text_IO.Put (Telnet_Strings.To_String (N));
          Ada.Text_IO.Put (" = ");
          Ada.Text_IO.Put (Telnet_Strings.To_String (V));
          Ada.Text_IO.New_Line;
-   
+
          if N = "CODEPAGE" then
-           if V = "500" then
-              Session_Code_Page := P500'Access;
-           elsif V = "870" then
-              Session_Code_Page := P870'Access;
-           end if;
+            if V = "500" then
+               Session_Code_Page := P500'Access;
+            elsif V = "870" then
+               Session_Code_Page := P870'Access;
+            end if;
          end if;
 
       end Handle_Environment;
@@ -204,9 +205,20 @@ package body Telnet.Workers is
 
                      Bytes_Out.Clear;
 
-                     Handler.To_Physical (Bytes_Out,
-                        Session_Code_Page,
-                        Go_Ahead);
+                     begin
+
+                        Handler.To_Physical (Bytes_Out,
+                           Session_Code_Page,
+                           Go_Ahead);
+
+                     exception
+
+                        when My_Error : others =>
+                           Ada.Text_IO.Put ("Exception raised: ");
+                           Ada.Text_IO.Put (
+                              Ada.Exceptions.Exception_Name (My_Error));
+
+                     end;
 
                      if Bytes_Out.Length > 0 then
                         for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
@@ -264,7 +276,7 @@ package body Telnet.Workers is
                         Handler.Break;
                         S := Data;
                         Got_Reply := True;
-                    when Telnet.Protocol.AO =>
+                     when Telnet.Protocol.AO =>
                         Put ("[AO]");
                         Handler.Break;
                         S := Data;
