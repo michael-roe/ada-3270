@@ -6,9 +6,11 @@ with Line_Vectors;
 with IBM_3270;
 with Buffer; use type Buffer.Byte;
 with IBM_3270_Orders;
-with Output_Stream;
+with IBM_3270.Output_Stream;
 
 package body Menu_Views.Tests is
+
+   procedure Update_Field (X : Natural; Y : Natural);
 
    First_Field : Boolean;
 
@@ -27,7 +29,8 @@ package body Menu_Views.Tests is
 
    end Update_Field;
 
-   procedure Parse is new Output_Stream.Parse (Update_Field => Update_Field);
+   procedure Parse is new IBM_3270.Output_Stream.Parse (
+      Update_Field => Update_Field);
 
    procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class) is
       V : Menu_View;

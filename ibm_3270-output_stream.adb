@@ -4,7 +4,7 @@ use type Buffer.Byte;
 with IBM_3270;
 with IBM_3270_Orders;
 
-package body Output_Stream is
+package body IBM_3270.Output_Stream is
 
    procedure Parse (
       Bytes_Out : Byte_Vectors.Vector) is
@@ -83,4 +83,4 @@ package body Output_Stream is
 
    end Parse;
 
-end Output_Stream;
+end IBM_3270.Output_Stream;

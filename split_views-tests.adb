@@ -6,11 +6,13 @@ with Byte_Vectors;
 with Line_Vectors;
 with IBM_3270;
 with IBM_3270_Orders;
+with IBM_3270.Output_Stream;
 with Buffer; use type Buffer.Byte;
-with output_stream;
 with Code_Page_500;
 
 package body Split_Views.Tests is
+
+   procedure Update_Field (X : Natural; Y : Natural);
 
    P : aliased Code_Page_500.Page_500;
 
@@ -39,7 +41,8 @@ package body Split_Views.Tests is
 
    end Update_Field;
 
-   procedure Parse is new Output_Stream.Parse (Update_Field => Update_Field);
+   procedure Parse is new IBM_3270.Output_Stream.Parse (
+      Update_Field => Update_Field);
 
    procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class) is
       V : Split_View;

@@ -1,6 +1,6 @@
 with Byte_Vectors;
 
-package Output_Stream is
+package IBM_3270.Output_Stream is
 
    --
    --  Output_Stream is only used to construct test cases (it does not
@@ -21,4 +21,4 @@ package Output_Stream is
    --  address whenever a Start_Field order is encountered.
    --
 
-end Output_Stream;
+end IBM_3270.Output_Stream;

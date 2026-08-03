@@ -5,7 +5,7 @@ with Byte_Vectors;
 with Line_Vectors;
 with IBM_3270;
 with IBM_3270_Orders;
-with Output_Stream;
+with IBM_3270.Output_Stream;
 with Code_Page_500;
 with Buffer; use type Buffer.Byte;
 
@@ -40,7 +40,8 @@ package body Login_Views.Tests is
 
    end Update_Field;
 
-   procedure Parse is new Output_Stream.Parse (Update_Field => Update_Field);
+   procedure Parse is new IBM_3270.Output_Stream.Parse (
+      Update_Field => Update_Field);
 
    procedure Test_Short_Read (T : in out Test_Cases.Test_Case'Class) is
       V : Login_View;
