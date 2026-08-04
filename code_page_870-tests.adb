@@ -190,7 +190,7 @@ Wide_Character'Val (16#02dd#));
 
    function Name (T : Code_Page_Test) return Test_String is
    begin
-      return Format ("Code_Page_870_Tests");
+      return Format ("Code_Page_870.Tests");
    end Name;
 
 end Code_Page_870.Tests;
