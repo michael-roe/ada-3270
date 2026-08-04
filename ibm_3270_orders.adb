@@ -8,6 +8,15 @@ package body IBM_3270_Orders is
 
    type Unsigned_6 is mod 2**6;
 
+   --
+   --  See Appendix D, "12-, 14- and 16-Bit Addressing" in
+   --  3270 Information Display System, Data Stream Programmer's Reference,
+   --  GA23-0059-4
+   --
+   --  http://bitsavers.informatik.uni-stuttgart.de/pdf/ibm/3270/
+   --    GA23-0059-4_3270_Data_Stream_Programmers_Reference_Dec88.pdf
+   --
+
    Table : constant array (Unsigned_6) of Buffer.Byte := (
       16#40#, 16#C1#, 16#C2#, 16#C3#, 16#C4#, 16#C5#, 16#C6#, 16#C7#,
       16#C8#, 16#C9#, 16#4A#, 16#4B#, 16#4C#, 16#4D#, 16#4E#, 16#4F#,
