@@ -1,3 +1,6 @@
+with Ada.Text_IO;
+with Ada.Wide_Text_IO;
+with Ada.Integer_Text_IO;
 with IBM_3270;
 
 package body Code_Page_310 is
@@ -222,7 +225,7 @@ Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#0000#),
-Wide_Character'Val (16#223c#),
+Wide_Character'Val (16#223c#), --  Arguably, should just be tilde
 Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#23b8#),
@@ -352,18 +355,42 @@ Wide_Character'Val (16#234e#),
 Wide_Character'Val (16#0000#));
 
    procedure Append (V : in out Byte_Vectors.Vector; S : Wide_Character) is
+      Found : Boolean;
    begin
+
+      Found := False;
+
       for J in Table_Index loop
          if Table (J).From = S then
             V.Append (IBM_3270.Graphic_Escape);
             V.Append (Table (J).To);
+            Found := True;
          end if;
       end loop;
+
+      --
+      --  Fall-back for characters that are (a) in the first half of
+      --  ISO Latin 1; (b) don't exist in some national EBCDIC variants;
+      --  (c) can't be round-tripped through code page 310 either.
+      --
+
+      if not Found then
+         if S = '~' then
+            V.Append (IBM_3270.Graphic_Escape);
+            V.Append (16#80#);
+         elsif S = '|' then
+            V.Append (IBM_3270.Graphic_Escape);
+            V.Append (16#bf#);
+         end if;
+      end if;
+
    end Append;
 
    function To_Wide_Character (B : Buffer.Byte) return Wide_Character is
    begin
+
       return ITable (B);
+
    end To_Wide_Character;
 
 end Code_Page_310;
