@@ -403,10 +403,10 @@ package body Code_Page_880 is
          C := Wide_Character'Pos (S (J));
 
          --
-         --  Code Page 880 does not contain U+7B to U+7F
+         --  Code Page 880 does not contain U+7B to U+7F or U+60
          --
 
-         if C < 16#7b# then
+         if (C < 16#7b#) and (C /= 16#60#) then
             V.Append (Bottom_Half_Table (Seven_Bit (C)));
          else
             Found := False;

@@ -84,6 +84,17 @@ package body Code_Page_880.Tests is
 
    end Test_Bar;
 
+   procedure Test_Grave (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+      C : Wide_Character;
+   begin
+
+      P.Append (V, "`");
+
+      Assert (V.Length = 0, "Length should be 0");
+
+   end Test_Grave;
+
    procedure Register_Tests (T : in out Code_Page_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -99,6 +110,9 @@ package body Code_Page_880.Tests is
 
       Register_Routine (T, Test_Bar'Access,
          "Test_Bar");
+
+      Register_Routine (T, Test_Grave'Access,
+         "Test_Grave");
 
    end Register_Tests;
 
