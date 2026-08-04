@@ -117,7 +117,21 @@ package body Telnet.Workers is
 
       accept Connect;
 
-      Handler.Initialize;
+      begin
+
+         Handler.Initialize;
+
+      exception
+         when My_Error : others =>
+            Ada.Text_IO.Put ("Exception raised during initalization: ");
+            Ada.Text_IO.Put (
+               Ada.Exceptions.Exception_Name (My_Error));
+            Ada.Text_IO.New_Line;
+            Ada.Text_IO.Put (
+               Ada.Exceptions.Exception_Message (My_Error));
+            Ada.Text_IO.New_Line;
+
+      end;
 
       Session_Code_Page := P500'Access;
 
