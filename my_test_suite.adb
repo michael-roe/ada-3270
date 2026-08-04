@@ -5,6 +5,7 @@ with Telnet.Environ.Tests;
 with Code_Page_500.Tests;
 with Code_Page_310.Tests;
 with Code_Page_870.Tests;
+with Code_Page_880.Tests;
 with Code_Page_UTF8.Tests;
 with Line_Vectors_Tests;
 with IBM_3270_Orders.Tests;
@@ -30,17 +31,18 @@ package body My_Test_Suite is
    Test_4  : aliased Code_Page_500.Tests.Code_Page_Test;
    Test_5  : aliased Code_Page_310.Tests.Code_Page_Test;
    Test_6  : aliased Code_Page_870.Tests.Code_Page_Test;
-   Test_7  : aliased Line_Vectors_Tests.Line_Vectors_Test;
-   Test_8  : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
-   Test_9  : aliased IBM_3270.Input_Stream.Tests.Input_Stream_Test;
-   Test_10 : aliased Split_Views.Tests.Split_View_Test;
-   Test_11 : aliased Text_Views.Tests.Text_View_Test;
-   Test_12 : aliased Login_Views.Tests.Login_View_Test;
-   Test_13 : aliased Checkbox_Views.Tests.Checkbox_View_Test;
-   Test_14 : aliased Menu_Views.Tests.Menu_View_Test;
-   Test_15 : aliased Numbered_Menu_Views.Tests.Numbered_Menu_View_Test;
-   Test_16 : aliased Telnet.Environ.Tests.Environ_Test;
-   Test_17 : aliased Code_Page_UTF8.Tests.UTF8_Test;
+   Test_7  : aliased Code_Page_880.Tests.Code_Page_Test;
+   Test_8  : aliased Line_Vectors_Tests.Line_Vectors_Test;
+   Test_9  : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
+   Test_10 : aliased IBM_3270.Input_Stream.Tests.Input_Stream_Test;
+   Test_11 : aliased Split_Views.Tests.Split_View_Test;
+   Test_12 : aliased Text_Views.Tests.Text_View_Test;
+   Test_13 : aliased Login_Views.Tests.Login_View_Test;
+   Test_14 : aliased Checkbox_Views.Tests.Checkbox_View_Test;
+   Test_15 : aliased Menu_Views.Tests.Menu_View_Test;
+   Test_16 : aliased Numbered_Menu_Views.Tests.Numbered_Menu_View_Test;
+   Test_17 : aliased Telnet.Environ.Tests.Environ_Test;
+   Test_18 : aliased Code_Page_UTF8.Tests.UTF8_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -62,6 +64,7 @@ package body My_Test_Suite is
       Add_Test (Result'Access, Test_15'Access);
       Add_Test (Result'Access, Test_16'Access);
       Add_Test (Result'Access, Test_17'Access);
+      Add_Test (Result'Access, Test_18'Access);
 
       return Result'Access;
 
