@@ -95,6 +95,38 @@ package body Code_Page_880.Tests is
 
    end Test_Grave;
 
+   procedure Test_Round_Trip (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+      C : Wide_Character;
+   begin
+
+      --
+      --  Test that the printable Unicode characters up to U+7A, apart
+      --  from grave accent, survive round trip via code page 880.
+      --
+
+      for J in Wide_Character'Val (16#20#) ..
+         Wide_Character'Val (16#7a#)
+      loop
+         if J = '`' then
+            P.Append (V, " ");
+         else
+            P.Append (V, "" & J);
+         end if;
+      end loop;
+
+      Assert (V.Length = 91, "Length should be 91");
+
+      for J in 0 .. 90 loop
+         if J /= 16#40# then
+            Assert (P.To_Wide_Character (V.Element (J)) =
+               Wide_Character'Val (J + 16#20#),
+               "Character did not survive round trip");
+         end if;
+      end loop;
+
+   end Test_Round_Trip;
+
    procedure Register_Tests (T : in out Code_Page_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -113,6 +145,9 @@ package body Code_Page_880.Tests is
 
       Register_Routine (T, Test_Grave'Access,
          "Test_Grave");
+
+      Register_Routine (T, Test_Round_Trip'Access,
+         "Test_Round_Trip");
 
    end Register_Tests;
 
