@@ -11,7 +11,38 @@ with Byte_Text_IO;
 
 package body Code_Page_310.Tests is
 
-   procedure Test_Round_Trip (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_National_Variants (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+      S : Wide_String := "[\]{|}~";
+   begin
+
+      for J in S'Range loop
+         Code_Page_310.Append (V, S (J));
+      end loop;
+
+      Assert (V.Length = 14, "Length should be 14");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (1)) = '[',
+         "[ should survive round trip");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (3)) = '\',
+         "\ should survive round trip");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (5)) = ']',
+         "] should survive round trip");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (7)) = '{',
+         "{ should survive round trip");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (9)) = '|' or
+         Code_Page_310.To_Wide_Character (V.Element (9)) =
+         Wide_Character'Val (16#2223#),
+         "| should survive round trip");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (11)) = '}',
+         "} should survive round trip");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (13)) = '~' or
+         Code_Page_310.To_Wide_Character (V.Element (13)) =
+         Wide_Character'Val (16#223c#),
+         "~ should survive round trip");
+
+   end Test_National_Variants;
+
+   procedure Test_Box_Drawing (T : in out Test_Cases.Test_Case'Class) is
       V : Byte_Vectors.Vector;
    begin
 
@@ -36,7 +67,7 @@ package body Code_Page_310.Tests is
          = Box_Drawing.Up_Left,
          "Round trip");
 
-   end Test_Round_Trip;
+   end Test_Box_Drawing;
 
    procedure Test_Invalid (T : in out Test_Cases.Test_Case'Class) is
       V : Byte_Vectors.Vector;
@@ -52,8 +83,11 @@ package body Code_Page_310.Tests is
       use AUnit.Test_Cases.Registration;
    begin
 
-      Register_Routine (T, Test_Round_Trip'Access,
-         "Test_Round_Trip");
+      Register_Routine (T, Test_National_Variants'Access,
+         "Test_National_Variants");
+
+      Register_Routine (T, Test_Box_Drawing'Access,
+         "Test_Box_Drawing");
 
       Register_Routine (T, Test_Invalid'Access,
          "Test_Invalid");
