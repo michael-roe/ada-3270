@@ -32,10 +32,6 @@ package body Code_Page_880 is
       To : Buffer.Byte;
    end record;
 
-   --
-   --  This is wrong (data for a different code page)
-   --
-
    subtype Top_Index is Integer range 1 .. 92;
 
    Top_Half_Table : array (Top_Index) of Mapping := (
