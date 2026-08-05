@@ -235,7 +235,7 @@ package body Code_Page_880 is
       Wide_Character'Val (16#407#),
       Wide_Character'Val (16#408#),
       Wide_Character'Val (16#409#),
-      Wide_Character'Val (16#a6#),
+      Wide_Character'Val (16#7c#),
       Wide_Character'Val (16#2c#),
       Wide_Character'Val (16#25#),
       Wide_Character'Val (16#5f#),
@@ -290,7 +290,7 @@ package body Code_Page_880 is
       Wide_Character'Val (16#43e#),
       Wide_Character'Val (16#43f#),
       Wide_Character'Val (16#44f#),
-      Wide_Character'Val (16#0#),
+      Wide_Character'Val (16#7e#),
       Wide_Character'Val (16#73#),
       Wide_Character'Val (16#74#),
       Wide_Character'Val (16#75#),
@@ -398,11 +398,7 @@ package body Code_Page_880 is
       for J in S'Range loop
          C := Wide_Character'Pos (S (J));
 
-         --
-         --  Code Page 880 does not contain U+7B to U+7F or U+60
-         --
-
-         if (C < 16#7b#) and (C /= 16#60#) then
+         if C < 128 then
             V.Append (Bottom_Half_Table (Seven_Bit (C)));
          else
             Found := False;

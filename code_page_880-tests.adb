@@ -38,10 +38,10 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "{}");
 
-      Assert (V.Length = 4, "Length should be 4");
-      Assert (Code_Page_310.To_Wide_Character (V.Element (1)) = '{',
+      Assert (V.Length = 2, "Length should be 2");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (0)) = '{',
          "First character should be '{'");
-      Assert (Code_Page_310.To_Wide_Character (V.Element (3)) = '}',
+      Assert (Code_Page_310.To_Wide_Character (V.Element (1)) = '}',
          "Second character should be '}'");
 
    end Test_Brackets;
@@ -53,13 +53,16 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "~");
 
-      Assert (V.Length = 2, "Length should be 2");
+      Assert (V.Length = 1, "Length should be 1");
 
-      Assert (V.Element (0) = IBM_3270.Graphic_Escape,
-         "First character should be GE");
+      C := P.To_Wide_Character (V.Element (0));
 
-      C := Code_Page_310.To_Wide_Character (V.Element (1));
-
+      Ada.Text_IO.Put ("Tilde -> ");
+      Byte_Text_IO.Put (V.Element (0), Base => 16);
+      Ada.Text_IO.Put ("->");
+      Ada.Wide_Text_IO.Put (C);
+      Ada.Integer_Text_IO.Put (Wide_Character'Pos (C), Base => 16);
+      Ada.Text_IO.New_Line;
       Assert (C = Wide_Character'Val (16#223c#) or C = '~',
         "Tilde should round trip as tilde or tilde operator");
 
@@ -72,12 +75,16 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "|");
 
-      Assert (V.Length = 2, "Length should be 2");
+      Assert (V.Length = 1, "Length should be 1");
 
-      Assert (V.Element (0) = IBM_3270.Graphic_Escape,
-         "First character should be GE");
+      C := P.To_Wide_Character (V.Element (0));
 
-      C := Code_Page_310.To_Wide_Character (V.Element (1));
+      Ada.Text_IO.Put ("Bar -> ");
+      Byte_Text_IO.Put (V.Element (0), Base => 16);
+      Ada.Text_IO.Put ("->");
+      Ada.Wide_Text_IO.Put (C);
+      Ada.Integer_Text_IO.Put (Wide_Character'Pos (C), Base => 16);
+      Ada.Text_IO.New_Line;
 
       Assert (C = Wide_Character'Val (16#2223#) or C = '|',
         "Bar should round trip as bar or divides by operator");
@@ -91,7 +98,7 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "`");
 
-      Assert (V.Length = 0, "Length should be 0");
+      Assert (V.Length = 1, "Length should be 1");
 
    end Test_Grave;
 
