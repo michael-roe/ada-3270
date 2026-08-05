@@ -22,6 +22,7 @@ with IBM_3270;
 with Code_Pages;
 with Code_Page_500;
 with Code_Page_870;
+with Code_Page_875;
 with Code_Page_880;
 
 package body Telnet.Workers is
@@ -56,6 +57,8 @@ package body Telnet.Workers is
    P500 : aliased Code_Page_500.Page_500;
 
    P870 : aliased Code_Page_870.Page_870;
+
+   P875 : aliased Code_Page_875.Page_875;
 
    P880 : aliased Code_Page_880.Page_880;
 
@@ -101,6 +104,8 @@ package body Telnet.Workers is
                Session_Code_Page := P500'Access;
             elsif V = "870" then
                Session_Code_Page := P870'Access;
+            elsif V = "875" then
+               Session_Code_Page := P875'Access;
             elsif V = "880" then
                Session_Code_Page := P880'Access;
             end if;
