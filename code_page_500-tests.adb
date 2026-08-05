@@ -74,7 +74,7 @@ package body Code_Page_500.Tests is
 
    function Name (T : Code_Page_Test) return Test_String is
    begin
-      return Format ("Code_Page_500_Tests");
+      return Format ("Code_Page_500.Tests");
    end Name;
 
 end Code_Page_500.Tests;
