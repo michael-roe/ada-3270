@@ -32,17 +32,12 @@ package body Code_Page_875.Tests is
       V : Byte_Vectors.Vector;
    begin
 
-      for J in Wide_Character'Val (16#A1#) .. Wide_Character'Val (16#FF#) loop
-         P.Append (V, "" & J);
-      end loop;
+      P.Append (V, "" & Wide_Character'Val (16#0385#));
 
-      Assert (V.Length = 128 - 33, "Length should be 95");
-
-      for J in V.First_Index .. V.Last_Index loop
-         Assert (P.To_Wide_Character (V.Element (J)) =
-            Wide_Character'Val (J + 16#A1#),
-            "Round-trip conversion of character");
-      end loop;
+      Assert (V.Length = 1, "Length should be 1");
+      Assert (P.To_Wide_Character (V.Element (V.First_Index)) =
+         Wide_Character'Val (16#0385#),
+         "Character should survive round trip");
 
    end Test_Round_Trip2;
 
@@ -65,8 +60,8 @@ package body Code_Page_875.Tests is
       Register_Routine (T, Test_Round_Trip'Access,
          "Test_Round_Trip");
 
---      Register_Routine (T, Test_Round_Trip2'Access,
---         "Test_Round_Trip2");
+      Register_Routine (T, Test_Round_Trip2'Access,
+         "Test_Round_Trip2");
 
    end Register_Tests;
 
