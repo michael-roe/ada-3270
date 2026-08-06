@@ -7,6 +7,8 @@ package Code_Page_310.Tests is
 
    procedure Test_National_Variants (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Section_Sign (T : in out Test_Cases.Test_Case'Class);
+
    procedure Test_Box_Drawing (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Invalid (T : in out Test_Cases.Test_Case'Class);
