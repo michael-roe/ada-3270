@@ -10,7 +10,7 @@ package body Code_Page_310 is
       To : Buffer.Byte;
    end record;
 
-   subtype Table_Index is Integer range 0 .. 79;
+   subtype Table_Index is Integer range 0 .. 80;
 
    Table : constant array (Table_Index) of Mapping :=
    (
@@ -22,7 +22,9 @@ package body Code_Page_310 is
 (Wide_Character'Val (16#005c#), Buffer.Byte (16#b7#)),
 (Wide_Character'Val (16#005d#), Buffer.Byte (16#bd#)),
 (Wide_Character'Val (16#007b#), Buffer.Byte (16#c0#)),
+(Wide_Character'Val (16#007c#), Buffer.Byte (16#bf#)),
 (Wide_Character'Val (16#007d#), Buffer.Byte (16#d0#)),
+(Wide_Character'Val (16#007e#), Buffer.Byte (16#80#)),
 (Wide_Character'Val (16#00a4#), Buffer.Byte (16#9c#)),
 (Wide_Character'Val (16#00a7#), Buffer.Byte (16#c8#)),
 (Wide_Character'Val (16#00a8#), Buffer.Byte (16#72#)),
@@ -59,7 +61,6 @@ package body Code_Page_310 is
 (Wide_Character'Val (16#2207#), Buffer.Byte (16#ba#)),
 (Wide_Character'Val (16#220e#), Buffer.Byte (16#c3#)),
 (Wide_Character'Val (16#2218#), Buffer.Byte (16#af#)),
-(Wide_Character'Val (16#2223#), Buffer.Byte (16#bf#)),
 (Wide_Character'Val (16#2227#), Buffer.Byte (16#71#)),
 (Wide_Character'Val (16#2228#), Buffer.Byte (16#78#)),
 (Wide_Character'Val (16#2229#), Buffer.Byte (16#aa#)),
@@ -225,7 +226,7 @@ Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#0000#),
-Wide_Character'Val (16#223c#), --  Arguably, should just be tilde
+Wide_Character'Val (16#7e#), --  Arguably, should just be tilde
 Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#0000#),
 Wide_Character'Val (16#23b8#),
@@ -288,7 +289,7 @@ Wide_Character'Val (16#2206#),
 Wide_Character'Val (16#22a4#),
 Wide_Character'Val (16#005d#),
 Wide_Character'Val (16#2260#),
-Wide_Character'Val (16#2223#),
+Wide_Character'Val (16#7c#),
 Wide_Character'Val (16#007b#),
 Wide_Character'Val (16#207c#),
 Wide_Character'Val (16#002b#),
@@ -367,22 +368,6 @@ Wide_Character'Val (16#0000#));
             Found := True;
          end if;
       end loop;
-
-      --
-      --  Fall-back for characters that are (a) in the first half of
-      --  ISO Latin 1; (b) don't exist in some national EBCDIC variants;
-      --  (c) can't be round-tripped through code page 310 either.
-      --
-
-      if not Found then
-         if S = '~' then
-            V.Append (IBM_3270.Graphic_Escape);
-            V.Append (16#80#);
-         elsif S = '|' then
-            V.Append (IBM_3270.Graphic_Escape);
-            V.Append (16#bf#);
-         end if;
-      end if;
 
    end Append;
 
