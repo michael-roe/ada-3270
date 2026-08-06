@@ -7,6 +7,8 @@ with Ada.Characters.Conversions;
 with AUnit.Assertions; use AUnit.Assertions;
 with Buffer;
 use type Buffer.Byte;
+with Arrows;
+with Block_Elements;
 with Box_Drawing;
 with Byte_Vectors;
 with Byte_Text_IO;
@@ -46,28 +48,28 @@ package body Code_Page_310.Tests is
 
    procedure Test_Section_Sign (T : in out Test_Cases.Test_Case'Class) is
       V : Byte_Vectors.Vector;
-      Wide_Section_Sign : Wide_Character;
-      Wide_Paragraph_Sign: Wide_Character;
-   begin 
+      Section_Sign : Wide_Character;
+      Paragraph_Sign : Wide_Character;
+   begin
 
-      Wide_Section_Sign := Ada.Characters.Conversions.To_Wide_Character (
+      Section_Sign := Ada.Characters.Conversions.To_Wide_Character (
         Ada.Characters.Latin_1.Section_Sign);
 
-      Wide_Paragraph_Sign := Ada.Characters.Conversions.To_Wide_Character (
-         Ada.Characters.Latin_1.Paragraph_Sign); 
+      Paragraph_Sign := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Paragraph_Sign);
 
-      Code_Page_310.Append (V, Wide_Section_Sign);
+      Code_Page_310.Append (V, Section_Sign);
 
-      Code_Page_310.Append (V, Wide_Paragraph_Sign);
+      Code_Page_310.Append (V, Paragraph_Sign);
 
       Assert (V.Length = 4, "Length should be 4");
 
       Assert (Code_Page_310.To_Wide_Character (V.Element (1)) =
-         Wide_Section_Sign,
+         Section_Sign,
          "Section sign should survive round trip");
-         
+
       Assert (Code_Page_310.To_Wide_Character (V.Element (3)) =
-         Wide_Paragraph_Sign,
+         Paragraph_Sign,
          "Paragraph sign should survive round trip");
 
    end Test_Section_Sign;
@@ -109,6 +111,51 @@ package body Code_Page_310.Tests is
 
    end Test_Box_Drawing;
 
+   procedure Test_Block_Elements (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+   begin
+
+      Code_Page_310.Append (V, Block_Elements.Upper_Half);
+      Code_Page_310.Append (V, Block_Elements.Lower_Half);
+      Code_Page_310.Append (V, Block_Elements.Left_Half);
+      Code_Page_310.Append (V, Block_Elements.Right_Half);
+
+      Assert (V.Length = 8, "Length should be 8");
+
+   end Test_Block_Elements;
+
+   procedure Test_Arrows (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+   begin
+
+      Code_Page_310.Append (V, Arrows.Leftwards_Arrow);
+      Code_Page_310.Append (V, Arrows.Rightwards_Arrow);
+      Code_Page_310.Append (V, Arrows.Upwards_Arrow);
+      Code_Page_310.Append (V, Arrows.Downwards_Arrow);
+
+      Assert (V.Length = 8, "Length should be 8");
+
+   end Test_Arrows;
+
+   procedure Test_Math_Operators (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+      Multiplication_Sign : Wide_Character;
+      Division_Sign : Wide_Character;
+   begin
+
+      Multiplication_Sign := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Multiplication_Sign);
+
+      Division_Sign := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Division_Sign);
+
+      Code_Page_310.Append (V, Multiplication_Sign);
+      Code_Page_310.Append (V, Division_Sign);
+
+      Assert (V.Length = 4, "Length should be 4");
+
+   end Test_Math_Operators;
+
    procedure Test_Invalid (T : in out Test_Cases.Test_Case'Class) is
       V : Byte_Vectors.Vector;
    begin
@@ -131,6 +178,15 @@ package body Code_Page_310.Tests is
 
       Register_Routine (T, Test_Box_Drawing'Access,
          "Test_Box_Drawing");
+
+      Register_Routine (T, Test_Block_Elements'Access,
+         "Test_Block_Elements");
+
+      Register_Routine (T, Test_Arrows'Access,
+         "Test_Arrows");
+
+      Register_Routine (T, Test_Math_Operators'Access,
+         "Test_Math_Operators");
 
       Register_Routine (T, Test_Invalid'Access,
          "Test_Invalid");
