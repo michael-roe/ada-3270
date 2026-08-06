@@ -1,4 +1,5 @@
 with Ada.Wide_Text_IO;
+with Ada.Text_IO;
 with Ada.Characters.Handling;
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
@@ -34,15 +35,14 @@ package body Code_Page_310.Tests is
          "] should survive round trip");
       Assert (Code_Page_310.To_Wide_Character (V.Element (7)) = '{',
          "{ should survive round trip");
-      Assert (Code_Page_310.To_Wide_Character (V.Element (9)) = '|' or
-         Code_Page_310.To_Wide_Character (V.Element (9)) =
-         Wide_Character'Val (16#2223#),
+      Ada.Text_IO.Put ("Bar -> ");
+      Ada.Wide_Text_IO.Put (Code_Page_310.To_Wide_Character (V.Element (9)));
+      Ada.Text_IO.New_Line;
+      Assert (Code_Page_310.To_Wide_Character (V.Element (9)) = '|',
          "| should survive round trip");
       Assert (Code_Page_310.To_Wide_Character (V.Element (11)) = '}',
          "} should survive round trip");
-      Assert (Code_Page_310.To_Wide_Character (V.Element (13)) = '~' or
-         Code_Page_310.To_Wide_Character (V.Element (13)) =
-         Wide_Character'Val (16#223c#),
+      Assert (Code_Page_310.To_Wide_Character (V.Element (13)) = '~',
          "~ should survive round trip");
 
    end Test_National_Variants;
