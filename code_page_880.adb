@@ -271,7 +271,7 @@ package body Code_Page_880 is
       Wide_Character'Val (16#407#),
       Wide_Character'Val (16#408#),
       Wide_Character'Val (16#409#),
-      Wide_Character'Val (16#a6#),
+      Wide_Character'Val (16#7c#),
       Wide_Character'Val (16#2c#),
       Wide_Character'Val (16#25#),
       Wide_Character'Val (16#5f#),
@@ -433,7 +433,7 @@ package body Code_Page_880 is
 
       for J in S'Range loop
          C := Wide_Character'Pos (S (J));
-         if (C < 16#7b#) and (C /= 16#60#) then
+         if (C < 16#7d#) and (C /= 16#7b#) and (C /= 16#60#) then
             V.Append (Bottom_Half_Table (Seven_Bit (C)));
          else
             Found := False;

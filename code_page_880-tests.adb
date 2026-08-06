@@ -75,9 +75,9 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "|");
 
-      Assert (V.Length = 2, "Length should be 2");
+      Assert (V.Length = 1, "Length should be 1");
 
-      C := Code_Page_310.To_Wide_Character (V.Element (1));
+      C := P.To_Wide_Character (V.Element (0));
 
       Ada.Text_IO.Put ("Bar -> ");
       Byte_Text_IO.Put (V.Element (0), Base => 16);
