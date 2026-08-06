@@ -24,6 +24,7 @@ with Code_Page_500;
 with Code_Page_870;
 with Code_Page_875;
 with Code_Page_880;
+with Code_Page_1025;
 
 package body Telnet.Workers is
 
@@ -61,6 +62,8 @@ package body Telnet.Workers is
    P875 : aliased Code_Page_875.Page_875;
 
    P880 : aliased Code_Page_880.Page_880;
+
+   P1025 : aliased Code_Page_1025.Page_1025;
 
    procedure Environment_Undefined (
       N : Telnet_Strings.Bounded_String;
@@ -108,6 +111,8 @@ package body Telnet.Workers is
                Session_Code_Page := P875'Access;
             elsif V = "880" then
                Session_Code_Page := P880'Access;
+            elsif V = "1025" then
+               Session_Code_Page := P1025'Access;
             end if;
          end if;
 
