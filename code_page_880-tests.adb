@@ -38,10 +38,10 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "{}");
 
-      Assert (V.Length = 2, "Length should be 2");
-      Assert (Code_Page_310.To_Wide_Character (V.Element (0)) = '{',
+      Assert (V.Length = 4, "Length should be 4");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (1)) = '{',
          "First character should be '{'");
-      Assert (Code_Page_310.To_Wide_Character (V.Element (1)) = '}',
+      Assert (Code_Page_310.To_Wide_Character (V.Element (3)) = '}',
          "Second character should be '}'");
 
    end Test_Brackets;
@@ -53,9 +53,9 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "~");
 
-      Assert (V.Length = 1, "Length should be 1");
+      Assert (V.Length = 2, "Length should be 2");
 
-      C := P.To_Wide_Character (V.Element (0));
+      C := Code_Page_310.To_Wide_Character (V.Element (1));
 
       Ada.Text_IO.Put ("Tilde -> ");
       Byte_Text_IO.Put (V.Element (0), Base => 16);
@@ -75,9 +75,9 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "|");
 
-      Assert (V.Length = 1, "Length should be 1");
+      Assert (V.Length = 2, "Length should be 2");
 
-      C := P.To_Wide_Character (V.Element (0));
+      C := Code_Page_310.To_Wide_Character (V.Element (1));
 
       Ada.Text_IO.Put ("Bar -> ");
       Byte_Text_IO.Put (V.Element (0), Base => 16);
@@ -98,7 +98,7 @@ package body Code_Page_880.Tests is
 
       P.Append (V, "`");
 
-      Assert (V.Length = 1, "Length should be 1");
+      Assert (V.Length = 0, "Length should be 0");
 
    end Test_Grave;
 

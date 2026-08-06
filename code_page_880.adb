@@ -433,7 +433,7 @@ package body Code_Page_880 is
 
       for J in S'Range loop
          C := Wide_Character'Pos (S (J));
-         if C < 128 then
+         if (C < 16#7b#) and (C /= 16#60#) then
             V.Append (Bottom_Half_Table (Seven_Bit (C)));
          else
             Found := False;
