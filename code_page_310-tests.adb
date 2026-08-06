@@ -136,16 +136,18 @@ package body Code_Page_310.Tests is
 
       Code_Page_310.Append (V, Geometric_Shapes.Black_Square);
       Code_Page_310.Append (V, Geometric_Shapes.Lozenge);
+      Code_Page_310.Append (V, Geometric_Shapes.White_Circle);
 
-      Assert (V.Length = 4, "Length should be 4");
+      Assert (V.Length = 6, "Length should be 6");
       Assert (Code_Page_310.To_Wide_Character (V.Element (1)) =
          Geometric_Shapes.Black_Square,
-         "Black square should survive round trip");
-      Ada.Text_IO.Put ("Lozenge -> ");
-      Byte_Text_IO.Put (V.Element (3), Base => 16);
+         "Black Square should survive round trip");
       Assert (Code_Page_310.To_Wide_Character (V.Element (3)) =
          Geometric_Shapes.Lozenge,
          "Lozenge should survive round trip");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (5)) =
+         Geometric_Shapes.White_Circle,
+         "White Circle should survive round trip");
 
    end Test_Geometric_Shapes;
 

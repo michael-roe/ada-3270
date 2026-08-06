@@ -10,7 +10,7 @@ package body Code_Page_310 is
       To : Buffer.Byte;
    end record;
 
-   subtype Table_Index is Integer range 0 .. 80;
+   subtype Table_Index is Integer range 0 .. 81;
 
    Table : constant array (Table_Index) of Mapping :=
    (
@@ -94,8 +94,8 @@ package body Code_Page_310 is
 (Wide_Character'Val (16#2590#), Buffer.Byte (16#92#)),
 (Wide_Character'Val (16#2588#), Buffer.Byte (16#95#)),
 (Wide_Character'Val (16#25a0#), Buffer.Byte (16#c3#)),
-(Wide_Character'Val (16#25ca#), Buffer.Byte (16#70#))
-   );
+(Wide_Character'Val (16#25ca#), Buffer.Byte (16#70#)),
+(Wide_Character'Val (16#25cb#), Buffer.Byte (16#9d#)));
 
    ITable : constant array (Buffer.Byte) of Wide_Character := (
 Wide_Character'Val (16#0000#),
