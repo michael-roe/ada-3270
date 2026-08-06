@@ -10,6 +10,7 @@ use type Buffer.Byte;
 with Arrows;
 with Block_Elements;
 with Box_Drawing;
+with Math_Operators;
 with Byte_Vectors;
 with Byte_Text_IO;
 
@@ -151,8 +152,11 @@ package body Code_Page_310.Tests is
 
       Code_Page_310.Append (V, Multiplication_Sign);
       Code_Page_310.Append (V, Division_Sign);
+      Code_Page_310.Append (V, Math_Operators.Less_Than_Or_Equal);
+      Code_Page_310.Append (V, Math_Operators.Greater_Than_Or_Equal);
+      Code_Page_310.Append (V, Math_Operators.Not_Equal);
 
-      Assert (V.Length = 4, "Length should be 4");
+      Assert (V.Length = 10, "Length should be 10");
 
    end Test_Math_Operators;
 
