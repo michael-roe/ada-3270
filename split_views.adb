@@ -284,6 +284,11 @@ package body Split_Views is
       Last_Space : Natural;
    begin
 
+      if V.History.Length = 0 then
+         Lines.Set_Bounded_Wide_String (L, "");
+         Line_Vectors.Append (V.History, L);
+      end if;
+
       if Lines.Length (V.History.Element (V.History.Last_Index)) > 75 then
          L := V.History.Element (V.History.Last_Index);
          Last_Space := Lines.Length (L);
