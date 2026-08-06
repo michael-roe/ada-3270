@@ -12,6 +12,7 @@ with Arrows;
 with Block_Elements;
 with Box_Drawing;
 with Math_Operators;
+with Geometric_Shapes;
 with Byte_Vectors;
 with Byte_Text_IO;
 
@@ -120,8 +121,17 @@ package body Code_Page_310.Tests is
       Code_Page_310.Append (V, Block_Elements.Lower_Half);
       Code_Page_310.Append (V, Block_Elements.Left_Half);
       Code_Page_310.Append (V, Block_Elements.Right_Half);
+      Code_Page_310.Append (V, Block_Elements.Full);
+      Code_Page_310.Append (V, Geometric_Shapes.Black_Square);
 
-      Assert (V.Length = 8, "Length should be 8");
+      Assert (V.Length = 12, "Length should be 10");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (9)) =
+         Block_Elements.Full,
+         "Full block element should survive round trip");
+
+      Assert (Code_Page_310.To_Wide_Character (V.Element (11)) =
+         Geometric_Shapes.Black_Square,
+         "Black square should survive round trip");
 
    end Test_Block_Elements;
 
@@ -155,8 +165,12 @@ package body Code_Page_310.Tests is
       Code_Page_310.Append (V, Math_Operators.Less_Than_Or_Equal);
       Code_Page_310.Append (V, Math_Operators.Greater_Than_Or_Equal);
       Code_Page_310.Append (V, Math_Operators.Not_Equal);
+      Code_Page_310.Append (V, Math_Operators.Identical);
+      Code_Page_310.Append (V, Math_Operators.Logical_And);
+      Code_Page_310.Append (V, Math_Operators.Logical_Or);
+      Code_Page_310.Append (V, Math_Operators.Superset);
 
-      Assert (V.Length = 10, "Length should be 10");
+      Assert (V.Length = 18, "Length should be 18");
 
    end Test_Math_Operators;
 
