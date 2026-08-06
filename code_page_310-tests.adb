@@ -122,18 +122,32 @@ package body Code_Page_310.Tests is
       Code_Page_310.Append (V, Block_Elements.Left_Half);
       Code_Page_310.Append (V, Block_Elements.Right_Half);
       Code_Page_310.Append (V, Block_Elements.Full);
-      Code_Page_310.Append (V, Geometric_Shapes.Black_Square);
 
-      Assert (V.Length = 12, "Length should be 10");
+      Assert (V.Length = 10, "Length should be 10");
       Assert (Code_Page_310.To_Wide_Character (V.Element (9)) =
          Block_Elements.Full,
          "Full block element should survive round trip");
 
-      Assert (Code_Page_310.To_Wide_Character (V.Element (11)) =
+   end Test_Block_Elements;
+
+   procedure Test_Geometric_Shapes (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+   begin
+
+      Code_Page_310.Append (V, Geometric_Shapes.Black_Square);
+      Code_Page_310.Append (V, Geometric_Shapes.Lozenge);
+
+      Assert (V.Length = 4, "Length should be 4");
+      Assert (Code_Page_310.To_Wide_Character (V.Element (1)) =
          Geometric_Shapes.Black_Square,
          "Black square should survive round trip");
+      Ada.Text_IO.Put ("Lozenge -> ");
+      Byte_Text_IO.Put (V.Element (3), Base => 16);
+      Assert (Code_Page_310.To_Wide_Character (V.Element (3)) =
+         Geometric_Shapes.Lozenge,
+         "Lozenge should survive round trip");
 
-   end Test_Block_Elements;
+   end Test_Geometric_Shapes;
 
    procedure Test_Arrows (T : in out Test_Cases.Test_Case'Class) is
       V : Byte_Vectors.Vector;
@@ -199,6 +213,9 @@ package body Code_Page_310.Tests is
 
       Register_Routine (T, Test_Block_Elements'Access,
          "Test_Block_Elements");
+
+      Register_Routine (T, Test_Geometric_Shapes'Access,
+         "Test_Geometric_Shapes");
 
       Register_Routine (T, Test_Arrows'Access,
          "Test_Arrows");
