@@ -44,15 +44,21 @@ package Progress_Views is
 
    procedure Next_Page (V : in out Progress_View);
 
-   procedure Set_Subtitle (
+   procedure Set_Intro (
       V : in out Progress_View;
       L : Lines.Bounded_Wide_String);
+
+   procedure Set_Progress (
+      V : in out Progress_View;
+      Progress : Natural);
 
 private
 
    type Progress_View is new Paged_Views.Paged_View with record
       AID : Buffer.Byte := 0;
       Title : Lines.Bounded_Wide_String;
+      Intro : Lines.Bounded_Wide_String;
+      Progress : Natural := 0;
    end record;
 
 end Progress_Views;

@@ -40,8 +40,11 @@ package body Progress_Views is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 17, 4);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       P.Append (Bytes_Out, "[");
-      for J in 1 .. 40 loop
+      for J in 1 .. V.Progress loop
          Code_Page_310.Append (Bytes_Out, Block_Elements.Full);
+      end loop;
+      for J in 1 .. 40 - V.Progress loop
+         P.Append (Bytes_Out, " ");
       end loop;
       P.Append (Bytes_Out, "]");
       P.Append (Bytes_Out, " ");
@@ -51,11 +54,13 @@ package body Progress_Views is
 
       Panel_Elements.Box_Sides (5,  P, Bytes_Out);
 
-      for J in 6 .. 41 loop
+      Panel_Elements.Text_Line (6, P, V.Intro, Bytes_Out);
+
+      for J in 7 .. 22 loop
          Panel_Elements.Box_Sides (J, P, Bytes_Out);
       end loop;
 
-      Panel_Elements.Box_Bottom (42, P, Bytes_Out);
+      Panel_Elements.Box_Bottom (23, P, Bytes_Out);
 
    end To_Physical;
 
@@ -129,14 +134,24 @@ package body Progress_Views is
 
    end Set_Title;
 
-   procedure Set_Subtitle (
+   procedure Set_Intro (
       V : in out Progress_View;
       L : Lines.Bounded_Wide_String) is
    begin
 
-      null;
-      --  V.Subtitle := L;
+      V.Intro := L;
 
-   end Set_Subtitle;
+   end Set_Intro;
+
+   procedure Set_Progress (
+      V : in out Progress_View;
+      Progress : Natural) is
+   begin
+
+      if Progress <= 40 then
+         V.Progress := Progress;
+      end if;
+
+   end Set_Progress;
 
 end Progress_Views;
