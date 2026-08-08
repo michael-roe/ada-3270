@@ -203,12 +203,19 @@ package body Telnet.Workers is
 
                      if not RX_Empty then
                         RX.Dequeue (C);
-                        if C /= Telnet.Protocol.IAC then
+                        if C = IBM_3270.AID_PA1 then
+                           --
+                           --  I'm not sure if it's valid to receive PA1 here
+                           --
+                           Ada.Text_IO.Put ("[PA1]");
+                        elsif C /= Telnet.Protocol.IAC then
                            --
                            --  I think it's a protocol error to receive data
                            --  when the terminal does not have go ahead.
                            --
-                           Ada.Text_IO.Put_Line ("Received data unexpectedly");
+                           Ada.Text_IO.Put ("Received data unexpectedly ");
+                           Byte_Text_IO.Put (C, Base => 16);
+                           Ada.Text_IO.New_Line;
                         else
                            RX.Dequeue (C);
                            if C = Telnet.Protocol.BRK then
