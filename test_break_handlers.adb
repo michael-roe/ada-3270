@@ -5,6 +5,8 @@ with Buffer;
 use type Buffer.Byte;
 with IBM_3270;
 with IBM_3270_Orders;
+with Lines;
+with Progress_Views;
 
 package body Test_Break_Handlers is
 
@@ -16,6 +18,8 @@ package body Test_Break_Handlers is
       IBM_3270.IBM_Write_Erase,
       0);
 
+   Progress_Bar : Progress_Views.Progress_View;
+
    procedure To_Physical (
       V         : in out Test_Break_Handler;
       Bytes_Out : in out Byte_Vectors.Vector;
@@ -23,6 +27,7 @@ package body Test_Break_Handlers is
       Go_Ahead  : in out Boolean) is
    begin
 
+      Bytes_Out.Clear;
       if V.Counter = 0 then
          for J in Screen_Message'Range loop
             Bytes_Out.Append (Screen_Message (J));
@@ -39,18 +44,8 @@ package body Test_Break_Handlers is
          for J in Screen_Message_No_GA'Range loop
             Bytes_Out.Append (Screen_Message_No_GA (J));
          end loop;
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 0);
-         IBM_3270_Orders.Start_Field (Bytes_Out,
-            True,
-            IBM_3270_Orders.Highlighted);
-         P.Append (Bytes_Out, "Press the ATTN key");
-         IBM_3270_Orders.Start_Field (Bytes_Out,
-            True,
-            IBM_3270_Orders.Normal_Text);
-         IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 0, 2);
-         P.Append (Bytes_Out, "[");
-         P.Append (Bytes_Out, Natural'Wide_Image (V.Counter));
-         P.Append (Bytes_Out, "]");
+         Progress_Bar.Set_Progress (V.Counter);
+         Progress_Bar.To_Physical (Bytes_Out, P);
          Go_Ahead := False;
 
          delay 2.0;
@@ -106,9 +101,13 @@ package body Test_Break_Handlers is
    end Break;
 
    procedure Initialize (V : in out Test_Break_Handler) is
+      L : Lines.Bounded_Wide_String;
    begin
 
-      null;
+      Lines.Set_Bounded_Wide_String (L, "Break Handler Test");
+      Progress_Bar.Set_Title (L);
+      Lines.Set_Bounded_Wide_String (L, "Press the ATTN key to stop.");
+      Progress_Bar.Set_Intro (L);
 
    end Initialize;
 
