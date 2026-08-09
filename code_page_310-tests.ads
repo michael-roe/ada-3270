@@ -13,9 +13,13 @@ package Code_Page_310.Tests is
 
    procedure Test_Block_Elements (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Geometric_Shapes (T : in out Test_Cases.Test_Case'Class);
+
    procedure Test_Arrows (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Math_Operators (T : in out Test_Cases.Test_Case'Class);
+
+   procedure Test_Superscripts (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_Invalid (T : in out Test_Cases.Test_Case'Class);
 

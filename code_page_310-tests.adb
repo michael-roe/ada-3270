@@ -190,6 +190,34 @@ package body Code_Page_310.Tests is
 
    end Test_Math_Operators;
 
+   procedure Test_Superscripts (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+      Superscript_One : Wide_Character;
+      Superscript_Two : Wide_Character;
+      Superscript_Three : Wide_Character;
+   begin
+
+      Superscript_One := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Superscript_One);
+
+      Superscript_Two := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Superscript_Two);
+
+      Superscript_Three := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Superscript_Three);
+
+      Code_Page_310.Append (V, Superscript_One);
+      Code_Page_310.Append (V, Superscript_Two);
+      Code_Page_310.Append (V, Superscript_Three);
+
+      Assert (V.Length = 6, "Length should be 6");
+
+      Assert (Code_Page_310.To_Wide_Character (V.Element (1)) =
+         Superscript_One,
+         "Superscript_One should survive round trip");
+
+   end Test_Superscripts;
+
    procedure Test_Invalid (T : in out Test_Cases.Test_Case'Class) is
       V : Byte_Vectors.Vector;
    begin
@@ -224,6 +252,9 @@ package body Code_Page_310.Tests is
 
       Register_Routine (T, Test_Math_Operators'Access,
          "Test_Math_Operators");
+
+      Register_Routine (T, Test_Superscripts'Access,
+         "Test_Superscripts");
 
       Register_Routine (T, Test_Invalid'Access,
          "Test_Invalid");

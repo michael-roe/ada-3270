@@ -1,8 +1,12 @@
+with Ada.Characters.Latin_1;
 with Ada.Characters.Handling;
+with Ada.Characters.Conversions;
 with Ada.Containers; use type Ada.Containers.Count_Type;
 with AUnit.Assertions; use AUnit.Assertions;
 with Buffer;
 use type Buffer.Byte;
+with Code_Page_310;
+with IBM_3270;
 
 package body Code_Page_870.Tests is
 
@@ -176,6 +180,35 @@ Wide_Character'Val (16#02dd#));
 
    end Test_Round_Trip2;
 
+   procedure Test_Superscripts (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+      Superscript_One : Wide_Character;
+      Superscript_Two : Wide_Character;
+      Superscript_Three : Wide_Character;
+   begin
+
+      --
+      --  Superscript_One is in ISO Latin 1 but not in ISO Latin 2,
+      --  and it is in Code Page 310, so it should be represented using
+      --  a Graphics Escape.
+      --
+
+      Superscript_One := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Superscript_One);
+
+      P.Append (V, "" & Superscript_One);
+
+      Assert (V.Length = 2, "Length should be 2");
+
+      Assert (V.Element (0) = IBM_3270.Graphic_Escape,
+        "Should start with Graphic Escape");
+
+      Assert (Code_Page_310.To_Wide_Character (V.Element (1)) =
+         Superscript_One,
+         "Superscript_One should survive round trip");
+
+   end Test_Superscripts;
+
    procedure Register_Tests (T : in out Code_Page_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -185,6 +218,9 @@ Wide_Character'Val (16#02dd#));
 
       Register_Routine (T, Test_Round_Trip2'Access,
          "Test_Round_Trip2");
+
+      Register_Routine (T, Test_Superscripts'Access,
+         "Test_Superscripts");
 
    end Register_Tests;
 
