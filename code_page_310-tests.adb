@@ -86,6 +86,11 @@ package body Code_Page_310.Tests is
       Code_Page_310.Append (V, Box_Drawing.Up_Left);
       Code_Page_310.Append (V, Box_Drawing.Horizontal);
       Code_Page_310.Append (V, Box_Drawing.Vertical);
+      Code_Page_310.Append (V, Box_Drawing.Down_Horizontal);
+      Code_Page_310.Append (V, Box_Drawing.Up_Horizontal);
+      Code_Page_310.Append (V, Box_Drawing.Vertical_Horizontal);
+
+      Assert (V.Length = 18, "Length should be 18");
 
       Assert (Code_Page_310.To_Wide_Character (V.Element (V.First_Index + 1))
          = Box_Drawing.Down_Right,
@@ -168,6 +173,7 @@ package body Code_Page_310.Tests is
       V : Byte_Vectors.Vector;
       Multiplication_Sign : Wide_Character;
       Division_Sign : Wide_Character;
+      Plus_Minus_Sign : Wide_Character;
    begin
 
       Multiplication_Sign := Ada.Characters.Conversions.To_Wide_Character (
@@ -176,8 +182,12 @@ package body Code_Page_310.Tests is
       Division_Sign := Ada.Characters.Conversions.To_Wide_Character (
          Ada.Characters.Latin_1.Division_Sign);
 
+      Plus_Minus_Sign := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Plus_Minus_Sign);
+
       Code_Page_310.Append (V, Multiplication_Sign);
       Code_Page_310.Append (V, Division_Sign);
+      Code_Page_310.Append (V, Plus_Minus_Sign);
       Code_Page_310.Append (V, Math_Operators.Less_Than_Or_Equal);
       Code_Page_310.Append (V, Math_Operators.Greater_Than_Or_Equal);
       Code_Page_310.Append (V, Math_Operators.Not_Equal);
@@ -186,7 +196,7 @@ package body Code_Page_310.Tests is
       Code_Page_310.Append (V, Math_Operators.Logical_Or);
       Code_Page_310.Append (V, Math_Operators.Superset);
 
-      Assert (V.Length = 18, "Length should be 18");
+      Assert (V.Length = 20, "Length should be 20");
 
    end Test_Math_Operators;
 
