@@ -57,12 +57,13 @@ package body Code_Page_880.Tests is
 
       C := Code_Page_310.To_Wide_Character (V.Element (1));
 
-      Ada.Text_IO.Put ("Tilde -> ");
-      Byte_Text_IO.Put (V.Element (0), Base => 16);
-      Ada.Text_IO.Put ("->");
-      Ada.Wide_Text_IO.Put (C);
-      Ada.Integer_Text_IO.Put (Wide_Character'Pos (C), Base => 16);
-      Ada.Text_IO.New_Line;
+      --  Ada.Text_IO.Put ("Tilde -> ");
+      --  Byte_Text_IO.Put (V.Element (0), Base => 16);
+      --  Ada.Text_IO.Put ("->");
+      --  Ada.Wide_Text_IO.Put (C);
+      --  Ada.Integer_Text_IO.Put (Wide_Character'Pos (C), Base => 16);
+      --  Ada.Text_IO.New_Line;
+
       Assert (C = Wide_Character'Val (16#223c#) or C = '~',
         "Tilde should round trip as tilde or tilde operator");
 
@@ -79,12 +80,12 @@ package body Code_Page_880.Tests is
 
       C := P.To_Wide_Character (V.Element (0));
 
-      Ada.Text_IO.Put ("Bar -> ");
-      Byte_Text_IO.Put (V.Element (0), Base => 16);
-      Ada.Text_IO.Put ("->");
-      Ada.Wide_Text_IO.Put (C);
-      Ada.Integer_Text_IO.Put (Wide_Character'Pos (C), Base => 16);
-      Ada.Text_IO.New_Line;
+      --  Ada.Text_IO.Put ("Bar -> ");
+      --  Byte_Text_IO.Put (V.Element (0), Base => 16);
+      --  Ada.Text_IO.Put ("->");
+      --  Ada.Wide_Text_IO.Put (C);
+      --  Ada.Integer_Text_IO.Put (Wide_Character'Pos (C), Base => 16);
+      --  Ada.Text_IO.New_Line;
 
       Assert (C = Wide_Character'Val (16#2223#) or C = '|',
         "Bar should round trip as bar or divides by operator");

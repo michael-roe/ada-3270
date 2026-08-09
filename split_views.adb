@@ -124,8 +124,8 @@ package body Split_Views is
 
       if Y = 21 then
          if X = 77 and Lines.Length (L) >= 1 then
-            Ada.Text_IO.Put ("Updating tickbox");
-            Ada.Text_IO.Put (Natural'Image (X));
+            --  Ada.Text_IO.Put ("Updating tickbox");
+            --  Ada.Text_IO.Put (Natural'Image (X));
             case Lines.Element (L, 1) is
                when 'L' =>
                   V.Option := 1;

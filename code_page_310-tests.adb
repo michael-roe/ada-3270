@@ -37,9 +37,6 @@ package body Code_Page_310.Tests is
          "] should survive round trip");
       Assert (Code_Page_310.To_Wide_Character (V.Element (7)) = '{',
          "{ should survive round trip");
-      Ada.Text_IO.Put ("Bar -> ");
-      Ada.Wide_Text_IO.Put (Code_Page_310.To_Wide_Character (V.Element (9)));
-      Ada.Text_IO.New_Line;
       Assert (Code_Page_310.To_Wide_Character (V.Element (9)) = '|',
          "| should survive round trip");
       Assert (Code_Page_310.To_Wide_Character (V.Element (11)) = '}',
