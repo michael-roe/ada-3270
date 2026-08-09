@@ -12,4 +12,7 @@ package Box_Drawing is
    Down_Horizontal : constant Wide_Character := Wide_Character'Val (16#252C#);
    Up_Horizontal   : constant Wide_Character := Wide_Character'Val (16#2534#);
 
+   Vertical_Horizontal  : constant Wide_Character :=
+      Wide_Character'Val (16#253c#);
+
 end Box_Drawing;
