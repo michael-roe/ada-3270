@@ -15,6 +15,7 @@ with Math_Operators;
 with Geometric_Shapes;
 with Byte_Vectors;
 with Byte_Text_IO;
+with Superscripts;
 
 package body Code_Page_310.Tests is
 
@@ -216,13 +217,19 @@ package body Code_Page_310.Tests is
       Superscript_Three := Ada.Characters.Conversions.To_Wide_Character (
          Ada.Characters.Latin_1.Superscript_Three);
 
+      Code_Page_310.Append (V, Superscripts.Superscript_Zero);
       Code_Page_310.Append (V, Superscript_One);
       Code_Page_310.Append (V, Superscript_Two);
       Code_Page_310.Append (V, Superscript_Three);
+      Code_Page_310.Append (V, Superscripts.Superscript_Four);
 
-      Assert (V.Length = 6, "Length should be 6");
+      Assert (V.Length = 10, "Length should be 10");
 
       Assert (Code_Page_310.To_Wide_Character (V.Element (1)) =
+         Superscripts.Superscript_Zero,
+         "Superscript_Zero should survive round trip");
+
+      Assert (Code_Page_310.To_Wide_Character (V.Element (3)) =
          Superscript_One,
          "Superscript_One should survive round trip");
 
