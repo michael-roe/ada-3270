@@ -445,7 +445,7 @@ package body IBM_3270.Input_Stream.Tests is
    function Name (T : Input_Stream_Test) return Message_String is
    begin
 
-      return Format ("Input_Stream_Tests");
+      return Format ("IBM_3270.Input_Stream.Tests");
 
    end Name;
 

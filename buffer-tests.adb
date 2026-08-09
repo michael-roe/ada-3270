@@ -185,7 +185,7 @@ package body Buffer.Tests is
 
    function Name (T : Buffer_Test) return Test_String is
    begin
-      return Format ("Buffer_Tests");
+      return Format ("Buffer.Tests");
    end Name;
 
 end Buffer.Tests;

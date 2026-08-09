@@ -196,7 +196,7 @@ package body IBM_3270_Orders.Tests is
 
    function Name (T : IBM_3270_Orders_Test) return Message_String is
    begin
-      return Format ("IBM_3270_Orders_Tests");
+      return Format ("IBM_3270_Orders.Tests");
    end Name;
 
 end IBM_3270_Orders.Tests;
