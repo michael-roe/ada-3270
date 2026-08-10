@@ -1,6 +1,12 @@
 with AUnit.Assertions; use AUnit.Assertions;
 with Ada.Containers; use type Ada.Containers.Count_Type;
 with Ada.Wide_Text_IO;
+with Ada.Strings.Unbounded;
+with Ada.Characters.Conversions;
+with Ada.Characters.Latin_1;
+with Ada.Strings.UTF_Encoding.Wide_Strings;
+with Ada.Strings.UTF_Encoding.Strings;
+with Ada.Text_IO;
 with Lines;
 with Byte_Vectors;
 with Line_Vectors;
@@ -9,6 +15,9 @@ with IBM_3270_Orders;
 with IBM_3270.Output_Stream;
 with Buffer; use type Buffer.Byte;
 with Code_Page_500;
+with Outputable_Views;
+with View_Text_IO;
+with Block_Elements;
 
 package body Split_Views.Tests is
 
@@ -92,6 +101,48 @@ package body Split_Views.Tests is
 
    end Test_Enter;
 
+   ASV : aliased Split_View;
+
+   procedure Test_Put (T : in out Test_Cases.Test_Case'Class) is
+      OA : Outputable_Views.Outputable_Access;
+      US : Ada.Strings.Unbounded.Unbounded_String;
+      W : Wide_Character;
+   begin
+
+      OA := ASV'Access;
+
+      US := Ada.Strings.Unbounded.To_Unbounded_String (
+         Ada.Strings.UTF_Encoding.Strings.Encode ("Test"));
+      View_Text_IO.Put (OA, US);
+
+      Assert (Lines.Length (ASV.History.Element (0)) = 4,
+         "History first line length should be 4");
+
+      Assert (Lines.To_Wide_String (ASV.History.Element (0)) = "Test",
+         "History should contain Test");
+
+      US := Ada.Strings.Unbounded.To_Unbounded_String (
+         Ada.Strings.UTF_Encoding.Strings.Encode ("" &
+            Ada.Characters.Latin_1.Multiplication_Sign));
+      View_Text_IO.Put (OA, US);
+
+      Assert (Lines.Length (ASV.History.Element (0)) = 5,
+         "History first line length should be 5");
+
+      W := Ada.Characters.Conversions.To_Wide_Character (
+         Ada.Characters.Latin_1.Multiplication_Sign);
+
+      Assert (Lines.To_Wide_String (ASV.History.Element (0)) = "Test" & W,
+         "Should be Multiplication_Sign in History");
+
+      W := Block_Elements.Full;
+
+      US := Ada.Strings.Unbounded.To_Unbounded_String (
+         Ada.Strings.UTF_Encoding.Wide_Strings.Encode ("" & W));
+      View_Text_IO.Put (OA, US);
+
+   end Test_Put;
+
    procedure Register_Tests (T : in out Split_View_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -101,6 +152,9 @@ package body Split_Views.Tests is
 
       Register_Routine (T, Test_Enter'Access,
          "Test_Enter");
+
+      Register_Routine (T, Test_Put'Access,
+         "Test_Put");
 
    end Register_Tests;
 
