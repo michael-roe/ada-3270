@@ -141,6 +141,12 @@ package body Split_Views.Tests is
          Ada.Strings.UTF_Encoding.Wide_Strings.Encode ("" & W));
       View_Text_IO.Put (OA, US);
 
+      Assert (Lines.Length (ASV.History.Element (0)) = 6,
+         "History first line length should be 6");
+
+      Assert (Lines.Element (ASV.History.Element (0), 6) = W,
+         "History should contain block element");
+
    end Test_Put;
 
    procedure Register_Tests (T : in out Split_View_Test) is

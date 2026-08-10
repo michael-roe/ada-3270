@@ -15,6 +15,7 @@ package body View_Text_IO is
       S : Ada.Strings.Unbounded.Unbounded_String) is
       B : Buffer.Byte;
       Two_Bytes : Ada.Strings.UTF_Encoding.UTF_8_String := "  ";
+      Three_Bytes : Ada.Strings.UTF_Encoding.UTF_8_String := "   ";
       W : Wide_Character;
       C : Character;
       Index : Natural;
@@ -52,7 +53,27 @@ package body View_Text_IO is
             else
                To_Do := 0;
             end if;
+         elsif (B and 16#f0#) = 16#e0# then
+            if To_Do >= 3 then
+               Three_Bytes (1) :=
+                  Ada.Strings.Unbounded.Element (S, Index);
+               Three_Bytes (2) :=
+                  Ada.Strings.Unbounded.Element (S, Index + 1);
+               Three_Bytes (3) :=
+                  Ada.Strings.Unbounded.Element (S, Index + 2);
+               W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
+                  Three_Bytes)(1);
+               --  Ada.Text_IO.Put ("View_Text_IO: ");
+               --  Ada.Wide_Text_IO.Put (W);
+               --  Ada.Text_IO.New_Line;
+               V.Put_Character (W);
+               Index := Index + 3;
+               To_Do := To_Do - 3;
+            else
+               To_Do := 0;
+            end if;
          else
+            Ada.Text_IO.Put_Line ("Longer UTF8 sequences not handled");
             To_Do := 0; --  Longer sequences not implemented yet
          end if;
       end loop;
