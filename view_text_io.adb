@@ -27,7 +27,14 @@ package body View_Text_IO is
 
       while To_Do > 0 loop
          B := Character'Pos (Ada.Strings.Unbounded.Element (S, Index));
-         if B < 128 then
+         if B = 10 then
+            V.New_Line;
+            Index := Index + 1;
+            To_Do := To_Do - 1;
+         elsif B = 13 then
+            Index := Index + 1;
+            To_Do := To_Do - 1;
+         elsif B < 128 then
             --  Ada.Text_IO.Put ("View_Text_IO: ");
             --  Ada.Text_IO.Put ("" &
             --     Ada.Strings.Unbounded.Element (S, Index));
@@ -74,7 +81,12 @@ package body View_Text_IO is
             end if;
          else
             Ada.Text_IO.Put_Line ("Longer UTF8 sequences not handled");
-            To_Do := 0; --  Longer sequences not implemented yet
+            if To_Do >= 4 then
+               Index := Index + 4;
+               To_Do := To_Do - 4;
+            else
+               To_Do := 0;
+            end if;
          end if;
       end loop;
 
