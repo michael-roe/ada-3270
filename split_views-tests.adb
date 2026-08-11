@@ -107,6 +107,12 @@ package body Split_Views.Tests is
       OA : Outputable_Views.Outputable_Access;
       US : Ada.Strings.Unbounded.Unbounded_String;
       W : Wide_Character;
+      Four_Byte_Example : Ada.Strings.UTF_Encoding.UTF_String := "(" &
+         Character'Val (16#F0#) &
+         Character'Val (16#90#) &
+         Character'Val (16#80#) &
+         Character'Val (16#81#) &
+         ')';
    begin
 
       OA := ASV'Access;
@@ -146,6 +152,15 @@ package body Split_Views.Tests is
 
       Assert (Lines.Element (ASV.History.Element (0), 6) = W,
          "History should contain block element");
+
+      View_Text_IO.Put (OA,
+         Ada.Strings.Unbounded.To_Unbounded_String (Four_Byte_Example));
+
+      Assert (Lines.Element (ASV.History.Element (0), 7) = '(',
+         "History should contain open parethesis");
+
+      Assert (Lines.Element (ASV.History.Element (0), 8) = ')',
+         "History should contain close parethesis");
 
    end Test_Put;
 
