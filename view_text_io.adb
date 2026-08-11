@@ -2,6 +2,7 @@ with Ada.Characters.Conversions;
 with Ada.Strings.UTF_Encoding;
 with Ada.Strings.UTF_Encoding.Strings;
 with Ada.Strings.UTF_Encoding.Wide_Strings;
+with Ada.Strings.UTF_Encoding.Wide_Wide_Strings;
 with Ada.Text_IO;
 with Ada.Wide_Text_IO;
 with Ada.Integer_Text_IO;
@@ -16,7 +17,9 @@ package body View_Text_IO is
       B : Buffer.Byte;
       Two_Bytes : Ada.Strings.UTF_Encoding.UTF_8_String := "  ";
       Three_Bytes : Ada.Strings.UTF_Encoding.UTF_8_String := "   ";
+      Four_Bytes : Ada.Strings.UTF_Encoding.UTF_8_String := "    ";
       W : Wide_Character;
+      WW : Wide_Wide_Character;
       C : Character;
       Index : Natural;
       To_Do : Natural;
@@ -80,8 +83,25 @@ package body View_Text_IO is
                To_Do := 0;
             end if;
          else
-            Ada.Text_IO.Put_Line ("Longer UTF8 sequences not handled");
             if To_Do >= 4 then
+               Four_Bytes (1) :=
+                  Ada.Strings.Unbounded.Element (S, Index);
+               Four_Bytes (2) :=
+                  Ada.Strings.Unbounded.Element (S, Index + 1);
+               Four_Bytes (3) :=
+                  Ada.Strings.Unbounded.Element (S, Index + 2);
+               Four_Bytes (4) :=
+                  Ada.Strings.Unbounded.Element (S, Index + 3);
+               declare
+                  WWS : Wide_Wide_String :=
+                     Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Decode (
+                     Four_Bytes);
+               begin
+                  Ada.Text_IO.Put ("4 byte character: ");
+                  Ada.Integer_Text_IO.Put (Wide_Wide_Character'Pos (WWS (1)),
+                     Base => 16);
+                  Ada.Text_IO.New_Line;
+               end;
                Index := Index + 4;
                To_Do := To_Do - 4;
             else
