@@ -162,6 +162,14 @@ package body Split_Views.Tests is
       Assert (Lines.Element (ASV.History.Element (0), 8) = ')',
          "History should contain close parethesis");
 
+      US := Ada.Strings.Unbounded.To_Unbounded_String (
+         Ada.Strings.UTF_Encoding.Strings.Encode ("" &
+            Character'Val (10) & "*"));
+      View_Text_IO.Put (OA, US);
+
+      Assert (Lines.Element (ASV.History.Element (1), 1) = '*',
+         "History should contain asterisk");
+
    end Test_Put;
 
    procedure Register_Tests (T : in out Split_View_Test) is
