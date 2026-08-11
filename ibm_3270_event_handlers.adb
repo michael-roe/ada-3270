@@ -1,5 +1,7 @@
 with Ada.Text_IO;
 with Ada.Integer_Text_IO;
+with Ada.Strings.Unbounded;
+with GNATCOLL.JSON;
 with Buffer;
 use type Buffer.Byte;
 with Views;
@@ -11,9 +13,15 @@ with Checkbox_Views;
 with Numbered_Menu_Views;
 with Menu_Views;
 with Login_Views;
+with Progress_Views;
+with Outputable_Views;
 with IBM_3270;
 with Lines;
 with Line_Vectors;
+with Geometric_Shapes;
+with Block_Elements;
+with Math_Operators;
+with View_Text_IO;
 
 package body IBM_3270_Event_Handlers is
 
@@ -34,6 +42,8 @@ package body IBM_3270_Event_Handlers is
    Intent_Input : aliased Split_Views.Split_View;
 
    Checkboxes : aliased Checkbox_Views.Checkbox_View;
+
+   Progress_Screen : aliased Progress_Views.Progress_View;
 
    procedure To_Physical (
       V         : in out IBM_3270_Handler;
@@ -78,6 +88,10 @@ package body IBM_3270_Event_Handlers is
       After_Backslash : Boolean;
       Backend_Byte : Buffer.Byte;
       Hex_Digits : String := "16#0000#";
+      From_Backend : Ada.Strings.Unbounded.Unbounded_String;
+      Backend_Object : GNATCOLL.JSON.JSON_Value;
+      Backend_UTF8 : GNATCOLL.JSON.UTF8_Unbounded_String;
+      Output_Interface : Outputable_Views.Outputable_Access;
    begin
 
       begin
@@ -107,66 +121,29 @@ package body IBM_3270_Event_Handlers is
          Intent_Input.Edit_To_History;
          Intent_Input.New_Line;
          Intent_Input.New_Line;
-         After_Backslash := False;
          Backend_Byte := 0;
+         Ada.Strings.Unbounded.Set_Unbounded_String (From_Backend, "");
          while Backend_Byte /= 10 loop
             V.RX2.Dequeue (Backend_Byte);
-            if After_Backslash then
-               if Backend_Byte = Character'Pos ('\') then
-                  Intent_Input.Put_Character ('\');
-               elsif Backend_Byte = Character'Pos ('"') then
-                  Intent_Input.Put_Character ('"');
-               elsif Backend_Byte = Character'Pos ('n') then
-                  Intent_Input.New_Line;
-               elsif Backend_Byte = Character'Pos ('u') then
-                  --  Ada.Text_IO.Put_Line ("Hex string");
-                  V.RX2.Dequeue (Backend_Byte);
-                  Hex_Digits (4) :=
-                     Character'Val (Backend_Byte);
-                  V.RX2.Dequeue (Backend_Byte);
-                  Hex_Digits (5) :=
-                     Character'Val (Backend_Byte);
-                  V.RX2.Dequeue (Backend_Byte);
-                  Hex_Digits (6) :=
-                     Character'Val (Backend_Byte);
-                  V.RX2.Dequeue (Backend_Byte);
-                  Hex_Digits (7) :=
-                     Character'Val (Backend_Byte);
-                  --  Ada.Text_IO.Put_Line (Hex_Digits);
-                  Intent_Input.Put_Character (
-                     Wide_Character'Val (
-                        Integer'Value (Hex_Digits)));
-               end if;
-               After_Backslash := False;
-            else
-               if Backend_Byte = 13 then
-                  null;
-               elsif Backend_Byte = Character'Pos ('\') then
-                  After_Backslash := True;
-               elsif Backend_Byte = Character'Pos ('"') then
-                  --
-                  --  JSON strings can't contain a quote character,
-                  --  but will be terminated by one.
-                  --
-                  null;
-               elsif Backend_Byte < 128 then
-                  Intent_Input.Put_Character (
-                     Wide_Character'Val (Backend_Byte));
-               else
-                  --
-                  --  Multi-byte UTF-8 character
-                  --
-                  Intent_Input.Put_Character ('?');
-               end if;
+            if Backend_Byte /= 13 then
+               Ada.Strings.Unbounded.Append (From_Backend,
+                  Character'Val (Backend_Byte));
             end if;
          end loop;
+         --  Ada.Text_IO.Put_Line ("Got string from backend");
+         Backend_Object := GNATCOLL.JSON.Read (From_Backend);
+         --  Ada.Text_IO.Put_Line ("Read done");
+         Backend_UTF8 := GNATCOLL.JSON.Get (Backend_Object);
+         --  Ada.Text_IO.Put_Line ("Get done");
+         View_Text_IO.Put (V.Outputable, Backend_UTF8);
+         --  Ada.Text_IO.Put_Line ("Put done");
 
          case V.State  is
             when Login_Panel =>
-                 V.Current := Main_Menu'Access;
-                  V.Pageable := Main_Menu'Access;
-                  V.JSONable := Main_Menu'Access;
-                  V.State := Main_Panel;
+               V.Current := Main_Menu'Access;
+               V.Pageable := Main_Menu'Access;
+               V.JSONable := Main_Menu'Access;
+               V.State := Main_Panel;
             when Main_Panel =>
                if Main_Menu.Get_Option /= 0 then
                   V.Current := Entity_Menu'Access;
@@ -218,6 +195,7 @@ package body IBM_3270_Event_Handlers is
       V.Current := Login_Screen'Access;
       V.Pageable := Main_Menu'Access;
       V.JSONable := Main_Menu'Access;
+      V.Outputable := Intent_Input'Access;
       V.State := Login_Panel;
 
       Lines.Set_Bounded_Wide_String (L, "Login");
@@ -302,6 +280,9 @@ package body IBM_3270_Event_Handlers is
       Checkboxes.Set_Checkbox (2, True);
       Checkboxes.Set_Checkbox (3, False);
       Checkboxes.Set_Checkbox (4, False);
+
+      Lines.Set_Bounded_Wide_String (L, "Progress Bar");
+      Progress_Screen.Set_Title (L);
 
    end Initialize;
 
