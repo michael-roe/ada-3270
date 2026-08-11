@@ -3,21 +3,25 @@ import sys
 import socket
 import json
 import requests
+import time
 
 
 api_key=os.environ.get("SYNTHETIC_API_KEY")
+# api_key=os.environ.get("NOVITA_API_KEY")
 
 #
 # URL of the server running the LLM
 #
 
 url = "https://api.synthetic.new/v1/chat/completions"
+# url = "https://api.novita.ai/openai/v1/chat/completions"
 
 #
 # Which LLM to use
 #
 
 model = "hf:Qwen/Qwen3.6-27B"
+# model = "deepseek/deepseek-r1-0528"
 
 #
 # Local port number of the process that connects to the terminal
@@ -33,6 +37,9 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("127.0.0.1", port))
 f = s.makefile("rw", encoding="utf-8", newline="\r\n")
 
+log_name = time.strftime("%Y%m%d%H%M.log")
+log_file = open(log_name, "w");
+
 for j in range (0, 5):
   line = f.readline().strip()
   opt = json.loads(line)
@@ -45,6 +52,9 @@ history = []
 while True:
   line = f.readline().strip()
   query = json.loads(line)
+
+  log_file.write(json.dumps({"role": "user", "content": query}))
+  log_file.flush()
 
   history.append({"role": "user", "content": query})
 
