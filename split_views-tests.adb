@@ -109,9 +109,9 @@ package body Split_Views.Tests is
       W : Wide_Character;
       Four_Byte_Example : Ada.Strings.UTF_Encoding.UTF_String := "(" &
          Character'Val (16#F0#) &
+         Character'Val (16#9F#) &
          Character'Val (16#90#) &
-         Character'Val (16#80#) &
-         Character'Val (16#81#) &
+         Character'Val (16#81#) & 
          ')';
    begin
 
