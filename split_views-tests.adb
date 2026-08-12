@@ -159,7 +159,10 @@ package body Split_Views.Tests is
       Assert (Lines.Element (ASV.History.Element (0), 7) = '(',
          "History should contain open parethesis");
 
-      Assert (Lines.Element (ASV.History.Element (0), 8) = ')',
+      Assert (Lines.Element (ASV.History.Element (0), 8) = '?',
+         "History should contain question mark");
+
+      Assert (Lines.Element (ASV.History.Element (0), 9) = ')',
          "History should contain close parethesis");
 
       US := Ada.Strings.Unbounded.To_Unbounded_String (

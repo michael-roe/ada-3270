@@ -8,6 +8,7 @@ with Ada.Wide_Text_IO;
 with Ada.Integer_Text_IO;
 with Buffer;
 use type Buffer.Byte;
+with Punctuation;
 
 package body View_Text_IO is
 
@@ -44,7 +45,7 @@ package body View_Text_IO is
             --  Ada.Text_IO.New_Line;
             V.Put_Character (Wide_Character'Val (B));
             Index := Index + 1;
-            To_Do := To_Do - 1; 
+            To_Do := To_Do - 1;
          elsif (B and 16#e0#) = 16#c0# then
             if To_Do >= 2 then
                Two_Bytes (1) :=
@@ -55,9 +56,26 @@ package body View_Text_IO is
                   Two_Bytes)(1);
                --  Ada.Text_IO.Put ("View_Text_IO: ");
                --  Ada.Wide_Text_IO.Put (W);
-               --  Ada.Integer_Text_IO.Put (Wide_Character'Pos (W), Base => 16);
+               --  Ada.Integer_Text_IO.Put (
+               --     Wide_Character'Pos (W), Base => 16);
                --  Ada.Text_IO.New_Line;
-               V.Put_Character (W);
+               --
+
+               if W = Punctuation.Em_Dash then
+
+                  --
+                  --  Em_Dash is handled here because it isn't suitable for a
+                  --  fixed width terminal font and is replaced with two
+                  --  characters. Other substitutions (e.g directional
+                  --  quotation marks) are handled during Unicode to EBCDIC
+                  --  conversion.
+                  --
+
+                  V.Put_Character ('-');
+                  V.Put_Character ('-');
+               else
+                  V.Put_Character (W);
+               end if;
                Index := Index + 2;
                To_Do := To_Do - 2;
             else
@@ -101,6 +119,7 @@ package body View_Text_IO is
                   Ada.Integer_Text_IO.Put (Wide_Wide_Character'Pos (WWS (1)),
                      Base => 16);
                   Ada.Text_IO.New_Line;
+                  V.Put_Character ('?');
                end;
                Index := Index + 4;
                To_Do := To_Do - 4;
