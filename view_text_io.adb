@@ -63,7 +63,19 @@ package body View_Text_IO is
                --  Ada.Text_IO.New_Line;
                --
 
-               V.Put_Character (W);
+               --
+               --  OE ligature ought to be handled at a different layer
+               --
+
+               if W = Wide_Character'Val (16#0152#) then
+                  V.Put_Character ('O');
+                  V.Put_Character ('E');
+               elsif W = Wide_Character'Val (16#0153#) then
+                  V.Put_Character ('o');
+                  V.Put_Character ('e');
+               else
+                  V.Put_Character (W);
+               end if;
                Index := Index + 2;
                To_Do := To_Do - 2;
             else
