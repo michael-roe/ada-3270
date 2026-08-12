@@ -145,7 +145,7 @@ package body Telnet.Workers is
 
       Session_Code_Page := P500'Access;
 
-      for J in 1 .. 30 loop -- only 8 options to send
+      for J in 1 .. 10000 loop -- only 8 options to send
 
          Next_Option (Direction, Option);
 
