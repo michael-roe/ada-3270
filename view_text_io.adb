@@ -52,30 +52,40 @@ package body View_Text_IO is
                   Ada.Strings.Unbounded.Element (S, Index);
                Two_Bytes (2) :=
                   Ada.Strings.Unbounded.Element (S, Index + 1);
-               W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
-                  Two_Bytes)(1);
 
-               --
-               --  Ada.Text_IO.Put ("View_Text_IO: ");
-               --  Ada.Wide_Text_IO.Put (W);
-               --  Ada.Integer_Text_IO.Put (
-               --     Wide_Character'Pos (W), Base => 16);
-               --  Ada.Text_IO.New_Line;
-               --
+               begin
 
-               --
-               --  OE ligature ought to be handled at a different layer
-               --
+                  W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
+                     Two_Bytes)(1);
 
-               if W = Wide_Character'Val (16#0152#) then
-                  V.Put_Character ('O');
-                  V.Put_Character ('E');
-               elsif W = Wide_Character'Val (16#0153#) then
-                  V.Put_Character ('o');
-                  V.Put_Character ('e');
-               else
-                  V.Put_Character (W);
-               end if;
+                  --
+                  --  Ada.Text_IO.Put ("View_Text_IO: ");
+                  --  Ada.Wide_Text_IO.Put (W);
+                  --  Ada.Integer_Text_IO.Put (
+                  --     Wide_Character'Pos (W), Base => 16);
+                  --  Ada.Text_IO.New_Line;
+                  --
+
+                  --
+                  --  OE ligature ought to be handled at a different layer
+                  --
+
+                  if W = Wide_Character'Val (16#0152#) then
+                     V.Put_Character ('O');
+                     V.Put_Character ('E');
+                  elsif W = Wide_Character'Val (16#0153#) then
+                     V.Put_Character ('o');
+                     V.Put_Character ('e');
+                  else
+                     V.Put_Character (W);
+                  end if;
+
+               exception
+
+                  when Ada.Strings.UTF_Encoding.Encoding_Error =>
+                     Ada.Text_IO.Put_Line ("Invalid UTF8 encoding");
+               end;
+
                Index := Index + 2;
                To_Do := To_Do - 2;
             else

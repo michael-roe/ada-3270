@@ -159,11 +159,6 @@ package body Split_Views.Tests is
          Character'Val (16#90#) &
          Character'Val (16#81#) &
          ')';
-      Bad_Encoding : Ada.Strings.UTF_Encoding.UTF_String := "" &
-      Character'Val (16#F0#) &
-      Character'Val (0) &
-      Character'Val (0) &
-      Character'Val (0);
    begin
 
       OA := ASV'Access;
@@ -216,9 +211,6 @@ package body Split_Views.Tests is
       Assert (Lines.Element (ASV.History.Element (0), 9) = ')',
          "History should contain close parethesis");
 
-      View_Text_IO.Put (OA,
-         Ada.Strings.Unbounded.To_Unbounded_String (Bad_Encoding));
-
       US := Ada.Strings.Unbounded.To_Unbounded_String (
          Ada.Strings.UTF_Encoding.Strings.Encode ("" &
             Character'Val (10) & "*"));
@@ -228,6 +220,30 @@ package body Split_Views.Tests is
          "History should contain asterisk");
 
    end Test_Put;
+
+   procedure Test_Put_Invalid (T : in out Test_Cases.Test_Case'Class) is
+      OA : Outputable_Views.Outputable_Access;
+      US : Ada.Strings.Unbounded.Unbounded_String;
+      W : Wide_Character;
+      Bad_Encoding_2 : Ada.Strings.UTF_Encoding.UTF_String := "" &
+         Character'Val (16#C4#) &
+         Character'Val (0);
+      Bad_Encoding_4 : Ada.Strings.UTF_Encoding.UTF_String := "" &
+         Character'Val (16#F0#) &
+         Character'Val (0) &
+         Character'Val (0) &
+         Character'Val (0);
+   begin
+
+      OA := ASV'Access;
+
+      View_Text_IO.Put (OA,
+         Ada.Strings.Unbounded.To_Unbounded_String (Bad_Encoding_2));
+
+      View_Text_IO.Put (OA,
+         Ada.Strings.Unbounded.To_Unbounded_String (Bad_Encoding_4));
+
+   end Test_Put_Invalid;
 
    procedure Register_Tests (T : in out Split_View_Test) is
       use AUnit.Test_Cases.Registration;
@@ -244,6 +260,9 @@ package body Split_Views.Tests is
 
       Register_Routine (T, Test_Put'Access,
          "Test_Put");
+
+      Register_Routine (T, Test_Put_Invalid'Access,
+         "Test_Put_Invalid");
 
    end Register_Tests;
 
