@@ -228,6 +228,10 @@ package body Split_Views.Tests is
       Bad_Encoding_2 : Ada.Strings.UTF_Encoding.UTF_String := "" &
          Character'Val (16#C4#) &
          Character'Val (0);
+      Bad_Encoding_3 : Ada.Strings.UTF_Encoding.UTF_String := "" &
+         Character'Val (16#E2#) &
+         Character'Val (16#96#) &
+         Character'Val (0);
       Bad_Encoding_4 : Ada.Strings.UTF_Encoding.UTF_String := "" &
          Character'Val (16#F0#) &
          Character'Val (0) &
@@ -239,6 +243,9 @@ package body Split_Views.Tests is
 
       View_Text_IO.Put (OA,
          Ada.Strings.Unbounded.To_Unbounded_String (Bad_Encoding_2));
+
+      View_Text_IO.Put (OA,
+         Ada.Strings.Unbounded.To_Unbounded_String (Bad_Encoding_3));
 
       View_Text_IO.Put (OA,
          Ada.Strings.Unbounded.To_Unbounded_String (Bad_Encoding_4));

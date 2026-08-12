@@ -99,6 +99,9 @@ package body View_Text_IO is
                   Ada.Strings.Unbounded.Element (S, Index + 1);
                Three_Bytes (3) :=
                   Ada.Strings.Unbounded.Element (S, Index + 2);
+
+               begin
+
                W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
                   Three_Bytes)(1);
                --  Ada.Text_IO.Put ("View_Text_IO: ");
@@ -132,6 +135,14 @@ package body View_Text_IO is
                else
                   V.Put_Character (W);
                end if;
+
+               exception
+
+                  when Ada.Strings.UTF_Encoding.Encoding_Error =>
+                     Ada.Text_IO.Put_Line ("Invalid UTF8 encoding");
+
+               end;
+
                Index := Index + 3;
                To_Do := To_Do - 3;
             else
@@ -159,10 +170,14 @@ package body View_Text_IO is
                         Base => 16);
                      Ada.Text_IO.New_Line;
                   end;
+
                exception
+
                   when Ada.Strings.UTF_Encoding.Encoding_Error =>
                      Ada.Text_IO.Put_Line ("Invalid UTF8 encoding");
+
                end;
+
                V.Put_Character ('?');
                Index := Index + 4;
                To_Do := To_Do - 4;
