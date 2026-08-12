@@ -125,17 +125,23 @@ package body View_Text_IO is
                   Ada.Strings.Unbounded.Element (S, Index + 2);
                Four_Bytes (4) :=
                   Ada.Strings.Unbounded.Element (S, Index + 3);
-               declare
-                  WWS : Wide_Wide_String :=
-                     Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Decode (
-                     Four_Bytes);
                begin
-                  Ada.Text_IO.Put ("4 byte character: ");
-                  Ada.Integer_Text_IO.Put (Wide_Wide_Character'Pos (WWS (1)),
-                     Base => 16);
-                  Ada.Text_IO.New_Line;
-                  V.Put_Character ('?');
+                  declare
+                     WWS : Wide_Wide_String :=
+                        Ada.Strings.UTF_Encoding.Wide_Wide_Strings.Decode (
+                        Four_Bytes);
+                  begin
+                     Ada.Text_IO.Put ("4 byte character: ");
+                     Ada.Integer_Text_IO.Put (
+                        Wide_Wide_Character'Pos (WWS (1)),
+                        Base => 16);
+                     Ada.Text_IO.New_Line;
+                  end;
+               exception
+                  when Ada.Strings.UTF_Encoding.Encoding_Error =>
+                     Ada.Text_IO.Put_Line ("Invalid UTF8 encoding");
                end;
+               V.Put_Character ('?');
                Index := Index + 4;
                To_Do := To_Do - 4;
             else
