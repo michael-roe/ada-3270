@@ -15,15 +15,19 @@ with IBM_3270_Orders;
 with IBM_3270.Output_Stream;
 with Buffer; use type Buffer.Byte;
 with Code_Page_500;
+with Code_Page_875;
 with Outputable_Views;
 with View_Text_IO;
 with Block_Elements;
+with Punctuation;
 
 package body Split_Views.Tests is
 
    procedure Update_Field (X : Natural; Y : Natural);
 
    P500 : aliased Code_Page_500.Page_500;
+
+   P875 : aliased Code_Page_875.Page_875;
 
    Field_Count : Natural;
 
@@ -100,6 +104,48 @@ package body Split_Views.Tests is
          "Edit window should be Hello World!");
 
    end Test_Enter;
+
+   procedure Test_Enter_Greek (T : in out Test_Cases.Test_Case'Class) is
+      V : Split_View;
+      Bytes_Out : Byte_Vectors.Vector;
+      Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      V.To_Physical (Bytes_Out, P875'Access);
+
+      Field_Count := 0;
+      Parse (Bytes_Out);
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In,
+         Cursor_X + 1,
+         Cursor_Y);
+      P875.Append (Bytes_In, "H");
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In,
+         Cursor_X_2 + 1,
+         Cursor_Y_2);
+
+      --
+      --  Unlike Code Page 500, Code Page 875 has a mapping for
+      --  directional single quotation marks.
+      --
+
+      P875.Append (Bytes_In, "" &
+         Punctuation.Left_Single_Quotation_Mark &
+         Punctuation.Right_Single_Quotation_Mark);
+
+      V.From_Physical (Bytes_In, P875'Access);
+
+      Assert (V.Get_Option = 3, "Get_Option should return 3");
+
+      Assert (Lines.To_Wide_String (V.Edit (0)) = "" &
+         Punctuation.Left_Single_Quotation_Mark &
+         Punctuation.Right_Single_Quotation_Mark,
+         "Edit window should be open and close quotes");
+
+   end Test_Enter_Greek;
 
    ASV : aliased Split_View;
 
@@ -192,6 +238,9 @@ package body Split_Views.Tests is
 
       Register_Routine (T, Test_Enter'Access,
          "Test_Enter");
+
+      Register_Routine (T, Test_Enter_Greek'Access,
+         "Test_Enter_Greek");
 
       Register_Routine (T, Test_Put'Access,
          "Test_Put");
