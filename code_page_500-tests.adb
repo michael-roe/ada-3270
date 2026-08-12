@@ -5,6 +5,7 @@ with AUnit.Assertions; use AUnit.Assertions;
 with Buffer;
 use type Buffer.Byte;
 with Math_Operators;
+with Punctuation;
 with IBM_3270;
 
 package body Code_Page_500.Tests is
@@ -57,6 +58,21 @@ package body Code_Page_500.Tests is
 
    end Test_Graphic_Escape;
 
+   procedure Test_Quotation_Marks (T : in out Test_Cases.Test_Case'Class) is
+      V : Byte_Vectors.Vector;
+   begin
+
+      P.Append (V, "" & Punctuation.Left_Double_Quotation_Mark);
+      P.Append (V, "" & Punctuation.Right_Double_Quotation_Mark);
+
+      Assert (V.Length = 2, "Length should be 2");
+      Assert (P.To_Wide_Character (V.Element (V.First_Index)) = '"',
+         "Directional quotation mark should translate to straight quote");
+      Assert (P.To_Wide_Character (V.Element (V.First_Index + 1)) = '"',
+         "Directional quotation mark should translate to straight quote");
+
+   end Test_Quotation_Marks;
+
    procedure Register_Tests (T : in out Code_Page_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -69,6 +85,9 @@ package body Code_Page_500.Tests is
 
       Register_Routine (T, Test_Round_Trip2'Access,
          "Test_Graphic_Escape");
+
+      Register_Routine (T, Test_Round_Trip2'Access,
+         "Test_Quotation_Marks");
 
    end Register_Tests;
 

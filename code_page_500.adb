@@ -2,6 +2,7 @@ with Buffer;
 use type Buffer.Byte;
 with Byte_Vectors;
 with Code_Page_310;
+with Punctuation;
 
 package body Code_Page_500 is
 
@@ -309,6 +310,15 @@ package body Code_Page_500 is
          C := Wide_Character'Pos (S (J));
          if C < 256 then
             V.Append (Table (Buffer.Byte (C)));
+         elsif S (J) = Punctuation.Left_Double_Quotation_Mark then
+
+            --
+            --  Lossy conversion for directional quotation mark
+            --
+
+            V.Append (Table (Character'Pos ('"')));
+         elsif S (J) = Punctuation.Right_Double_Quotation_Mark then
+            V.Append (Table (Character'Pos ('"')));
          else
             Code_Page_310.Append (V, S (J));
          end if;
