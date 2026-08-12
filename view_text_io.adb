@@ -54,6 +54,8 @@ package body View_Text_IO is
                   Ada.Strings.Unbounded.Element (S, Index + 1);
                W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
                   Two_Bytes)(1);
+
+               --
                --  Ada.Text_IO.Put ("View_Text_IO: ");
                --  Ada.Wide_Text_IO.Put (W);
                --  Ada.Integer_Text_IO.Put (
@@ -61,6 +63,25 @@ package body View_Text_IO is
                --  Ada.Text_IO.New_Line;
                --
 
+               V.Put_Character (W);
+               Index := Index + 2;
+               To_Do := To_Do - 2;
+            else
+               To_Do := 0;
+            end if;
+         elsif (B and 16#f0#) = 16#e0# then
+            if To_Do >= 3 then
+               Three_Bytes (1) :=
+                  Ada.Strings.Unbounded.Element (S, Index);
+               Three_Bytes (2) :=
+                  Ada.Strings.Unbounded.Element (S, Index + 1);
+               Three_Bytes (3) :=
+                  Ada.Strings.Unbounded.Element (S, Index + 2);
+               W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
+                  Three_Bytes)(1);
+               --  Ada.Text_IO.Put ("View_Text_IO: ");
+               --  Ada.Wide_Text_IO.Put (W);
+               --  Ada.Text_IO.New_Line;
                if W = Punctuation.Em_Dash then
 
                   --
@@ -89,25 +110,6 @@ package body View_Text_IO is
                else
                   V.Put_Character (W);
                end if;
-               Index := Index + 2;
-               To_Do := To_Do - 2;
-            else
-               To_Do := 0;
-            end if;
-         elsif (B and 16#f0#) = 16#e0# then
-            if To_Do >= 3 then
-               Three_Bytes (1) :=
-                  Ada.Strings.Unbounded.Element (S, Index);
-               Three_Bytes (2) :=
-                  Ada.Strings.Unbounded.Element (S, Index + 1);
-               Three_Bytes (3) :=
-                  Ada.Strings.Unbounded.Element (S, Index + 2);
-               W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
-                  Three_Bytes)(1);
-               --  Ada.Text_IO.Put ("View_Text_IO: ");
-               --  Ada.Wide_Text_IO.Put (W);
-               --  Ada.Text_IO.New_Line;
-               V.Put_Character (W);
                Index := Index + 3;
                To_Do := To_Do - 3;
             else
