@@ -73,6 +73,19 @@ package body View_Text_IO is
 
                   V.Put_Character ('-');
                   V.Put_Character ('-');
+               elsif W >= Wide_Character'Val (16#fe00#) and
+                  W <= Wide_Character'Val (16#fe0f#)
+               then
+
+                  --
+                  --  Ignore Unicode variation selectors.
+                  --  As luck would have it, none of the Code Page 310
+                  --  characters need variation selectors.
+                  --  (Left Right Arrow has an emoji variant, but isn't in
+                  --  Code Page 310.)
+                  --
+
+                  null;
                else
                   V.Put_Character (W);
                end if;
