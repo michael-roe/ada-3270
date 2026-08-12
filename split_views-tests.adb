@@ -111,8 +111,13 @@ package body Split_Views.Tests is
          Character'Val (16#F0#) &
          Character'Val (16#9F#) &
          Character'Val (16#90#) &
-         Character'Val (16#81#) & 
+         Character'Val (16#81#) &
          ')';
+      Bad_Encoding : Ada.Strings.UTF_Encoding.UTF_String := "" &
+      Character'Val (16#F0#) &
+      Character'Val (0) &
+      Character'Val (0) &
+      Character'Val (0);
    begin
 
       OA := ASV'Access;
@@ -164,6 +169,9 @@ package body Split_Views.Tests is
 
       Assert (Lines.Element (ASV.History.Element (0), 9) = ')',
          "History should contain close parethesis");
+
+      View_Text_IO.Put (OA,
+         Ada.Strings.Unbounded.To_Unbounded_String (Bad_Encoding));
 
       US := Ada.Strings.Unbounded.To_Unbounded_String (
          Ada.Strings.UTF_Encoding.Strings.Encode ("" &

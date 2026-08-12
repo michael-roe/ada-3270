@@ -9,6 +9,8 @@ package Split_Views.Tests is
 
    procedure Test_Enter (T : in out Test_Cases.Test_Case'Class);
 
+   procedure Test_Put (T : in out Test_Cases.Test_Case'Class);
+
    procedure Register_Tests (T : in out Split_View_Test);
 
    function Name (T : Split_View_Test) return Message_String;
