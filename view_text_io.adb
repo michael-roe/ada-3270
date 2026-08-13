@@ -119,6 +119,10 @@ package body View_Text_IO is
 
                   V.Put_Character ('-');
                   V.Put_Character ('-');
+               elsif W = Punctuation.Horizontal_Ellipsis then
+                  V.Put_Character ('.');
+                  V.Put_Character ('.');
+                  V.Put_Character ('.');
                elsif W >= Wide_Character'Val (16#fe00#) and
                   W <= Wide_Character'Val (16#fe0f#)
                then

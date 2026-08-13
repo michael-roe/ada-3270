@@ -21,4 +21,7 @@ package Punctuation is
    Bullet : constant Wide_Character :=
       Wide_Character'Val (16#2022#);
 
+   Horizontal_Ellipsis : constant Wide_Character :=
+      Wide_Character'Val (16#2026#);
+
 end Punctuation;
