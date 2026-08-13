@@ -54,6 +54,7 @@ while True:
   query = json.loads(line)
 
   log_file.write(json.dumps({"role": "user", "content": query}))
+  log_file.write("\n")
   log_file.flush()
 
   history.append({"role": "user", "content": query})
@@ -63,6 +64,7 @@ while True:
     "temperature": 0.6,
     "stream": True
   }
+  # For Novita: "separate_reasoning": True
 
   response = requests.post(url, headers=headers, json=payload, stream=True)
 
@@ -98,6 +100,10 @@ while True:
   print("Received:", content)
 
   history.append({"role": role, "content": content})
+
+  log_file.write(json.dumps({"role": role, "content": content, "reasoning_content": reasoning_content}))
+  log_file.write("\n")
+  log_file.flush()
 
   f.write(json.dumps(content))
   f.write("\n")
