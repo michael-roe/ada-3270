@@ -7,6 +7,7 @@ with Code_Page_310.Tests;
 with Code_Page_870.Tests;
 with Code_Page_880.Tests;
 with Code_Page_875.Tests;
+with Code_Page_924.Tests;
 with Code_Page_1025.Tests;
 with Code_Page_UTF8.Tests;
 with Line_Vectors_Tests;
@@ -47,6 +48,7 @@ package body My_Test_Suite is
    Test_18 : aliased Checkbox_Views.Tests.Checkbox_View_Test;
    Test_19 : aliased Menu_Views.Tests.Menu_View_Test;
    Test_20 : aliased Numbered_Menu_Views.Tests.Numbered_Menu_View_Test;
+   Test_21 : aliased Code_Page_924.Tests.Code_Page_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -71,6 +73,7 @@ package body My_Test_Suite is
       Add_Test (Result'Access, Test_18'Access);
       Add_Test (Result'Access, Test_19'Access);
       Add_Test (Result'Access, Test_20'Access);
+      Add_Test (Result'Access, Test_21'Access);
 
       return Result'Access;
 
