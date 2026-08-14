@@ -122,30 +122,33 @@ package body IBM_3270_Event_Handlers is
          Intent_Input.Edit_To_History;
          Intent_Input.New_Line;
          Intent_Input.New_Line;
-         Backend_Byte := 0;
-         Ada.Strings.Unbounded.Set_Unbounded_String (From_Backend, "");
-         while Backend_Byte /= 10 loop
-            V.RX2.Dequeue (Backend_Byte);
-            if Backend_Byte /= 13 then
-               Ada.Strings.Unbounded.Append (From_Backend,
-                  Character'Val (Backend_Byte));
-            end if;
+         Go_Ahead := False;
+         while not Go_Ahead loop
+            Backend_Byte := 0;
+            Ada.Strings.Unbounded.Set_Unbounded_String (From_Backend, "");
+            while Backend_Byte /= 10 loop
+               V.RX2.Dequeue (Backend_Byte);
+               if Backend_Byte /= 13 then
+                  Ada.Strings.Unbounded.Append (From_Backend,
+                     Character'Val (Backend_Byte));
+               end if;
+            end loop;
+            --  Ada.Text_IO.Put_Line ("Got string from backend");
+            --  Ada.Text_IO.Put_Line (Ada.Strings.Unbounded.To_String (
+            --     From_Backend));
+            Backend_Object := GNATCOLL.JSON.Read (From_Backend);
+            -- Ada.Text_IO.Put_Line ("Read done");
+            Backend_UTF8 := GNATCOLL.JSON.Get (Backend_Object, "content");
+            --  Ada.Text_IO.Put_Line ("Get done");
+            View_Text_IO.Put (V.Outputable, Backend_UTF8);
+            --  Ada.Text_IO.Put_Line ("Put done");
+            Go_Ahead := GNATCOLL.JSON.Get (Backend_Object, "final");
+            --  if Go_Ahead then
+            --     Ada.Text_IO.Put_Line ("End of message");
+            --  else
+            --     Ada.Text_IO.Put_Line ("Not end of message");
+            --  end if;
          end loop;
-         --  Ada.Text_IO.Put_Line ("Got string from backend");
-         --  Ada.Text_IO.Put_Line (Ada.Strings.Unbounded.To_String (
-         --     From_Backend));
-         Backend_Object := GNATCOLL.JSON.Read (From_Backend);
-         -- Ada.Text_IO.Put_Line ("Read done");
-         Backend_UTF8 := GNATCOLL.JSON.Get (Backend_Object, "content");
-         --  Ada.Text_IO.Put_Line ("Get done");
-         View_Text_IO.Put (V.Outputable, Backend_UTF8);
-         --  Ada.Text_IO.Put_Line ("Put done");
-         Go_Ahead := GNATCOLL.JSON.Get (Backend_Object, "final");
-         if Go_Ahead then
-            Ada.Text_IO.Put_Line ("End of message");
-         else
-            Ada.Text_IO.Put_Line ("Not end of message");
-         end if;
 
          case V.State  is
             when Login_Panel =>

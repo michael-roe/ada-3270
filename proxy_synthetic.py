@@ -104,6 +104,9 @@ while True:
               if "\n" in reasoning_delta:
                 print("#", end="")
                 sys.stdout.flush()
+                f.write(json.dumps({"content": "", "final": False}))
+                f.write("\n")
+                f.flush()
           if "content" in delta:
             content_delta = delta["content"]
             if not content_delta is None:
