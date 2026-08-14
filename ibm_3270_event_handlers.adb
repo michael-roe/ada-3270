@@ -131,9 +131,11 @@ package body IBM_3270_Event_Handlers is
             end if;
          end loop;
          --  Ada.Text_IO.Put_Line ("Got string from backend");
+         --  Ada.Text_IO.Put_Line (Ada.Strings.Unbounded.To_String (
+         --     From_Backend));
          Backend_Object := GNATCOLL.JSON.Read (From_Backend);
-         --  Ada.Text_IO.Put_Line ("Read done");
-         Backend_UTF8 := GNATCOLL.JSON.Get (Backend_Object);
+         -- Ada.Text_IO.Put_Line ("Read done");
+         Backend_UTF8 := GNATCOLL.JSON.Get (Backend_Object, "content");
          --  Ada.Text_IO.Put_Line ("Get done");
          View_Text_IO.Put (V.Outputable, Backend_UTF8);
          --  Ada.Text_IO.Put_Line ("Put done");

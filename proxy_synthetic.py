@@ -44,7 +44,8 @@ for j in range (0, 5):
   line = f.readline().strip()
   opt = json.loads(line)
   print ("Option:", opt)
-  f.write("\"OK\"\n")
+  f.write(json.dumps({"content": "OK"}))
+  f.write("\n")
   f.flush()
 
 history = []
@@ -125,6 +126,6 @@ while True:
     log_file.write("\n")
     log_file.flush()
   
-    f.write(json.dumps(content))
+    f.write(json.dumps({"content": content}))
     f.write("\n")
     f.flush()
