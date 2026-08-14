@@ -5,6 +5,7 @@ with Ada.Strings.UTF_Encoding.Wide_Strings;
 with Ada.Strings.UTF_Encoding.Wide_Wide_Strings;
 with Ada.Text_IO;
 with Ada.Wide_Text_IO;
+with Ada.Wide_Wide_Text_IO;
 with Ada.Integer_Text_IO;
 with Buffer;
 use type Buffer.Byte;
@@ -169,6 +170,7 @@ package body View_Text_IO is
                         Four_Bytes);
                   begin
                      Ada.Text_IO.Put ("4 byte character: ");
+                     Ada.Wide_Wide_Text_IO.Put (WWS (1));
                      Ada.Integer_Text_IO.Put (
                         Wide_Wide_Character'Pos (WWS (1)),
                         Base => 16);
