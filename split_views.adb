@@ -26,6 +26,7 @@ package body Split_Views is
       P : Code_Pages.Code_Page_Access) is
       B : Byte_Vectors.Vector;
       Line_Number : Natural;
+      Last_Page : Natural;
    begin
 
       Panel_Elements.Box_Top (0, P, Bytes_Out);
@@ -38,10 +39,16 @@ package body Split_Views is
          P,
          Bytes_Out);
 
+      if V.History.Length = 0 then
+         Last_Page := 0;
+      else
+         Last_Page := (Natural (V.History.Length) - 1) / 16;
+      end if;
+
       Panel_Elements.Right_Scroll_Up_Down (3,
          P,
          V.Page_Number /= 0,
-         True,
+         V.Page_Number < Last_Page,
          Bytes_Out);
 
       for J in 4 .. 19 loop
