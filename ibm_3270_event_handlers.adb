@@ -91,6 +91,7 @@ package body IBM_3270_Event_Handlers is
       From_Backend : Ada.Strings.Unbounded.Unbounded_String;
       Backend_Object : GNATCOLL.JSON.JSON_Value;
       Backend_UTF8 : GNATCOLL.JSON.UTF8_Unbounded_String;
+      Go_Ahead : Boolean;
       Output_Interface : Outputable_Views.Outputable_Access;
    begin
 
@@ -139,6 +140,12 @@ package body IBM_3270_Event_Handlers is
          --  Ada.Text_IO.Put_Line ("Get done");
          View_Text_IO.Put (V.Outputable, Backend_UTF8);
          --  Ada.Text_IO.Put_Line ("Put done");
+         Go_Ahead := GNATCOLL.JSON.Get (Backend_Object, "final");
+         if Go_Ahead then
+            Ada.Text_IO.Put_Line ("End of message");
+         else
+            Ada.Text_IO.Put_Line ("Not end of message");
+         end if;
 
          case V.State  is
             when Login_Panel =>

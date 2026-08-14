@@ -44,7 +44,7 @@ for j in range (0, 5):
   line = f.readline().strip()
   opt = json.loads(line)
   print ("Option:", opt)
-  f.write(json.dumps({"content": "OK"}))
+  f.write(json.dumps({"content": "OK", "final": True}))
   f.write("\n")
   f.flush()
 
@@ -72,7 +72,7 @@ while True:
   if response.status_code != requests.codes.ok:
     error_msg = response.json()
     print(error_msg["error"])
-    f.write(json.dumps(error_msg["error"]))
+    f.write(json.dumps({"content": error_msg["error"], "final": True}))
     f.write("\n")
     f.flush()
 
@@ -126,6 +126,6 @@ while True:
     log_file.write("\n")
     log_file.flush()
   
-    f.write(json.dumps({"content": content}))
+    f.write(json.dumps({"content": content, "final": True}))
     f.write("\n")
     f.flush()
