@@ -83,8 +83,8 @@ while True:
     reasoning_content = ""
   
     for line in response.iter_lines():
-      print("#", end="")
-      sys.stdout.flush()
+      # print("#", end="")
+      # sys.stdout.flush()
       line = line.decode("utf-8")
       if line.startswith("data: "):
         data = line[6:]
@@ -100,10 +100,20 @@ while True:
             reasoning_delta = delta["reasoning_content"]
             if not reasoning_delta is None:
               reasoning_content = reasoning_content + reasoning_delta
+              if "\n" in reasoning_delta:
+                print("#", end="")
+                sys.stdout.flush()
           if "content" in delta:
             content_delta = delta["content"]
             if not content_delta is None:
               content = content + content_delta
+              if "\n" in content_delta:
+                print("#", end="")
+                sys.stdout.flush()
+      elif line.startswith("event: "):
+        data = line[7:]
+        print("event: ", end="")
+        print(data)
   
     print("Role:", role)
     print("Received:", content)
