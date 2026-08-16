@@ -6,16 +6,16 @@ use type Ada.Containers.Count_Type;
 with Ada.Characters.Latin_1;
 with Ada.Characters.Conversions;
 with AUnit.Assertions; use AUnit.Assertions;
-with Buffer;
-use type Buffer.Byte;
 with Unicode.Names.Arrows;
 with Unicode.Names.Block_Elements;
+with Unicode.Names.Super_And_Sub_Scripts;
 with Box_Drawing;
 with Math_Operators;
 with Geometric_Shapes;
+with Buffer;
+use type Buffer.Byte;
 with Byte_Vectors;
 with Byte_Text_IO;
-with Superscripts;
 
 package body Code_Page_310.Tests is
 
@@ -223,16 +223,19 @@ package body Code_Page_310.Tests is
       Superscript_Three := Ada.Characters.Conversions.To_Wide_Character (
          Ada.Characters.Latin_1.Superscript_Three);
 
-      Code_Page_310.Append (V, Superscripts.Superscript_Zero);
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Super_And_Sub_Scripts.Superscript_Zero));
       Code_Page_310.Append (V, Superscript_One);
       Code_Page_310.Append (V, Superscript_Two);
       Code_Page_310.Append (V, Superscript_Three);
-      Code_Page_310.Append (V, Superscripts.Superscript_Four);
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Super_And_Sub_Scripts.Superscript_Four));
 
       Assert (V.Length = 10, "Length should be 10");
 
       Assert (Code_Page_310.To_Wide_Character (V.Element (1)) =
-         Superscripts.Superscript_Zero,
+         Wide_Character'Val (
+           Unicode.Names.Super_And_Sub_Scripts.Superscript_Zero),
          "Superscript_Zero should survive round trip");
 
       Assert (Code_Page_310.To_Wide_Character (V.Element (3)) =
