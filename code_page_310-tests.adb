@@ -9,7 +9,7 @@ with AUnit.Assertions; use AUnit.Assertions;
 with Buffer;
 use type Buffer.Byte;
 with Unicode.Names.Arrows;
-with Block_Elements;
+with Unicode.Names.Block_Elements;
 with Box_Drawing;
 with Math_Operators;
 with Geometric_Shapes;
@@ -120,15 +120,20 @@ package body Code_Page_310.Tests is
       V : Byte_Vectors.Vector;
    begin
 
-      Code_Page_310.Append (V, Block_Elements.Upper_Half);
-      Code_Page_310.Append (V, Block_Elements.Lower_Half);
-      Code_Page_310.Append (V, Block_Elements.Left_Half);
-      Code_Page_310.Append (V, Block_Elements.Right_Half);
-      Code_Page_310.Append (V, Block_Elements.Full);
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Block_Elements.Upper_Half_Block));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Block_Elements.Lower_Half_Block));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Block_Elements.Left_Half_Block));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Block_Elements.Right_Half_Block));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Block_Elements.Full_Block));
 
       Assert (V.Length = 10, "Length should be 10");
       Assert (Code_Page_310.To_Wide_Character (V.Element (9)) =
-         Block_Elements.Full,
+         Wide_Character'Val (Unicode.Names.Block_Elements.Full_Block),
          "Full block element should survive round trip");
 
    end Test_Block_Elements;
