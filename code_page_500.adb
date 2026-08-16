@@ -1,9 +1,9 @@
 with Ada.Characters.Latin_1;
+with Unicode.Names.General_Punctuation;
 with Buffer;
 use type Buffer.Byte;
 with Byte_Vectors;
 with Code_Page_310;
-with Punctuation;
 
 package body Code_Page_500 is
 
@@ -311,7 +311,9 @@ package body Code_Page_500 is
          C := Wide_Character'Pos (S (J));
          if C < 256 then
             V.Append (Table (Buffer.Byte (C)));
-         elsif S (J) = Punctuation.En_Dash then
+         elsif S (J) = Wide_Character'Val (
+            Unicode.Names.General_Punctuation.En_Dash)
+         then
 
             --
             --  Lossy conversion of en dash
@@ -319,7 +321,9 @@ package body Code_Page_500 is
             --
 
             V.Append (Table (Character'Pos ('-')));
-         elsif S (J) = Punctuation.Left_Single_Quotation_Mark then
+         elsif S (J) = Wide_Character'Val (
+            Unicode.Names.General_Punctuation.Left_Single_Quotation_Mark)
+         then
 
             --
             --  Lossy conversion of directional quotation marks
@@ -327,12 +331,18 @@ package body Code_Page_500 is
 
             V.Append (Table (Character'Pos (
                Ada.Characters.Latin_1.Apostrophe)));
-         elsif S (J) = Punctuation.Right_Single_Quotation_Mark then
+         elsif S (J) = Wide_Character'Val (
+            Unicode.Names.General_Punctuation.Right_Single_Quotation_Mark)
+         then
             V.Append (Table (Character'Pos (
                Ada.Characters.Latin_1.Apostrophe)));
-         elsif S (J) = Punctuation.Left_Double_Quotation_Mark then
+         elsif S (J) = Wide_Character'Val (
+            Unicode.Names.General_Punctuation.Left_Double_Quotation_Mark)
+         then
             V.Append (Table (Character'Pos ('"')));
-         elsif S (J) = Punctuation.Right_Double_Quotation_Mark then
+         elsif S (J) = Wide_Character'Val (
+            Unicode.Names.General_Punctuation.Right_Double_Quotation_Mark)
+         then
             V.Append (Table (Character'Pos ('"')));
          else
             Code_Page_310.Append (V, S (J));

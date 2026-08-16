@@ -7,9 +7,9 @@ with Ada.Text_IO;
 with Ada.Wide_Text_IO;
 with Ada.Wide_Wide_Text_IO;
 with Ada.Integer_Text_IO;
+with Unicode.Names.General_Punctuation;
 with Buffer;
 use type Buffer.Byte;
-with Punctuation;
 
 package body View_Text_IO is
 
@@ -108,7 +108,9 @@ package body View_Text_IO is
                --  Ada.Text_IO.Put ("View_Text_IO: ");
                --  Ada.Wide_Text_IO.Put (W);
                --  Ada.Text_IO.New_Line;
-               if W = Punctuation.Em_Dash then
+               if W = Wide_Character'Val (
+                  Unicode.Names.General_Punctuation.Em_Dash)
+               then
 
                   --
                   --  Em_Dash is handled here because it isn't suitable for a
@@ -120,7 +122,9 @@ package body View_Text_IO is
 
                   V.Put_Character ('-');
                   V.Put_Character ('-');
-               elsif W = Punctuation.Horizontal_Ellipsis then
+               elsif W = Wide_Character'Val (
+                  Unicode.Names.General_Punctuation.Horizontal_Ellipsis)
+               then
                   V.Put_Character ('.');
                   V.Put_Character ('.');
                   V.Put_Character ('.');
