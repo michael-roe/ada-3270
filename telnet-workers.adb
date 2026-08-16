@@ -31,6 +31,10 @@ package body Telnet.Workers is
 
    type State is (Data, Data_IAC, Will, Wont, Do_It, Dont, Opt, Opt_IAC);
 
+   procedure Environment_Undefined (
+      N : Telnet_Strings.Bounded_String;
+      User_Variable : Boolean);
+
    Terminal_Message : Buffer.Byte_Array := (
       Telnet.Protocol.IAC,
       Telnet.Protocol.SB,
@@ -93,6 +97,11 @@ package body Telnet.Workers is
       Go_Ahead : Boolean := False;
       RX_Empty : Boolean;
       Session_Code_Page : Code_Pages.Code_Page_Access;
+
+      procedure Handle_Environment (
+           N : Telnet_Strings.Bounded_String;
+           V : Telnet_Strings.Bounded_String;
+           User_Variable : Boolean);
 
       procedure Handle_Environment (
            N : Telnet_Strings.Bounded_String;
