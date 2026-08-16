@@ -181,7 +181,7 @@ package body Panel_Elements is
       P.Append (Bytes_Out, "" & C);
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       Code_Page_310.Append (Bytes_Out, Box_Drawing.Vertical);
- 
+
    end Right_Selection;
 
    procedure Text_Line (
