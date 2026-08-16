@@ -9,9 +9,9 @@ with AUnit.Assertions; use AUnit.Assertions;
 with Unicode.Names.Arrows;
 with Unicode.Names.Block_Elements;
 with Unicode.Names.Super_And_Sub_Scripts;
+with Unicode.Names.Geometric_Shapes;
 with Box_Drawing;
 with Math_Operators;
-with Geometric_Shapes;
 with Buffer;
 use type Buffer.Byte;
 with Byte_Vectors;
@@ -142,19 +142,22 @@ package body Code_Page_310.Tests is
       V : Byte_Vectors.Vector;
    begin
 
-      Code_Page_310.Append (V, Geometric_Shapes.Black_Square);
-      Code_Page_310.Append (V, Geometric_Shapes.Lozenge);
-      Code_Page_310.Append (V, Geometric_Shapes.White_Circle);
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Geometric_Shapes.Black_Square));
+      Code_Page_310.Append (V, Wide_Character'Val (
+          Unicode.Names.Geometric_Shapes.Lozenge));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Geometric_Shapes.White_Circle));
 
       Assert (V.Length = 6, "Length should be 6");
       Assert (Code_Page_310.To_Wide_Character (V.Element (1)) =
-         Geometric_Shapes.Black_Square,
+         Wide_Character'Val (Unicode.Names.Geometric_Shapes.Black_Square),
          "Black Square should survive round trip");
       Assert (Code_Page_310.To_Wide_Character (V.Element (3)) =
-         Geometric_Shapes.Lozenge,
+         Wide_Character'Val (Unicode.Names.Geometric_Shapes.Lozenge),
          "Lozenge should survive round trip");
       Assert (Code_Page_310.To_Wide_Character (V.Element (5)) =
-         Geometric_Shapes.White_Circle,
+         Wide_Character'Val (Unicode.Names.Geometric_Shapes.White_Circle),
          "White Circle should survive round trip");
 
    end Test_Geometric_Shapes;
