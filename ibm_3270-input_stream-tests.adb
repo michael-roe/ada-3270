@@ -2,6 +2,7 @@ with AUnit.Assertions; use AUnit.Assertions;
 with Ada.Text_IO;
 with Ada.Wide_Text_IO;
 with Ada.Containers; use type Ada.Containers.Count_Type;
+with Unicode.Names.Latin_Extended_A;
 with Buffer; use type Buffer.Byte;
 with Views;
 with Byte_Vectors;
@@ -383,7 +384,10 @@ package body IBM_3270.Input_Stream.Tests is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
 
       P870.Append (Bytes_In,
-        "Dzie" & Wide_Character'Val (16#144#) & " dobry");
+        "Dzie" &
+        Wide_Character'Val (
+           Unicode.Names.Latin_Extended_A.Latin_Small_Letter_N_With_Acute) &
+        " dobry");
 
       V.Alternate_Code_Page := True;
       V.From_Physical (Bytes_In, P870'Access);
