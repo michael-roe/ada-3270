@@ -3,6 +3,7 @@ with Ada.Text_IO;
 with Ada.Wide_Text_IO;
 with Ada.Containers; use type Ada.Containers.Count_Type;
 with Unicode.Names.Latin_Extended_A;
+with Unicode.Names.Mathematical_Operators;
 with Buffer; use type Buffer.Byte;
 with Views;
 with Byte_Vectors;
@@ -12,7 +13,6 @@ with Code_Page_310;
 with Code_Page_500;
 with Code_Page_870;
 with Lines; use type Lines.Bounded_Wide_String;
-with Math_Operators;
 
 package body IBM_3270.Input_Stream.Tests is
 
@@ -206,7 +206,8 @@ package body IBM_3270.Input_Stream.Tests is
       --  Bytes_In.Append (16#C1#);
       IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
       P500.Append (Bytes_In, "*");
-      Code_Page_310.Append (Bytes_In, Math_Operators.Logical_And);
+      Code_Page_310.Append (Bytes_In, Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Logical_And));
 
       V.From_Physical (Bytes_In, P500'Access);
 
@@ -220,7 +221,8 @@ package body IBM_3270.Input_Stream.Tests is
       Assert (V.Last_Y = 2, "Y should be 2");
       Assert (Lines.Length (V.Last_Field) = 2,
          "Field length should be 2");
-      Lines.Set_Bounded_Wide_String (L, "*" & Math_Operators.Logical_And);
+      Lines.Set_Bounded_Wide_String (L, "*" & Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Logical_And));
       Assert (V.Last_Field = L, "Field should contain 2 wide characters");
 
    end Test_Buffer_Address;

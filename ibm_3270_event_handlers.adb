@@ -18,9 +18,6 @@ with Outputable_Views;
 with IBM_3270;
 with Lines;
 with Line_Vectors;
-with Geometric_Shapes;
-with Block_Elements;
-with Math_Operators;
 with View_Text_IO;
 
 package body IBM_3270_Event_Handlers is

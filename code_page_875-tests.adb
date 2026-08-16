@@ -3,9 +3,9 @@ with Ada.Wide_Text_IO;
 with Ada.Characters.Handling;
 with Ada.Containers; use type Ada.Containers.Count_Type;
 with AUnit.Assertions; use AUnit.Assertions;
+with Unicode.Names.Mathematical_Operators;
 with Buffer;
 use type Buffer.Byte;
-with Math_Operators;
 with IBM_3270;
 
 package body Code_Page_875.Tests is
@@ -45,7 +45,8 @@ package body Code_Page_875.Tests is
       V : Byte_Vectors.Vector;
    begin
 
-      P.Append (V, "" & Math_Operators.Logical_And);
+      P.Append (V, "" & Wide_Character'Val (
+        Unicode.Names.Mathematical_Operators.Logical_And));
 
       Assert (V.Length = 2, "Length should be 2");
       Assert (V.Element (V.First_Index) = IBM_3270.Graphic_Escape,
