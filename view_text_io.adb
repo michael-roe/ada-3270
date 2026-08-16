@@ -8,6 +8,7 @@ with Ada.Wide_Text_IO;
 with Ada.Wide_Wide_Text_IO;
 with Ada.Integer_Text_IO;
 with Unicode.Names.General_Punctuation;
+with Unicode.Names.Latin_Extended_A;
 with Buffer;
 use type Buffer.Byte;
 
@@ -71,10 +72,14 @@ package body View_Text_IO is
                   --  OE ligature ought to be handled at a different layer
                   --
 
-                  if W = Wide_Character'Val (16#0152#) then
+                  if W = Wide_Character'Val (
+                     Unicode.Names.Latin_Extended_A.Latin_Capital_Ligature_Oe)
+                  then
                      V.Put_Character ('O');
                      V.Put_Character ('E');
-                  elsif W = Wide_Character'Val (16#0153#) then
+                  elsif W = Wide_Character'Val (
+                     Unicode.Names.Latin_Extended_A.Latin_Small_Ligature_Oe)
+                  then
                      V.Put_Character ('o');
                      V.Put_Character ('e');
                   else
