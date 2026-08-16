@@ -4,7 +4,7 @@ use type Ada.Containers.Count_Type;
 with Code_Page_310;
 with Code_Page_500;
 with Box_Drawing;
-with Block_Elements;
+with Unicode.Names.Block_Elements;
 with IBM_3270_Orders;
 with IBM_3270.Input_Stream;
 with Panel_Elements;
@@ -41,7 +41,8 @@ package body Progress_Views is
       IBM_3270_Orders.Start_Field (Bytes_Out, True, Normal_Text);
       P.Append (Bytes_Out, "[");
       for J in 1 .. V.Progress loop
-         Code_Page_310.Append (Bytes_Out, Block_Elements.Full);
+         Code_Page_310.Append (Bytes_Out, Wide_Character'Val (
+            Unicode.Names.Block_Elements.Full_Block));
       end loop;
       for J in 1 .. 40 - V.Progress loop
          P.Append (Bytes_Out, " ");

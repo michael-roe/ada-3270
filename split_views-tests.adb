@@ -18,7 +18,7 @@ with Code_Page_500;
 with Code_Page_875;
 with Outputable_Views;
 with View_Text_IO;
-with Block_Elements;
+with Unicode.Names.Block_Elements;
 with Punctuation;
 
 package body Split_Views.Tests is
@@ -187,7 +187,7 @@ package body Split_Views.Tests is
       Assert (Lines.To_Wide_String (ASV.History.Element (0)) = "Test" & W,
          "Should be Multiplication_Sign in History");
 
-      W := Block_Elements.Full;
+      W := Wide_Character'Val (Unicode.Names.Block_Elements.Full_Block);
 
       US := Ada.Strings.Unbounded.To_Unbounded_String (
          Ada.Strings.UTF_Encoding.Wide_Strings.Encode ("" & W));
