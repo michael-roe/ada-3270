@@ -26,6 +26,12 @@ See style.md for a summary.
 
 # Organization of Source Code
 
+- Unicode
+  - Unicode.Names (imported from Ada/XML)
+
+- JSON
+  - GNATCOLL.JSON (imported from GNATCOLL)
+
 - Producer/Consumer
   - Buffer
   - Buffer_Queues
@@ -34,15 +40,11 @@ See style.md for a summary.
   - Byte_Vectors
 
 - Character Set Conversion
-  - Arrows
-  - Block_Elements
-  - Box_Drawing
   - Code_Page_310
   - Code_Page_500
   - Code_Page_870
   - Code_Pages
   - Emoji
-  - Math_Operators
 
 - TELNET
   - Telnet
