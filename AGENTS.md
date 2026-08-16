@@ -5,7 +5,7 @@ To build unit tests:
 
 ```
 source setup_aunit.sh
-gnatmake test_runner
+gnatmake -gnatW8 test_runner -largs gnatcoll_support.o
 ```
 
 To run unit tests:
