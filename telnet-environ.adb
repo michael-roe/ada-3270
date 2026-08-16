@@ -11,25 +11,6 @@ package body Telnet.Environ is
 
    type Byte_Array is array (1 .. 10) of Buffer.Byte;
 
-   procedure Debug (
-      N : Telnet_Strings.Bounded_String;
-      V : Telnet_Strings.Bounded_String) is
-   begin
-
-      Ada.Text_IO.Put ("NAME = ");
-
-      Ada.Text_IO.Put (Telnet_Strings.To_String (N));
-
-      Ada.Text_IO.New_Line;
-
-      Ada.Text_IO.Put ("VALUE = ");
-
-      Ada.Text_IO.Put (Telnet_Strings.To_String (V));
-
-      Ada.Text_IO.New_Line;
-
-   end Debug;
-
    procedure Parse (V : Byte_Vectors.Vector) is
       B : Buffer.Byte;
       State_Escape : Boolean;
