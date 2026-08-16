@@ -10,8 +10,8 @@ with Unicode.Names.Arrows;
 with Unicode.Names.Block_Elements;
 with Unicode.Names.Super_And_Sub_Scripts;
 with Unicode.Names.Geometric_Shapes;
+with Unicode.Names.Mathematical_Operators;
 with Box_Drawing;
-with Math_Operators;
 with Buffer;
 use type Buffer.Byte;
 with Byte_Vectors;
@@ -198,13 +198,20 @@ package body Code_Page_310.Tests is
       Code_Page_310.Append (V, Multiplication_Sign);
       Code_Page_310.Append (V, Division_Sign);
       Code_Page_310.Append (V, Plus_Minus_Sign);
-      Code_Page_310.Append (V, Math_Operators.Less_Than_Or_Equal);
-      Code_Page_310.Append (V, Math_Operators.Greater_Than_Or_Equal);
-      Code_Page_310.Append (V, Math_Operators.Not_Equal);
-      Code_Page_310.Append (V, Math_Operators.Identical);
-      Code_Page_310.Append (V, Math_Operators.Logical_And);
-      Code_Page_310.Append (V, Math_Operators.Logical_Or);
-      Code_Page_310.Append (V, Math_Operators.Superset);
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Less_Than_Or_Equal_To));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Greater_Than_Or_Equal_To));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Not_Equal_To));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Identical_To));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Logical_And));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Logical_Or));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Mathematical_Operators.Superset_Of));
 
       Assert (V.Length = 20, "Length should be 20");
 
