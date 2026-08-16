@@ -108,47 +108,47 @@ package body View_Text_IO is
 
                begin
 
-               W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
-                  Three_Bytes)(1);
-               --  Ada.Text_IO.Put ("View_Text_IO: ");
-               --  Ada.Wide_Text_IO.Put (W);
-               --  Ada.Text_IO.New_Line;
-               if W = Wide_Character'Val (
-                  Unicode.Names.General_Punctuation.Em_Dash)
-               then
+                  W := Ada.Strings.UTF_Encoding.Wide_Strings.Decode (
+                     Three_Bytes)(1);
+                  --  Ada.Text_IO.Put ("View_Text_IO: ");
+                  --  Ada.Wide_Text_IO.Put (W);
+                  --  Ada.Text_IO.New_Line;
+                  if W = Wide_Character'Val (
+                     Unicode.Names.General_Punctuation.Em_Dash)
+                  then
 
-                  --
-                  --  Em_Dash is handled here because it isn't suitable for a
-                  --  fixed width terminal font and is replaced with two
-                  --  characters. Other substitutions (e.g directional
-                  --  quotation marks) are handled during Unicode to EBCDIC
-                  --  conversion.
-                  --
+                     --
+                     --  Em_Dash is handled here because it isn't suitable
+                     --  for a fixed width terminal font and is replaced
+                     --  with two characters. Other substitutions (e.g
+                     --  directional quotation marks) are handled during
+                     --   Unicode to EBCDIC conversion.
+                     --
 
-                  V.Put_Character ('-');
-                  V.Put_Character ('-');
-               elsif W = Wide_Character'Val (
-                  Unicode.Names.General_Punctuation.Horizontal_Ellipsis)
-               then
-                  V.Put_Character ('.');
-                  V.Put_Character ('.');
-                  V.Put_Character ('.');
-               elsif W >= Wide_Character'Val (16#fe00#) and
-                  W <= Wide_Character'Val (16#fe0f#)
-               then
+                     V.Put_Character ('-');
+                     V.Put_Character ('-');
+                  elsif W = Wide_Character'Val (
+                     Unicode.Names.General_Punctuation.Horizontal_Ellipsis)
+                  then
+                     V.Put_Character ('.');
+                     V.Put_Character ('.');
+                     V.Put_Character ('.');
+                  elsif W >= Wide_Character'Val (16#fe00#) and
+                     W <= Wide_Character'Val (16#fe0f#)
+                  then
 
-                  --
-                  --  Ignore Unicode variation selectors.
-                  --  As luck would have it, none of the Code Page 310
-                  --  characters need variation selectors.
-                  --  (Left Right Arrow has an emoji variant, but isn't in
-                  --  Code Page 310.)
-                  --
+                     --
+                     --  Ignore Unicode variation selectors.
+                     --  As luck would have it, none of the Code Page 310
+                     --  characters need variation selectors.
+                     --  (Left Right Arrow has an emoji variant, but isn't in
+                     --  Code Page 310.)
+                     --
 
-                  null;
-               else
-                  V.Put_Character (W);
-               end if;
+                     null;
+                  else
+                     V.Put_Character (W);
+                  end if;
 
                exception
 
