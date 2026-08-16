@@ -8,7 +8,7 @@ with Ada.Characters.Conversions;
 with AUnit.Assertions; use AUnit.Assertions;
 with Buffer;
 use type Buffer.Byte;
-with Arrows;
+with Unicode.Names.Arrows;
 with Block_Elements;
 with Box_Drawing;
 with Math_Operators;
@@ -158,10 +158,14 @@ package body Code_Page_310.Tests is
       V : Byte_Vectors.Vector;
    begin
 
-      Code_Page_310.Append (V, Arrows.Leftwards_Arrow);
-      Code_Page_310.Append (V, Arrows.Rightwards_Arrow);
-      Code_Page_310.Append (V, Arrows.Upwards_Arrow);
-      Code_Page_310.Append (V, Arrows.Downwards_Arrow);
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Arrows.Leftwards_Arrow));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Arrows.Rightwards_Arrow));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Arrows.Upwards_Arrow));
+      Code_Page_310.Append (V, Wide_Character'Val (
+         Unicode.Names.Arrows.Downwards_Arrow));
 
       Assert (V.Length = 8, "Length should be 8");
 

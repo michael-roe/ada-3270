@@ -1,6 +1,6 @@
 with Code_Page_310;
 with Box_Drawing;
-with Arrows;
+with Unicode.Names.Arrows;
 with IBM_3270_Orders;
 
 package body Panel_Elements is
@@ -150,13 +150,15 @@ package body Panel_Elements is
       IBM_3270_Orders.Set_Buffer_Address (Bytes_Out, 69, Y);
       P.Append (Bytes_Out, "More: ");
       if Left_Enabled then
-         Code_Page_310.Append (Bytes_Out, Arrows.Leftwards_Arrow);
+         Code_Page_310.Append (Bytes_Out,
+            Wide_Character'Val (Unicode.Names.Arrows.Leftwards_Arrow));
       else
          P.Append (Bytes_Out, " ");
       end if;
       P.Append (Bytes_Out, " ");
       if Right_Enabled then
-         Code_Page_310.Append (Bytes_Out, Arrows.Rightwards_Arrow);
+         Code_Page_310.Append (Bytes_Out,
+            Wide_Character'Val (Unicode.Names.Arrows.Rightwards_Arrow));
       else
          P.Append (Bytes_Out, " ");
       end if;
