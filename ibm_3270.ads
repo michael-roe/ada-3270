@@ -41,11 +41,19 @@ package IBM_3270 is
    AID_PF8   : constant Buffer.Byte := 16#f8#;
    AID_PF9   : constant Buffer.Byte := 16#f9#;
 
-   Graphic_Escape     : constant Buffer.Byte := 16#08#;
-   Set_Buffer_Address : constant Buffer.Byte := 16#11#;
-   Insert_Cursor      : constant Buffer.Byte := 16#13#;
-   Duplicate          : constant Buffer.Byte := 16#1c#;
-   Start_Field        : constant Buffer.Byte := 16#1d#;
-   Field_Mark         : constant Buffer.Byte := 16#1e#;
+   Graphic_Escape       : constant Buffer.Byte := 16#08#;
+   Set_Buffer_Address   : constant Buffer.Byte := 16#11#;
+   Insert_Cursor        : constant Buffer.Byte := 16#13#;
+   Duplicate            : constant Buffer.Byte := 16#1c#;
+   Start_Field          : constant Buffer.Byte := 16#1d#;
+   Field_Mark           : constant Buffer.Byte := 16#1e#;
+   Set_Attribute        : constant Buffer.Byte := 16#28#;
+   Start_Field_Extended : constant Buffer.Byte := 16#29#;
+
+   Attribute_Reset      : constant Buffer.Byte := 16#00#;
+   Attribute_Highlight  : constant Buffer.Byte := 16#41#;
+   Attribute_Color      : constant Buffer.Byte := 16#42#;
+   Attribute_Symbols    : constant Buffer.Byte := 16#43#;
+   Attribute_Basic      : constant Buffer.Byte := 16#c0#;
 
 end IBM_3270;
