@@ -96,6 +96,43 @@ package body IBM_3270_Orders is
 
    end Start_Field;
 
+   procedure Start_Field_Extended (V : in out Byte_Vectors.Vector;
+      Protect  : Boolean;
+      Intense  : Intensity;
+      Modified : Boolean := False;
+      Numeric  : Boolean := False;
+      Highlight : Highlighting := Not_Highlighted) is
+      Length   : Buffer.Byte;
+      Attr     : Buffer.Byte;
+   begin
+
+      Length := 1;
+
+      if Highlight /= Not_Highlighted then
+         Length := Length + 1;
+      end if;
+
+      V.Append (IBM_3270.Start_Field_Extended);
+      V.Append (Length);
+
+      Attr := 0;
+
+      Attr := Attr + 4 * Intensity'Pos (Intense);
+
+      if Protect then
+         Attr := Attr + 16#20#;
+      end if;
+
+      V.Append (IBM_3270.Attribute_Basic);
+      V.Append (Attr);
+
+      if Highlight /= Not_Highlighted then
+         V.Append (IBM_3270.Attribute_Highlight);
+         V.Append (16#F4#);
+      end if;
+
+   end Start_Field_Extended;
+
    function Unpack (B : Buffer.Byte) return Natural;
 
    function Unpack (B : Buffer.Byte) return Natural is

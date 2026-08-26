@@ -5,6 +5,8 @@ package IBM_3270_Orders is
 
    type Intensity is (Normal_Text, Detectable, Highlighted, Hidden);
 
+   type Highlighting is (Not_Highlighted, Underscored);
+
    procedure Append_Buffer_Address (V : in out Byte_Vectors.Vector;
       X : Integer;
       Y : Integer);
@@ -55,6 +57,13 @@ package IBM_3270_Orders is
    --  Modified sets the modified data tag; the terminal will treat this
    --  field as if its contents have been modified by the user.
    --
+
+   procedure Start_Field_Extended (V : in out Byte_Vectors.Vector;
+      Protect  : Boolean;
+      Intense  : Intensity;
+      Modified : Boolean := False;
+      Numeric  : Boolean := False;
+      Highlight : Highlighting := Not_Highlighted);
 
    procedure To_Buffer_Address (
       C1 : Buffer.Byte;
