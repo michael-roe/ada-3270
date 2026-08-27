@@ -117,7 +117,15 @@ package body IBM_3270_Orders is
 
       Attr := 0;
 
+      if Modified then
+         Attr := Attr + 16#1#;
+      end if;
+
       Attr := Attr + 4 * Intensity'Pos (Intense);
+
+      if Numeric then
+         Attr := Attr + 16#10#;
+      end if;
 
       if Protect then
          Attr := Attr + 16#20#;
