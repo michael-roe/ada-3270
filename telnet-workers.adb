@@ -272,6 +272,9 @@ package body Telnet.Workers is
 
                      if Bytes_Out.Length > 0 then
                         for J in 0 .. Integer (Bytes_Out.Length) - 1 loop
+                           if Bytes_Out.Element (J) = 16#ff# then
+                              TX.Enqueue (Telnet.Protocol.IAC);
+                           end if;
                            TX.Enqueue (Bytes_Out.Element (J));
                         end loop;
                      end if;
