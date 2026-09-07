@@ -7,6 +7,11 @@ package body IBM_3270.Structured_Field_Parser is
    procedure Parse_Character_Set (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
+      Length : Natural);
+
+   procedure Parse_Character_Set (
+      Bytes_In : Byte_Vectors.Vector;
+      Index : Natural;
       Length : Natural) is
       Header_Length : Natural;
       Descriptor_Length : Natural;
@@ -35,9 +40,12 @@ package body IBM_3270.Structured_Field_Parser is
       for J in 0 .. Descriptor_Count - 1 loop
          Byte_Text_IO.Put (
             Bytes_In.Element (Index + Header_Length + J * Descriptor_Length)
-         ); 
+         );
          Ada.Text_IO.New_Line;
-         Code_Page := 256 * Natural (Bytes_In.Element (Index + Header_Length + J * Descriptor_Length + 5)) + Natural (Bytes_In.Element (Index + Header_Length + J * Descriptor_Length + 6));
+         Code_Page := 256 * Natural (Bytes_In.Element (
+            Index + Header_Length + J * Descriptor_Length + 5)) +
+            Natural (Bytes_In.Element (
+               Index + Header_Length + J * Descriptor_Length + 6));
          Ada.Integer_Text_IO.Put (Code_Page);
          Ada.Text_IO.New_Line;
       end loop;
@@ -49,7 +57,7 @@ package body IBM_3270.Structured_Field_Parser is
       Index : Natural;
       Length : Natural;
    begin
-      
+
       To_Do := Natural (Bytes_In.Length);
       Index := Bytes_In.First_Index;
 
@@ -62,7 +70,7 @@ package body IBM_3270.Structured_Field_Parser is
             Natural (Bytes_In.Element (Index + 1));
 
          if Length = 0 then
-            Exit;
+            exit;
          end if;
 
          if Length > 3 then
@@ -71,11 +79,11 @@ package body IBM_3270.Structured_Field_Parser is
             then
                Parse_Character_Set (Bytes_In, Index, Length);
             end if;
-            -- for J in 3 .. Length - 1 loop
-            --    Byte_Text_IO.Put (Bytes_In.Element (Index + J), Base => 16);
-            --   Ada.Text_IO.Put (" ");
-            -- end loop;
-            -- Ada.Text_IO.New_Line;
+            --  for J in 3 .. Length - 1 loop
+            --     Byte_Text_IO.Put (Bytes_In.Element (Index + J), Base => 16);
+            --     Ada.Text_IO.Put (" ");
+            --  end loop;
+            --  Ada.Text_IO.New_Line;
          end if;
 
          To_Do := To_Do - Length;
