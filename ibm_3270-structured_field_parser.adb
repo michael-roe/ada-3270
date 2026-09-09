@@ -19,35 +19,26 @@ package body IBM_3270.Structured_Field_Parser is
       Code_Page : Natural;
    begin
 
-      Ada.Text_IO.Put_Line ("Parse_Character_Set");
-
-      for J in 3 .. Length - 1 loop
-         Byte_Text_IO.Put (Bytes_In.Element (Index + J), Base => 16);
-         Ada.Text_IO.Put (" ");
-      end loop;
-
-      Ada.Text_IO.New_Line;
-
       Header_Length := 13;
       Descriptor_Length := 7;
 
       Descriptor_Count := (Length - Header_Length) / Descriptor_Length;
 
-      Ada.Text_IO.Put ("Descriptor_Count = ");
-      Ada.Integer_Text_IO.Put (Descriptor_Count);
-      Ada.Text_IO.New_Line;
+      --  Ada.Text_IO.Put ("Descriptor_Count = ");
+      --  Ada.Integer_Text_IO.Put (Descriptor_Count);
+      --  Ada.Text_IO.New_Line;
 
       for J in 0 .. Descriptor_Count - 1 loop
-         Byte_Text_IO.Put (
-            Bytes_In.Element (Index + Header_Length + J * Descriptor_Length)
-         );
+         --  Byte_Text_IO.Put (
+         --     Bytes_In.Element (Index + Header_Length +
+         --        J * Descriptor_Length)
+         --  );
          Ada.Text_IO.New_Line;
          Code_Page := 256 * Natural (Bytes_In.Element (
             Index + Header_Length + J * Descriptor_Length + 5)) +
             Natural (Bytes_In.Element (
                Index + Header_Length + J * Descriptor_Length + 6));
-         Ada.Integer_Text_IO.Put (Code_Page);
-         Ada.Text_IO.New_Line;
+         Update_Code_Page (Code_Page);
       end loop;
 
    end Parse_Character_Set;

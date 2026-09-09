@@ -2,7 +2,7 @@ with Byte_Vectors;
 
 generic
 
-   with procedure Callback;
+   with procedure Update_Code_Page (Code_Page : Integer);
 
 package IBM_3270.Structured_Field_Parser is
 
