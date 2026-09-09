@@ -9,6 +9,11 @@ package body IBM_3270.Structured_Field_Parser is
       Index : Natural;
       Length : Natural);
 
+   procedure Parse_Reply_Modes (
+      Bytes_In : Byte_Vectors.Vector;
+      Index : Natural;
+      Length : Natural);
+
    procedure Parse_Character_Set (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
@@ -43,6 +48,20 @@ package body IBM_3270.Structured_Field_Parser is
 
    end Parse_Character_Set;
 
+   procedure Parse_Reply_Modes (
+      Bytes_In : Byte_Vectors.Vector;
+      Index : Natural;
+      Length : Natural) is
+   begin
+
+      for J in 4 .. Length - 1 loop
+         if Bytes_In.Element (Index + J) < 3 then
+            Update_Reply_Mode (IBM_3270_Orders.Reply_Mode'Val (Bytes_In.Element (Index + J)));
+         end if;
+      end loop;
+
+   end Parse_Reply_Modes;
+
    procedure Parse (Bytes_In : Byte_Vectors.Vector) is
       To_Do : Natural;
       Index : Natural;
@@ -65,16 +84,13 @@ package body IBM_3270.Structured_Field_Parser is
          end if;
 
          if Length > 3 then
-            if Bytes_In.Element (Index + 2) = 16#81# and
-               Bytes_In.Element (Index + 3) = 16#85#
-            then
-               Parse_Character_Set (Bytes_In, Index, Length);
+            if Bytes_In.Element (Index + 2) = 16#81# then
+               if Bytes_In.Element (Index + 3) = 16#85# then
+                  Parse_Character_Set (Bytes_In, Index, Length);
+               elsif Bytes_In.Element (Index + 3) = 16#88# then
+                  Parse_Reply_Modes (Bytes_In, Index, Length);
+               end if;
             end if;
-            --  for J in 3 .. Length - 1 loop
-            --     Byte_Text_IO.Put (Bytes_In.Element (Index + J), Base => 16);
-            --     Ada.Text_IO.Put (" ");
-            --  end loop;
-            --  Ada.Text_IO.New_Line;
          end if;
 
          To_Do := To_Do - Length;

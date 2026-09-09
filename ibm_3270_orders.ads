@@ -7,6 +7,8 @@ package IBM_3270_Orders is
 
    type Highlighting is (Not_Highlighted, Underscored);
 
+   type Reply_Mode is (Field_Mode, Extended_Mode, Character_Mode);
+
    procedure Append_Buffer_Address (V : in out Byte_Vectors.Vector;
       X : Integer;
       Y : Integer);

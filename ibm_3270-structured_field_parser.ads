@@ -1,8 +1,12 @@
 with Byte_Vectors;
+with IBM_3270_Orders;
 
 generic
 
    with procedure Update_Code_Page (Code_Page : Integer);
+
+   with procedure Update_Reply_Mode (
+      Reply_Mode : IBM_3270_Orders.Reply_Mode);
 
 package IBM_3270.Structured_Field_Parser is
 
