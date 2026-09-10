@@ -5,7 +5,9 @@ package IBM_3270_Orders is
 
    type Intensity is (Normal_Text, Detectable, Highlighted, Hidden);
 
-   type Highlighting is (Not_Highlighted, Underscored);
+   type Highlighting is (Default_Highlighted, Not_Highlighted,
+      Blink_Highlighted, Reverse_Video_Highlighted, Underscore_Highlighted,
+      Intensity_Highlighted);
 
    type Reply_Mode is (Field_Mode, Extended_Mode, Character_Mode);
 
