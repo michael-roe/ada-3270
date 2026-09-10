@@ -108,7 +108,9 @@ package body IBM_3270_Orders is
 
       Length := 1;
 
-      if Highlight /= Not_Highlighted then
+      if (Highlight /= Default_Highlighted) and
+         (Highlight /= Not_Highlighted)
+      then
          Length := Length + 1;
       end if;
 
@@ -134,10 +136,24 @@ package body IBM_3270_Orders is
       V.Append (IBM_3270.Attribute_Basic);
       V.Append (Attr);
 
-      if Highlight /= Not_Highlighted then
-         V.Append (IBM_3270.Attribute_Highlight);
-         V.Append (16#F4#);
-      end if;
+      case (Highlight) is
+         when Default_Highlighted =>
+            null;
+         when Not_Highlighted =>
+            null;
+         when Blink_Highlighted =>
+            V.Append (IBM_3270.Attribute_Highlight);
+            V.Append (16#F1#);
+         when Reverse_Video_Highlighted =>
+            V.Append (IBM_3270.Attribute_Highlight);
+            V.Append (16#F2#);
+         when Underscore_Highlighted =>
+            V.Append (IBM_3270.Attribute_Highlight);
+            V.Append (16#F4#);
+         when Intensity_Highlighted =>
+            V.Append (IBM_3270.Attribute_Highlight);
+            V.Append (16#F8#);
+      end case;
 
    end Start_Field_Extended;
 
