@@ -10,6 +10,9 @@ package body IBM_3270.Structured_Field_Parser_Tests is
 
    procedure Update_Code_Page (Code_Page : Integer);
 
+   procedure Update_Highlighting (
+      Highlighting : IBM_3270_Orders.Highlighting);
+
    procedure Update_Reply_Mode (Reply_Mode : IBM_3270_Orders.Reply_Mode);
 
    Read_Partition_Reply : array (Integer range 0 .. 179)
@@ -55,6 +58,14 @@ package body IBM_3270.Structured_Field_Parser_Tests is
 
    end Update_Code_Page;
 
+   procedure Update_Highlighting (
+      Highlighting : IBM_3270_Orders.Highlighting) is
+   begin
+
+      Ada.Text_IO.Put_Line (IBM_3270_Orders.Highlighting'Image (Highlighting));
+
+   end Update_Highlighting;
+
    procedure Update_Reply_Mode (Reply_Mode : IBM_3270_Orders.Reply_Mode) is
    begin
 
@@ -64,6 +75,7 @@ package body IBM_3270.Structured_Field_Parser_Tests is
 
    package Parser is new IBM_3270.Structured_Field_Parser (
       Update_Code_Page => Update_Code_Page,
+      Update_Highlighting => Update_Highlighting,
       Update_Reply_Mode => Update_Reply_Mode);
 
    procedure Test_Code_Page (T : in out Test_Cases.Test_Case'Class) is

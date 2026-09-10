@@ -9,6 +9,11 @@ package body IBM_3270.Structured_Field_Parser is
       Index : Natural;
       Length : Natural);
 
+   procedure Parse_Highlighting (
+      Bytes_In : Byte_Vectors.Vector;
+      Index : Natural;
+      Length : Natural);
+
    procedure Parse_Reply_Modes (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
@@ -29,16 +34,7 @@ package body IBM_3270.Structured_Field_Parser is
 
       Descriptor_Count := (Length - Header_Length) / Descriptor_Length;
 
-      --  Ada.Text_IO.Put ("Descriptor_Count = ");
-      --  Ada.Integer_Text_IO.Put (Descriptor_Count);
-      --  Ada.Text_IO.New_Line;
-
       for J in 0 .. Descriptor_Count - 1 loop
-         --  Byte_Text_IO.Put (
-         --     Bytes_In.Element (Index + Header_Length +
-         --        J * Descriptor_Length)
-         --  );
-         Ada.Text_IO.New_Line;
          Code_Page := 256 * Natural (Bytes_In.Element (
             Index + Header_Length + J * Descriptor_Length + 5)) +
             Natural (Bytes_In.Element (
@@ -47,6 +43,41 @@ package body IBM_3270.Structured_Field_Parser is
       end loop;
 
    end Parse_Character_Set;
+
+   procedure Parse_Highlighting (
+      Bytes_In : Byte_Vectors.Vector;
+      Index : Natural;
+      Length : Natural) is
+      Descriptors : Natural;
+      B : Buffer.Byte;
+   begin
+
+      if Length < 5 then
+         return;
+      end if;
+
+      Descriptors := Natural (Bytes_In.Element (Index + 4));
+
+      if Length < 2*Descriptors + 5 then
+         return;
+      end if;
+
+      for J in 0 .. Descriptors - 1 loop
+         B := Bytes_In.Element (Index + 2*J + 6);
+         if B = 16#F0# then
+            Update_Highlighting (IBM_3270_Orders.Not_Highlighted);
+         elsif B = 16#F1# then
+            Update_Highlighting (IBM_3270_Orders.Blink_Highlighted);
+         elsif B = 16#F2# then
+            Update_Highlighting (IBM_3270_Orders.Reverse_Video_Highlighted);
+         elsif B = 16#F4# then
+            Update_Highlighting (IBM_3270_Orders.Underscore_Highlighted);
+         elsif B = 16#F8# then
+            Update_Highlighting (IBM_3270_Orders.Intensity_Highlighted);
+         end if;
+      end loop;
+
+   end Parse_Highlighting;
 
    procedure Parse_Reply_Modes (
       Bytes_In : Byte_Vectors.Vector;
@@ -87,6 +118,8 @@ package body IBM_3270.Structured_Field_Parser is
             if Bytes_In.Element (Index + 2) = 16#81# then
                if Bytes_In.Element (Index + 3) = 16#85# then
                   Parse_Character_Set (Bytes_In, Index, Length);
+               elsif Bytes_In.Element (Index + 3) = 16#87# then
+                  Parse_Highlighting (Bytes_In, Index, Length);
                elsif Bytes_In.Element (Index + 3) = 16#88# then
                   Parse_Reply_Modes (Bytes_In, Index, Length);
                end if;
