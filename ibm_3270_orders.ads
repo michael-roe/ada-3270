@@ -9,6 +9,10 @@ package IBM_3270_Orders is
       Blink_Highlighted, Reverse_Video_Highlighted, Underscore_Highlighted,
       Intensity_Highlighted);
 
+   type Color is (Default_Color, Background_Color,
+      Blue, Red, Magenta, Green, Cyan, Yellow,
+      Foreground_Color);
+
    type Reply_Mode is (Field_Mode, Extended_Mode, Character_Mode);
 
    procedure Append_Buffer_Address (V : in out Byte_Vectors.Vector;
@@ -68,6 +72,12 @@ package IBM_3270_Orders is
       Modified : Boolean := False;
       Numeric  : Boolean := False;
       Highlight : Highlighting := Not_Highlighted);
+
+   procedure Set_Highlighting (V : in out Byte_Vectors.Vector;
+      Highlight : Highlighting);
+
+   procedure Set_Color (V : in out Byte_Vectors.Vector;
+      Text_Color : Color);
 
    procedure To_Buffer_Address (
       C1 : Buffer.Byte;

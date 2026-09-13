@@ -157,6 +157,58 @@ package body IBM_3270_Orders is
 
    end Start_Field_Extended;
 
+   procedure Set_Highlighting (V : in out Byte_Vectors.Vector;
+      Highlight : Highlighting) is
+   begin
+
+      V.Append (IBM_3270.Set_Attribute);
+      V.Append (IBM_3270.Attribute_Highlight);
+      case (Highlight) is
+         when Default_Highlighted =>
+            V.Append (0);
+         when Not_Highlighted =>
+            V.Append (16#F0#);
+         when Blink_Highlighted =>
+            V.Append (16#F1#);
+         when Reverse_Video_Highlighted =>
+            V.Append (16#F2#);
+         when Underscore_Highlighted =>
+            V.Append (16#F4#);
+         when Intensity_Highlighted =>
+            V.Append (16#F8#);
+      end case;
+
+   end Set_Highlighting;
+
+   procedure Set_Color (V : in out Byte_Vectors.Vector;
+      Text_Color : Color) is
+   begin
+
+      V.Append (IBM_3270.Set_Attribute);
+      V.Append (IBM_3270.Attribute_Color);
+      case (Text_Color) is
+         when Default_Color =>
+            V.Append (0);
+         when Blue =>
+            V.Append (IBM_3270.Color_Blue);
+         when Red =>
+            V.Append (IBM_3270.Color_Red);
+         when Magenta =>
+            V.Append (IBM_3270.Color_Magenta);
+         when Green =>
+            V.Append (IBM_3270.Color_Green);
+         when Cyan =>
+            V.Append (IBM_3270.Color_Cyan);
+         when Yellow =>
+            V.Append (IBM_3270.Color_Yellow);
+         when Foreground_Color =>
+            V.Append (16#f7#);
+         when others =>
+            V.Append (0);
+      end case;
+
+   end Set_Color;
+
    function Unpack (B : Buffer.Byte) return Natural;
 
    function Unpack (B : Buffer.Byte) return Natural is
