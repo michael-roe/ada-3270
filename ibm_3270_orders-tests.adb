@@ -124,6 +124,36 @@ package body IBM_3270_Orders.Tests is
 
    end Test_Start_Field_Protected;
 
+   procedure Test_Set_Highlighting_Underscore (
+      T : in out Test_Cases.Test_Case'Class) is
+      Bytes_Out : Byte_Vectors.Vector;
+   begin
+
+      Set_Highlighting (Bytes_Out, Underscore_Highlighted);
+
+      Assert (Bytes_Out.Length = 3, "Length should be 3");
+      Assert (Bytes_Out.Element (Bytes_Out.First_Index) =
+         IBM_3270.Set_Attribute,
+         "Expected Set_Attribute");
+      Assert (Bytes_Out.Element (Bytes_Out.First_Index + 1) =
+         IBM_3270.Attribute_Highlight,
+         "Expected Attribute_Highlight");
+
+   end Test_Set_Highlighting_Underscore;
+
+   procedure Test_Set_Color_Cyan (
+      T : in out Test_Cases.Test_Case'Class) is
+      Bytes_Out : Byte_Vectors.Vector;
+   begin
+
+      Set_Color (Bytes_Out, Cyan);
+
+      Assert (Bytes_Out.Element (Bytes_Out.First_Index) =
+         IBM_3270.Set_Attribute,
+         "Expected Set_Attribute");
+
+   end Test_Set_Color_Cyan;
+
    procedure Test_To_Buffer_Address_Invalid (
       T : in out Test_Cases.Test_Case'Class) is
       X : Natural;
@@ -185,6 +215,12 @@ package body IBM_3270_Orders.Tests is
 
       Register_Routine (T, Test_Start_Field_Protected'Access,
          "Test_Start_Field_Protected");
+
+      Register_Routine (T, Test_Set_Highlighting_Underscore'Access,
+         "Test_Set_Highlighting_Underscore");
+
+      Register_Routine (T, Test_Set_Color_Cyan'Access,
+         "Test_Set_Color_Cyan");
 
       Register_Routine (T, Test_To_Buffer_Address_Invalid'Access,
          "Test_To_Buffer_Address_Invalid");
