@@ -7,6 +7,8 @@ package IBM_3270.Structured_Fields is
 
    procedure Set_Reply_Mode (
       Bytes_Out : in out Byte_Vectors.Vector;
-      Reply_Mode : IBM_3270_Orders.Reply_Mode);
+      Reply_Mode : IBM_3270_Orders.Reply_Mode;
+      Enable_Highlight : Boolean := False;
+      Enable_Color : Boolean := False);
 
 end IBM_3270.Structured_Fields;

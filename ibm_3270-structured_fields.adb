@@ -13,14 +13,35 @@ package body IBM_3270.Structured_Fields is
 
    procedure Set_Reply_Mode (
       Bytes_Out : in out Byte_Vectors.Vector;
-      Reply_Mode : IBM_3270_Orders.Reply_Mode) is
+      Reply_Mode : IBM_3270_Orders.Reply_Mode;
+      Enable_Highlight : Boolean := False;
+      Enable_Color : Boolean := False) is
+      Length : Buffer.Byte;
    begin
 
+      Length := 5;
+
+      if Enable_Highlight then
+         Length := Length + 1;
+      end if;
+
+      if Enable_Color then
+         Length := Length + 2;
+      end if;
+
       Bytes_Out.Append (0);
-      Bytes_Out.Append (5);
+      Bytes_Out.Append (Length);
       Bytes_Out.Append (16#09#); --  Set Reply Mode
       Bytes_Out.Append (0);
       Bytes_Out.Append (IBM_3270_Orders.Reply_Mode'Pos (Reply_Mode));
+
+      if Enable_Highlight then
+         Bytes_Out.Append (IBM_3270.Attribute_Highlight);
+      end if;
+
+      if Enable_Color then
+         Bytes_Out.Append (IBM_3270.Attribute_Color);
+      end if;
 
    end Set_Reply_Mode;
 
