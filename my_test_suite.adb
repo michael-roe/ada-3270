@@ -14,6 +14,7 @@ with Line_Vectors_Tests;
 with IBM_3270_Orders.Tests;
 with IBM_3270.Input_Stream.Tests;
 with IBM_3270.Structured_Field_Parser_Tests;
+with IBM_3270.Structured_Fields.Tests;
 with Split_Views.Tests;
 with Text_Views.Tests;
 with Login_Views.Tests;
@@ -44,13 +45,14 @@ package body My_Test_Suite is
    Test_13 : aliased IBM_3270_Orders.Tests.IBM_3270_Orders_Test;
    Test_14 : aliased IBM_3270.Input_Stream.Tests.Input_Stream_Test;
    Test_15 : aliased IBM_3270.Structured_Field_Parser_Tests.SF_Parser_Test;
-   Test_16 : aliased Split_Views.Tests.Split_View_Test;
-   Test_17 : aliased Text_Views.Tests.Text_View_Test;
-   Test_18 : aliased Login_Views.Tests.Login_View_Test;
-   Test_19 : aliased Checkbox_Views.Tests.Checkbox_View_Test;
-   Test_20 : aliased Menu_Views.Tests.Menu_View_Test;
-   Test_21 : aliased Numbered_Menu_Views.Tests.Numbered_Menu_View_Test;
-   Test_22 : aliased Code_Page_924.Tests.Code_Page_Test;
+   Test_16 : aliased IBM_3270.Structured_Fields.Tests.Structured_Fields_Test;
+   Test_17 : aliased Split_Views.Tests.Split_View_Test;
+   Test_18 : aliased Text_Views.Tests.Text_View_Test;
+   Test_19 : aliased Login_Views.Tests.Login_View_Test;
+   Test_20 : aliased Checkbox_Views.Tests.Checkbox_View_Test;
+   Test_21 : aliased Menu_Views.Tests.Menu_View_Test;
+   Test_22 : aliased Numbered_Menu_Views.Tests.Numbered_Menu_View_Test;
+   Test_23 : aliased Code_Page_924.Tests.Code_Page_Test;
 
    function Suite return Access_Test_Suite is
    begin
@@ -77,6 +79,7 @@ package body My_Test_Suite is
       Add_Test (Result'Access, Test_20'Access);
       Add_Test (Result'Access, Test_21'Access);
       Add_Test (Result'Access, Test_22'Access);
+      Add_Test (Result'Access, Test_23'Access);
 
       return Result'Access;
 

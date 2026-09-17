@@ -9,6 +9,7 @@ package IBM_3270.Structured_Fields is
       Bytes_Out : in out Byte_Vectors.Vector;
       Reply_Mode : IBM_3270_Orders.Reply_Mode;
       Enable_Highlight : Boolean := False;
-      Enable_Color : Boolean := False);
+      Enable_Color : Boolean := False;
+      Enable_Symbols : Boolean := False);
 
 end IBM_3270.Structured_Fields;

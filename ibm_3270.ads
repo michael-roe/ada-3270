@@ -57,6 +57,8 @@ package IBM_3270 is
    Attribute_Color      : constant Buffer.Byte := 16#42#;
    Attribute_Symbols    : constant Buffer.Byte := 16#43#;
    Attribute_Basic      : constant Buffer.Byte := 16#c0#;
+   Attribute_Validation : constant Buffer.Byte := 16#c1#;
+   Attribute_Outline    : constant Buffer.Byte := 16#c2#;
 
    Color_Blue           : constant Buffer.Byte := 16#f1#;
    Color_Red            : constant Buffer.Byte := 16#f2#;
