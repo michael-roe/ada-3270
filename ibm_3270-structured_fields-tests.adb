@@ -5,6 +5,27 @@ with IBM_3270_Orders;
 
 package body IBM_3270.Structured_Fields.Tests is
 
+   procedure Test_Read_Partition_Query (
+      T : in out Test_Cases.Test_Case'Class) is
+      Bytes_Out : Byte_Vectors.Vector;
+   begin
+
+      Read_Partition_Query (Bytes_Out);
+
+      Assert (Bytes_Out.Length = 5,
+         "Length should be 5");
+
+      Assert (Bytes_Out.Element (Bytes_Out.First_Index) = 0,
+         "MSB of length should be 0");
+
+      Assert (Bytes_Out.Element (Bytes_Out.First_Index + 1) = 5,
+         "LSB of length should be 5");
+
+      Assert (Bytes_Out.Element (Bytes_Out.First_Index + 2) = 1,
+         "Should be 1");
+
+   end Test_Read_Partition_Query;
+
    procedure Test_Set_Reply_Mode (T : in out Test_Cases.Test_Case'Class) is
       Bytes_Out : Byte_Vectors.Vector;
    begin
@@ -30,6 +51,9 @@ package body IBM_3270.Structured_Fields.Tests is
    procedure Register_Tests (T : in out Structured_Fields_Test) is
       use AUnit.Test_Cases.Registration;
    begin
+
+      Register_Routine (T, Test_Read_Partition_Query'Access,
+         "Test_Read_Partition_Query");
 
       Register_Routine (T, Test_Set_Reply_Mode'Access,
          "Test_Set_Reply_Mode");
