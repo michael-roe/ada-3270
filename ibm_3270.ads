@@ -10,6 +10,7 @@ package IBM_3270 is
    WCC_Go_Ahead : constant Buffer.Byte := 16#2#;
    WCC_Bell     : constant Buffer.Byte := 16#4#;
    WCC_Print    : constant Buffer.Byte := 16#8#;
+   WCC_Reset    : constant Buffer.Byte := 16#40#;
    WCC_Parity   : constant Buffer.Byte := 16#80#;
 
    IBM_Write            : constant Buffer.Byte := 16#F1#;
