@@ -146,7 +146,7 @@ package body IBM_3270_Orders.Tests is
       Bytes_Out : Byte_Vectors.Vector;
    begin
 
-      Set_Color (Bytes_Out, Cyan);
+      Set_Foreground_Color (Bytes_Out, Cyan);
 
       Assert (Bytes_Out.Element (Bytes_Out.First_Index) =
          IBM_3270.Set_Attribute,

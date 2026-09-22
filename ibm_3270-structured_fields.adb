@@ -15,7 +15,8 @@ package body IBM_3270.Structured_Fields is
       Bytes_Out : in out Byte_Vectors.Vector;
       Reply_Mode : IBM_3270_Orders.Reply_Mode;
       Enable_Highlight : Boolean := False;
-      Enable_Color : Boolean := False;
+      Enable_Foreground_Color : Boolean := False;
+      Enable_Background_Color : Boolean := False;
       Enable_Symbols : Boolean := False) is
       Length : Buffer.Byte;
    begin
@@ -26,7 +27,11 @@ package body IBM_3270.Structured_Fields is
          Length := Length + 1;
       end if;
 
-      if Enable_Color then
+      if Enable_Foreground_Color then
+         Length := Length + 1;
+      end if;
+
+      if Enable_Background_Color then
          Length := Length + 1;
       end if;
 
@@ -44,8 +49,12 @@ package body IBM_3270.Structured_Fields is
          Bytes_Out.Append (IBM_3270.Attribute_Highlight);
       end if;
 
-      if Enable_Color then
-         Bytes_Out.Append (IBM_3270.Attribute_Color);
+      if Enable_Foreground_Color then
+         Bytes_Out.Append (IBM_3270.Attribute_Foreground_Color);
+      end if;
+
+      if Enable_Background_Color then
+         Bytes_Out.Append (IBM_3270.Attribute_Background_Color);
       end if;
 
       if Enable_Symbols then

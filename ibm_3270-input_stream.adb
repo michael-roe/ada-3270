@@ -106,8 +106,10 @@ package body IBM_3270.Input_Stream is
                                  Ada.Text_IO.Put_Line ("Basic");
                               when IBM_3270.Attribute_Highlight =>
                                  Ada.Text_IO.Put_Line ("Highlight");
-                              when IBM_3270.Attribute_Color =>
-                                 Ada.Text_IO.Put_Line ("Color");
+                              when IBM_3270.Attribute_Foreground_Color =>
+                                 Ada.Text_IO.Put_Line ("Foreground Color");
+                              when IBM_3270.Attribute_Background_Color =>
+                                 Ada.Text_IO.Put_Line ("Background Color");
                               when IBM_3270.Attribute_Validation =>
                                  Ada.Text_IO.Put_Line ("Validation");
                               when others =>

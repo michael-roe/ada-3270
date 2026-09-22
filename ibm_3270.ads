@@ -53,13 +53,14 @@ package IBM_3270 is
    Set_Attribute        : constant Buffer.Byte := 16#28#;
    Start_Field_Extended : constant Buffer.Byte := 16#29#;
 
-   Attribute_Reset      : constant Buffer.Byte := 16#00#;
-   Attribute_Highlight  : constant Buffer.Byte := 16#41#;
-   Attribute_Color      : constant Buffer.Byte := 16#42#;
-   Attribute_Symbols    : constant Buffer.Byte := 16#43#;
-   Attribute_Basic      : constant Buffer.Byte := 16#c0#;
-   Attribute_Validation : constant Buffer.Byte := 16#c1#;
-   Attribute_Outline    : constant Buffer.Byte := 16#c2#;
+   Attribute_Reset            : constant Buffer.Byte := 16#00#;
+   Attribute_Highlight        : constant Buffer.Byte := 16#41#;
+   Attribute_Foreground_Color : constant Buffer.Byte := 16#42#;
+   Attribute_Symbols          : constant Buffer.Byte := 16#43#;
+   Attribute_Background_Color : constant Buffer.Byte := 16#45#;
+   Attribute_Basic            : constant Buffer.Byte := 16#c0#;
+   Attribute_Validation       : constant Buffer.Byte := 16#c1#;
+   Attribute_Outline          : constant Buffer.Byte := 16#c2#;
 
    Color_Blue           : constant Buffer.Byte := 16#f1#;
    Color_Red            : constant Buffer.Byte := 16#f2#;

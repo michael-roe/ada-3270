@@ -180,13 +180,13 @@ package body IBM_3270_Orders is
 
    end Set_Highlighting;
 
-   procedure Set_Color (V : in out Byte_Vectors.Vector;
-      Text_Color : Color) is
+   procedure Set_Foreground_Color (V : in out Byte_Vectors.Vector;
+      Foreground_Color : Color) is
    begin
 
       V.Append (IBM_3270.Set_Attribute);
-      V.Append (IBM_3270.Attribute_Color);
-      case (Text_Color) is
+      V.Append (IBM_3270.Attribute_Foreground_Color);
+      case (Foreground_Color) is
          when Default_Color =>
             V.Append (0);
          when Blue =>
@@ -201,13 +201,42 @@ package body IBM_3270_Orders is
             V.Append (IBM_3270.Color_Cyan);
          when Yellow =>
             V.Append (IBM_3270.Color_Yellow);
-         when Foreground_Color =>
+         when Neutral_Foreground =>
             V.Append (16#f7#);
          when others =>
             V.Append (0);
       end case;
 
-   end Set_Color;
+   end Set_Foreground_Color;
+
+   procedure Set_Background_Color (V : in out Byte_Vectors.Vector;
+      Background_Color : Color) is
+   begin
+
+      V.Append (IBM_3270.Set_Attribute);
+      V.Append (IBM_3270.Attribute_Background_Color);
+      case (Background_Color) is
+         when Default_Color =>
+            V.Append (0);
+         when Blue =>
+            V.Append (IBM_3270.Color_Blue);
+         when Red =>
+            V.Append (IBM_3270.Color_Red);
+         when Magenta =>
+            V.Append (IBM_3270.Color_Magenta);
+         when Green =>
+            V.Append (IBM_3270.Color_Green);
+         when Cyan =>
+            V.Append (IBM_3270.Color_Cyan);
+         when Yellow =>
+            V.Append (IBM_3270.Color_Yellow);
+         when Neutral_Foreground =>
+            V.Append (16#f7#);
+         when others =>
+            V.Append (0);
+      end case;
+
+   end Set_Background_Color;
 
    function Unpack (B : Buffer.Byte) return Natural;
 
