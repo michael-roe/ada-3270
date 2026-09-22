@@ -26,6 +26,7 @@ package body IBM_3270.Input_Stream is
       Y : Natural;
       First_Field : Boolean;
       Attribute_Count : Natural;
+      Underscored : Boolean;
    begin
       To_Do := Bytes_In.Last_Index - Bytes_In.First_Index + 1;
       Index := Bytes_In.First_Index;
@@ -71,6 +72,7 @@ package body IBM_3270.Input_Stream is
                         Bytes_In.Element (Index + 2),
                         X,
                         Y);
+                     Underscored := False;
                      To_Do := To_Do - 3;
                      Index := Index + 3;
                      First_Field := False;
@@ -127,8 +129,18 @@ package body IBM_3270.Input_Stream is
                      To_Do := 0;
                   end if;
                when IBM_3270.Set_Attribute =>
-                  Ada.Text_IO.Put_Line ("Input_Stream: Set Attribute");
                   if To_Do >= 3 then
+                     if Bytes_In.Element (Index + 1) =
+                        IBM_3270.Attribute_Highlight
+                     then
+                        if Bytes_In.Element (Index + 2) =
+                           IBM_3270.Highlight_Underscore
+                        then
+                           Underscored := True;
+                        else
+                           Underscored := False;
+                        end if;
+                     end if;
                      To_Do := To_Do - 3;
                      Index := Index + 3;
                   else

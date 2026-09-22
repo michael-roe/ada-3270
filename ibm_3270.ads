@@ -69,4 +69,6 @@ package IBM_3270 is
    Color_Cyan           : constant Buffer.Byte := 16#f5#;
    Color_Yellow         : constant Buffer.Byte := 16#f6#;
 
+   Highlight_Underscore : constant Buffer.Byte := 16#f4#;
+
 end IBM_3270;
