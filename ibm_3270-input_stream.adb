@@ -1,6 +1,7 @@
 with Ada.Text_IO;
 with Ada.Wide_Text_IO;
 with Ada.Strings;
+with Byte_Text_IO;
 with Code_Page_500;
 with Code_Page_310;
 with IBM_3270;
@@ -24,6 +25,7 @@ package body IBM_3270.Input_Stream is
       X : Natural;
       Y : Natural;
       First_Field : Boolean;
+      Attribute_Count : Natural;
    begin
       To_Do := Bytes_In.Last_Index - Bytes_In.First_Index + 1;
       Index := Bytes_In.First_Index;
@@ -93,6 +95,43 @@ package body IBM_3270.Input_Stream is
                when IBM_3270.Field_Mark =>
                   To_Do := To_Do - 1;
                   Index := Index + 1;
+               when IBM_3270.Start_Field_Extended =>
+                  Ada.Text_IO.Put_Line ("Input_Stream: Start Field Extended");
+                  if To_Do >= 2 then
+                     Attribute_Count := Natural (Bytes_In.Element (Index + 1));
+                     if To_Do >= 2 + 2 * Attribute_Count then
+                        for J in 0 .. Attribute_Count - 1 loop
+                           case Bytes_In.Element (Index + 2 * J + 2) is
+                              when IBM_3270.Attribute_Basic =>
+                                 Ada.Text_IO.Put_Line ("Basic");
+                              when IBM_3270.Attribute_Highlight =>
+                                 Ada.Text_IO.Put_Line ("Highlight");
+                              when IBM_3270.Attribute_Color =>
+                                 Ada.Text_IO.Put_Line ("Color");
+                              when IBM_3270.Attribute_Validation =>
+                                 Ada.Text_IO.Put_Line ("Validation");
+                              when others =>
+                                 Byte_Text_IO.Put (Bytes_In.Element (
+                                    Index + 2 * J + 2), Base => 16);
+                                 Ada.Text_IO.New_Line;
+                           end case;
+                        end loop;
+                        To_Do := To_Do - (2 + 2 * Attribute_Count);
+                        Index := Index + 2 + 2 * Attribute_Count;
+                     else
+                        To_Do := 0;
+                     end if;
+                  else
+                     To_Do := 0;
+                  end if;
+               when IBM_3270.Set_Attribute =>
+                  Ada.Text_IO.Put_Line ("Input_Stream: Set Attribute");
+                  if To_Do >= 3 then
+                     To_Do := To_Do - 3;
+                     Index := Index + 3;
+                  else
+                     To_Do := 0;
+                  end if;
                when others =>
                   Lines.Append (
                      L,
