@@ -400,6 +400,31 @@ package body IBM_3270.Input_Stream.Tests is
 
    end Test_Code_Page;
 
+   procedure Test_Highlighted (T : in out Test_Cases.Test_Case'Class) is
+      V : Test_View;
+      Bytes_In : Byte_Vectors.Vector;
+      L : Lines.Bounded_Wide_String;
+   begin
+
+      Bytes_In.Append (IBM_3270.AID_Enter);
+      IBM_3270_Orders.Append_Buffer_Address (Bytes_In, 0, 0);
+      IBM_3270_Orders.Set_Buffer_Address (Bytes_In, 1, 2);
+      P500.Append (Bytes_In, "Words can be ");
+      IBM_3270_Orders.Set_Highlighting (Bytes_In,
+         IBM_3270_Orders.Underscore_Highlighted);
+      P500.Append (Bytes_In, "highlighted");
+      IBM_3270_Orders.Set_Highlighting (Bytes_In,
+         IBM_3270_Orders.Default_Highlighted);
+      P500.Append (Bytes_In, ".");
+
+      V.From_Physical (Bytes_In, P500'Access);
+
+      Lines.Set_Bounded_Wide_String (L, "Words can be highlighted.");
+
+      Assert (V.Last_Field = L, "Highlighted field was decoded incorrectly");
+
+   end Test_Highlighted;
+
    procedure Register_Tests (T : in out Input_Stream_Test) is
       use AUnit.Test_Cases.Registration;
    begin
@@ -445,6 +470,9 @@ package body IBM_3270.Input_Stream.Tests is
 
       Register_Routine (T, Test_Code_Page'Access,
          "Test_Code_Page");
+
+      Register_Routine (T, Test_Highlighted'Access,
+         "Test_Highlighted");
 
    end Register_Tests;
 

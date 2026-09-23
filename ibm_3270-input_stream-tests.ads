@@ -171,6 +171,13 @@ package IBM_3270.Input_Stream.Tests is
    --  Test_Code_Page tests an input stream encoded in code page 870.
    --
 
+   procedure Test_Highlighted (T : in out Test_Cases.Test_Case'Class);
+
+   --
+   --  Test_Highlighted tests a character mode input stream with part
+   --  of a field highlighted.
+   --
+
    procedure Register_Tests (T : in out Input_Stream_Test);
 
    function Name (T : Input_Stream_Test) return Message_String;
