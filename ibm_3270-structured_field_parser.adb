@@ -7,22 +7,26 @@ package body IBM_3270.Structured_Field_Parser is
    procedure Parse_Character_Set (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
-      Length : Natural);
+      Length : Natural;
+      D : IBM_3270.Drivers.Driver_Access);
 
    procedure Parse_Highlighting (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
-      Length : Natural);
+      Length : Natural;
+      D : IBM_3270.Drivers.Driver_Access);
 
    procedure Parse_Reply_Modes (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
-      Length : Natural);
+      Length : Natural;
+      D : IBM_3270.Drivers.Driver_Access);
 
    procedure Parse_Character_Set (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
-      Length : Natural) is
+      Length : Natural;
+      D : IBM_3270.Drivers.Driver_Access) is
       Header_Length : Natural;
       Descriptor_Length : Natural;
       Descriptor_Count : Natural;
@@ -39,7 +43,7 @@ package body IBM_3270.Structured_Field_Parser is
             Index + Header_Length + J * Descriptor_Length + 5)) +
             Natural (Bytes_In.Element (
                Index + Header_Length + J * Descriptor_Length + 6));
-         Update_Code_Page (Code_Page);
+         D.Update_Code_Page (Code_Page);
       end loop;
 
    end Parse_Character_Set;
@@ -47,7 +51,8 @@ package body IBM_3270.Structured_Field_Parser is
    procedure Parse_Highlighting (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
-      Length : Natural) is
+      Length : Natural;
+      D : IBM_3270.Drivers.Driver_Access) is
       Descriptors : Natural;
       B : Buffer.Byte;
    begin
@@ -58,22 +63,22 @@ package body IBM_3270.Structured_Field_Parser is
 
       Descriptors := Natural (Bytes_In.Element (Index + 4));
 
-      if Length < 2*Descriptors + 5 then
+      if Length < 2 * Descriptors + 5 then
          return;
       end if;
 
       for J in 0 .. Descriptors - 1 loop
-         B := Bytes_In.Element (Index + 2*J + 6);
+         B := Bytes_In.Element (Index + 2 * J + 6);
          if B = 16#F0# then
-            Update_Highlighting (IBM_3270_Orders.Not_Highlighted);
+            D.Update_Highlighting (IBM_3270_Orders.Not_Highlighted);
          elsif B = 16#F1# then
-            Update_Highlighting (IBM_3270_Orders.Blink_Highlighted);
+            D.Update_Highlighting (IBM_3270_Orders.Blink_Highlighted);
          elsif B = 16#F2# then
-            Update_Highlighting (IBM_3270_Orders.Reverse_Video_Highlighted);
+            D.Update_Highlighting (IBM_3270_Orders.Reverse_Video_Highlighted);
          elsif B = 16#F4# then
-            Update_Highlighting (IBM_3270_Orders.Underscore_Highlighted);
+            D.Update_Highlighting (IBM_3270_Orders.Underscore_Highlighted);
          elsif B = 16#F8# then
-            Update_Highlighting (IBM_3270_Orders.Intensity_Highlighted);
+            D.Update_Highlighting (IBM_3270_Orders.Intensity_Highlighted);
          end if;
       end loop;
 
@@ -82,18 +87,21 @@ package body IBM_3270.Structured_Field_Parser is
    procedure Parse_Reply_Modes (
       Bytes_In : Byte_Vectors.Vector;
       Index : Natural;
-      Length : Natural) is
+      Length : Natural;
+      D : IBM_3270.Drivers.Driver_Access) is
    begin
 
       for J in 4 .. Length - 1 loop
          if Bytes_In.Element (Index + J) < 3 then
-            Update_Reply_Mode (IBM_3270_Orders.Reply_Mode'Val (Bytes_In.Element (Index + J)));
+            D.Update_Reply_Mode (IBM_3270_Orders.Reply_Mode'Val (
+               Bytes_In.Element (Index + J)));
          end if;
       end loop;
 
    end Parse_Reply_Modes;
 
-   procedure Parse (Bytes_In : Byte_Vectors.Vector) is
+   procedure Parse (Bytes_In : Byte_Vectors.Vector;
+      D : IBM_3270.Drivers.Driver_Access) is
       To_Do : Natural;
       Index : Natural;
       Length : Natural;
@@ -117,11 +125,11 @@ package body IBM_3270.Structured_Field_Parser is
          if Length > 3 then
             if Bytes_In.Element (Index + 2) = 16#81# then
                if Bytes_In.Element (Index + 3) = 16#85# then
-                  Parse_Character_Set (Bytes_In, Index, Length);
+                  Parse_Character_Set (Bytes_In, Index, Length, D);
                elsif Bytes_In.Element (Index + 3) = 16#87# then
-                  Parse_Highlighting (Bytes_In, Index, Length);
+                  Parse_Highlighting (Bytes_In, Index, Length, D);
                elsif Bytes_In.Element (Index + 3) = 16#88# then
-                  Parse_Reply_Modes (Bytes_In, Index, Length);
+                  Parse_Reply_Modes (Bytes_In, Index, Length, D);
                end if;
             end if;
          end if;

@@ -1,7 +1,7 @@
 with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
-package IBM_3270.Structured_Field_Parser_Tests is
+package IBM_3270.Structured_Field_Parser.Tests is
 
    type SF_Parser_Test is new Test_Cases.Test_Case with null record;
 
@@ -11,4 +11,4 @@ package IBM_3270.Structured_Field_Parser_Tests is
 
    function Name (T : SF_Parser_Test) return Message_String;
 
-end IBM_3270.Structured_Field_Parser_Tests;
+end IBM_3270.Structured_Field_Parser.Tests;

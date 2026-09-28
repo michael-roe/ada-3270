@@ -5,15 +5,23 @@ with Byte_Text_IO;
 with Byte_Vectors;
 with IBM_3270_Orders;
 with IBM_3270.Structured_Field_Parser;
+with IBM_3270.Drivers;
 
-package body IBM_3270.Structured_Field_Parser_Tests is
+package body IBM_3270.Structured_Field_Parser.Tests is
 
-   procedure Update_Code_Page (Code_Page : Integer);
+   type Test_Driver is new IBM_3270.Drivers.Driver with null record;
+
+   procedure Update_Code_Page (
+     D : in out Test_Driver;
+     Code_Page : Integer);
 
    procedure Update_Highlighting (
+      D : in out Test_Driver;
       Highlighting : IBM_3270_Orders.Highlighting);
 
-   procedure Update_Reply_Mode (Reply_Mode : IBM_3270_Orders.Reply_Mode);
+   procedure Update_Reply_Mode (
+      D : in out Test_Driver;
+      Reply_Mode : IBM_3270_Orders.Reply_Mode);
 
    Read_Partition_Reply : array (Integer range 0 .. 179)
       of Buffer.Byte := (
@@ -47,7 +55,9 @@ package body IBM_3270.Structured_Field_Parser_Tests is
 
    Supported_Reply_Modes : array (IBM_3270_Orders.Reply_Mode) of Boolean;
 
-   procedure Update_Code_Page (Code_Page : Integer) is
+   procedure Update_Code_Page (
+      D : in out Test_Driver;
+      Code_Page : Integer) is
    begin
 
       if Code_Page = 310 then
@@ -59,6 +69,7 @@ package body IBM_3270.Structured_Field_Parser_Tests is
    end Update_Code_Page;
 
    procedure Update_Highlighting (
+      D : in out Test_Driver;
       Highlighting : IBM_3270_Orders.Highlighting) is
    begin
 
@@ -66,17 +77,16 @@ package body IBM_3270.Structured_Field_Parser_Tests is
 
    end Update_Highlighting;
 
-   procedure Update_Reply_Mode (Reply_Mode : IBM_3270_Orders.Reply_Mode) is
+   procedure Update_Reply_Mode (
+      D : in out Test_Driver;
+      Reply_Mode : IBM_3270_Orders.Reply_Mode) is
    begin
 
       Supported_Reply_Modes (Reply_Mode) := True;
 
    end Update_Reply_Mode;
 
-   package Parser is new IBM_3270.Structured_Field_Parser (
-      Update_Code_Page => Update_Code_Page,
-      Update_Highlighting => Update_Highlighting,
-      Update_Reply_Mode => Update_Reply_Mode);
+   TD : aliased Test_Driver;
 
    procedure Test_Code_Page (T : in out Test_Cases.Test_Case'Class) is
       Bytes_In : Byte_Vectors.Vector;
@@ -93,7 +103,7 @@ package body IBM_3270.Structured_Field_Parser_Tests is
          Supported_Reply_Modes (J) := False;
       end loop;
 
-      Parser.Parse (Bytes_In);
+      IBM_3270.Structured_Field_Parser.Parse (Bytes_In, TD'Access);
 
       Assert (Has_Page_310, "Code Page 310 not reported");
       Assert (Has_Page_500, "Code Page 500 not reported");
@@ -119,8 +129,8 @@ package body IBM_3270.Structured_Field_Parser_Tests is
    function Name (T : SF_Parser_Test) return Message_String is
    begin
 
-      return Format ("IBM_3270.Structured_Field_Parser_Tests");
+      return Format ("IBM_3270.Structured_Field_Parser.Tests");
 
    end Name;
 
-end IBM_3270.Structured_Field_Parser_Tests;
+end IBM_3270.Structured_Field_Parser.Tests;
