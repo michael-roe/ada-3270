@@ -11,7 +11,7 @@ procedure Test_Box is
 
    Vertical : constant Wide_Character := Wide_Character'Val (
       Unicode.Names.Box_Drawing.Box_Drawings_Light_Vertical);
-      
+
 begin
 
    Ada.Wide_Text_IO.Create (F1, Ada.Wide_Text_IO.Out_File,
