@@ -14,11 +14,11 @@ package body Code_Page_1025.Tests is
       V : Byte_Vectors.Vector;
    begin
 
-      for J in Wide_Character'Val (16#20#) .. Wide_Character'Val (16#7E#) loop
+      for J in Wide_Character'Val (16#20#) .. Wide_Character'Val (16#7F#) loop
          P.Append (V, "" & J);
       end loop;
 
-      Assert (V.Length = 127 - 32, "Length should be 94");
+      Assert (V.Length = 128 - 32, "Length should be 95");
 
       for J in V.First_Index .. V.Last_Index loop
          Assert (P.To_Wide_Character (V.Element (J)) =
