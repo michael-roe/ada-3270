@@ -20,6 +20,7 @@ with Telnet_Strings;
 use type Telnet_Strings.Bounded_String;
 with IBM_3270;
 with Code_Pages;
+with Code_Page_037;
 with Code_Page_500;
 with Code_Page_870;
 with Code_Page_875;
@@ -59,6 +60,8 @@ package body Telnet.Workers is
       Character'Pos ('E'),
       Telnet.Protocol.IAC,
       Telnet.Protocol.SE);
+
+   P037 : aliased Code_Page_037.Page_037;
 
    P500 : aliased Code_Page_500.Page_500;
 
@@ -115,7 +118,9 @@ package body Telnet.Workers is
          Ada.Text_IO.New_Line;
 
          if N = "CODEPAGE" then
-            if V = "500" then
+            if V = "037" or V = "37" then
+               Session_Code_Page := P037'Access;
+            elsif V = "500" then
                Session_Code_Page := P500'Access;
             elsif V = "870" then
                Session_Code_Page := P870'Access;
