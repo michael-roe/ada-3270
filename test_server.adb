@@ -93,7 +93,7 @@ begin
       Shared_Buffers.RX2'Access,
       Shared_Buffers.TX2'Access);
 
-   Server_Address.Addr := Inet_Addr ("127.0.0.1");
+   Server_Address.Addr := Any_Inet_Addr;
    Server_Address.Port := 17002;
    Create_Socket (Server_Socket);
    Set_Socket_Option (Server_Socket, Socket_Level,
